@@ -12,20 +12,20 @@ namespace ClassLibrary.Models
         public int POIID { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "O nome não pode ter mais de 50 caracters.")]
+        [StringLength(50, ErrorMessageResourceType = typeof(Resources.Global), ErrorMessageResourceName = "POI_Name_Error")]
         public string Name{ get; set; }
 
-        [StringLength(250, ErrorMessage = "A descrição não pode ter mais de 250 caracteres.")]
-        [Display(Name = "Descrição")]
+        [StringLength(250, ErrorMessageResourceType = typeof(Resources.Global), ErrorMessageResourceName = "POI_Description_Error" )]
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
         [Required]
-        [RegularExpression(@"([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}", ErrorMessage = "Latitude inválida")]
+        [RegularExpression(@"([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.Global), ErrorMessageResourceName = "POI_Latitude_Error")]
         [Display(Name = "Gps - Latitude")]
         public decimal GPS_Lat { get; set; }
 
         [Required]
-        [RegularExpression(@"([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}", ErrorMessage = "Longitude inválida")]
+        [RegularExpression(@"([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.Global), ErrorMessageResourceName = "POI_Longitude_Error")]
         [Display(Name = "Gps - Longitude")]
         public decimal GPS_Long { get; set; }
 
