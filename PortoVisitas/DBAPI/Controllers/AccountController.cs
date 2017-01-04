@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using DBAPI.Models;
 using DBAPI.Providers;
 using DBAPI.Results;
+using ClassLibrary.Models;
 
 namespace DBAPI.Controllers
 {

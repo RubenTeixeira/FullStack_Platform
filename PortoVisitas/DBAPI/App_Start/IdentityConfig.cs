@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using DBAPI.Models;
+using ClassLibrary.Models;
 
 namespace DBAPI
 {

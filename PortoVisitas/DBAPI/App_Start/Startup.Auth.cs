@@ -10,6 +10,8 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using DBAPI.Providers;
 using DBAPI.Models;
+using System.Data.Entity;
+using MySql.Data.Entity;
 
 namespace DBAPI
 {
