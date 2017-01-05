@@ -9,7 +9,7 @@ namespace ClassLibrary.Helpers
 {
     public class DBWebApiHttpClient
     {
-        public const string WebApiBaseAddress = "https://localhost:44329/";
+        public const string WebApiBaseAddress = "https://10.8.11.86/DBAPI/";
 
         public static HttpClient GetClient()
         {

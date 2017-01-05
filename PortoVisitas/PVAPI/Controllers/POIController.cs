@@ -19,7 +19,8 @@ namespace PVAPI.Controllers
         static HttpClient client;
 
         // GET: api/POI
-        public async Task<IEnumerable<POIDTO>> Get()
+        [ResponseType(typeof(POIDTO))]
+        public async Task<IHttpActionResult> Get()
         {
             client = DBWebApiHttpClient.GetClient();
 
@@ -28,10 +29,11 @@ namespace PVAPI.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                pois = await response.Content.ReadAsAsync<IEnumerable<POIDTO>>();
+               pois = await response.Content.ReadAsAsync<IEnumerable<POIDTO>>();
+                return Ok(pois);
             }
 
-            return pois;
+            return BadRequest(response.ToString());
         }
 
         // GET: api/POI/5
