@@ -4,8 +4,7 @@ using System.Linq;
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(PVAPI.Startup))]
-
+[assembly: OwinStartup("PVAPIConfig", typeof(PVAPI.Startup))]
 namespace PVAPI
 {
     public partial class Startup

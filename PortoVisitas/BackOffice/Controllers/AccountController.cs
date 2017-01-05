@@ -9,7 +9,6 @@ using BackOffice.Models;
 using ClassLibrary.Helpers;
 using Newtonsoft.Json;
 using System.Net.Http;
-using System.Web.Script.Serialization;
 
 namespace BackOffice.Controllers
 {
@@ -58,6 +57,7 @@ namespace BackOffice.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            PVWebApiHttpClient.clearToken();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -78,26 +78,27 @@ namespace BackOffice.Controllers
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             try
             {
+
+                var data = new
+                {
+                    Email = model.Email,
+                    Password = model.Password,
+                    RememberMe = model.RememberMe
+                };
+
+                string dataJSON = JsonConvert.SerializeObject(data);
+                HttpContent content = new StringContent(dataJSON, System.Text.Encoding.Unicode, "application/json");
+
                 var client = PVWebApiHttpClient.GetClient();
-                string username = model.Email;
-                string password = model.Password;
 
-                HttpContent content = new StringContent(
-                "grant_type=password&username=" + username + "&password=" + password,
-                System.Text.Encoding.UTF8,
-                "application/x-www-form-urlencoded");
-
-                var response = await client.PostAsync("/Token", content);
+                var response = await client.PostAsync("api/Account/Login", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string data = await response.Content.ReadAsStringAsync();
-                    //use JavaScriptSerializer from System.Web.Script.Serialization
-                    JavaScriptSerializer JSserializer = new JavaScriptSerializer();
-                    //deserialize to your class
-                    TokenResponse tokenResponse = JSserializer.Deserialize<TokenResponse>(data);
+                    TokenResponse tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
 
                     PVWebApiHttpClient.storeToken(tokenResponse);
+                    PVWebApiHttpClient.storeUsername(tokenResponse.Username);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -421,10 +422,9 @@ namespace BackOffice.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+        {   
+            PVWebApiHttpClient.clearToken();
             return RedirectToAction("Index", "Home");
         }
 
