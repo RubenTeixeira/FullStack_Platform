@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +6,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BackOffice.Models;
+using ClassLibrary.Helpers;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Web.Script.Serialization;
 
 namespace BackOffice.Controllers
 {
@@ -75,19 +76,39 @@ namespace BackOffice.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            try
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                var client = PVWebApiHttpClient.GetClient();
+                string username = model.Email;
+                string password = model.Password;
+
+                HttpContent content = new StringContent(
+                "grant_type=password&username=" + username + "&password=" + password,
+                System.Text.Encoding.UTF8,
+                "application/x-www-form-urlencoded");
+
+                var response = await client.PostAsync("/Token", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    //use JavaScriptSerializer from System.Web.Script.Serialization
+                    JavaScriptSerializer JSserializer = new JavaScriptSerializer();
+                    //deserialize to your class
+                    TokenResponse tokenResponse = JSserializer.Deserialize<TokenResponse>(data);
+
+                    PVWebApiHttpClient.storeToken(tokenResponse);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return Content("Ocorreu um erro: " + response.StatusCode);
+                }
+            }
+            catch
+            {
+                return Content("Ocorreu um erro.");
             }
         }
 
@@ -151,21 +172,33 @@ namespace BackOffice.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var data = new
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    Email = model.Email,
+                    Password = model.Password,
+                    ConfirmPassword = model.Password
+                };
+                try
+                {
+                    var client = PVWebApiHttpClient.GetClient();
 
-                    return RedirectToAction("Index", "Home");
+                    string dataJSON = JsonConvert.SerializeObject(data);
+                    HttpContent content = new StringContent(dataJSON, System.Text.Encoding.Unicode, "application/json");
+
+                    var response = await client.PostAsync("api/Account/Register", content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return Content("Ocorreu um erro: " + response.StatusCode);
+                    }
                 }
-                AddErrors(result);
+                catch
+                {
+                    return Content("Ocorreu um erro.");
+                }
             }
 
             // If we got this far, something failed, redisplay form

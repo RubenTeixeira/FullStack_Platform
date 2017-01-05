@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="POI_Description_Error" xml:space="preserve">
-    <value>A descrição não pode ter mais de 250 caracteres</value>
+    <value>The description can not be more than 250 characters</value>
   </data>
   <data name="POI_Lat_Error" xml:space="preserve">
     <value>Invalid Latitude</value>
@@ -127,6 +127,6 @@
     <value>Invalid Longitude</value>
   </data>
   <data name="POI_Name_Error" xml:space="preserve">
-    <value>O nome não pode ter mais de 50 caracters</value>
+    <value>Name can not be more than 50 characters</value>
   </data>
 </root>

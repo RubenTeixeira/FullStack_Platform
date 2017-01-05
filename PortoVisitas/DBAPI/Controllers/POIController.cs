@@ -1,40 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ClassLibrary.Models;
-using DBAPI.Models;
+using DBAPI.DAL;
+using ClassLibrary.DTO;
+using System.Diagnostics;
 
 namespace DBAPI.Controllers
 {
     public class POIController : ApiController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: api/POI
-        public IQueryable<POI> GetPOIs()
+        [ResponseType(typeof(List<POIDTO>))]
+        public async Task<IHttpActionResult> GetPOI()
         {
-            return db.POIs;
+            List<POI> listPoi = await unitOfWork.POIRepository.FindPOIs();
+
+            List<POIDTO> list = unitOfWork.POIRepository.ConvertModelListToDTO(listPoi);
+
+            return Ok(list);
         }
 
         // GET: api/POI/5
-        [ResponseType(typeof(POI))]
+        [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> GetPOI(int id)
         {
-            POI pOI = await db.POIs.FindAsync(id);
-            if (pOI == null)
+            POI poi = await unitOfWork.POIRepository.FindPOIByIDAsync(id);
+
+            if (poi == null)
             {
                 return NotFound();
             }
 
-            return Ok(pOI);
+            POIDTO dto = unitOfWork.POIRepository.ConvertModelToDTO(poi);
+
+            return Ok(dto);
         }
 
         // PUT: api/POI/5
@@ -51,15 +56,15 @@ namespace DBAPI.Controllers
                 return BadRequest();
             }
 
-            db.Entry(pOI).State = EntityState.Modified;
+            unitOfWork.POIRepository.UpdatePOI(pOI);
 
             try
             {
-                await db.SaveChangesAsync();
+                await unitOfWork.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!POIExists(id))
+                if (!unitOfWork.POIRepository.POIExists(id))
                 {
                     return NotFound();
                 }
@@ -73,7 +78,7 @@ namespace DBAPI.Controllers
         }
 
         // POST: api/POI
-        [ResponseType(typeof(POI))]
+        [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> PostPOI(POI pOI)
         {
             if (!ModelState.IsValid)
@@ -81,24 +86,25 @@ namespace DBAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.POIs.Add(pOI);
-            await db.SaveChangesAsync();
+            await unitOfWork.POIRepository.CreatePOI(pOI);
 
-            return CreatedAtRoute("DefaultApi", new { id = pOI.POIID }, pOI);
+            var dto = unitOfWork.POIRepository.ConvertModelToDTO(pOI);
+
+            return CreatedAtRoute("DefaultApi", new { id = pOI.POIID }, dto);
         }
 
         // DELETE: api/POI/5
         [ResponseType(typeof(POI))]
         public async Task<IHttpActionResult> DeletePOI(int id)
         {
-            POI pOI = await db.POIs.FindAsync(id);
+            POI pOI = await unitOfWork.POIRepository.FindPOIByIDAsync(id);
+
             if (pOI == null)
             {
                 return NotFound();
             }
 
-            db.POIs.Remove(pOI);
-            await db.SaveChangesAsync();
+            await unitOfWork.POIRepository.DeletePOI(id);
 
             return Ok(pOI);
         }
@@ -107,14 +113,9 @@ namespace DBAPI.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool POIExists(int id)
-        {
-            return db.POIs.Count(e => e.POIID == id) > 0;
         }
     }
 }

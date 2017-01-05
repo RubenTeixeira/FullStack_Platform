@@ -245,9 +245,21 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\POIController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DAL\MySqlConfiguration.cs" />
+    <Compile Include="DAL\MySqlHistoryContext.cs" />
+    <Compile Include="DAL\MySqlInitializer.cs" />
+    <Compile Include="DAL\Repositories\POIRepository.cs" />
+    <Compile Include="DAL\RepositoryInterfaces\IPOIRepository.cs" />
+    <Compile Include="DAL\UnitOfWork.cs" />
+    <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701041912473_Initial.cs" />
+    <Compile Include="Migrations\201701041912473_Initial.Designer.cs">
+      <DependentUpon>201701041912473_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -332,6 +344,11 @@
       <Project>{e9aab0e8-c36d-43bf-b8bf-ff689875260d}</Project>
       <Name>ClassLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201701041912473_Initial.resx">
+      <DependentUpon>201701041912473_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

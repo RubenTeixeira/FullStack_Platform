@@ -61,7 +61,7 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A descrição não pode ter mais de 250 caracteres.
+        ///   Looks up a localized string similar to The description can not be more than 250 characters.
         /// </summary>
         public static string POI_Description_Error {
             get {
@@ -88,7 +88,7 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to O nome não pode ter mais de 50 caracters.
+        ///   Looks up a localized string similar to Name can not be more than 50 characters.
         /// </summary>
         public static string POI_Name_Error {
             get {

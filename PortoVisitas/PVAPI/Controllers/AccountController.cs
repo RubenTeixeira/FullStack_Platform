@@ -16,6 +16,8 @@ using Microsoft.Owin.Security.OAuth;
 using PVAPI.Models;
 using PVAPI.Providers;
 using PVAPI.Results;
+using ClassLibrary.Helpers;
+using Newtonsoft.Json;
 
 namespace PVAPI.Controllers
 {
@@ -323,21 +325,39 @@ namespace PVAPI.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var data = new
+                {
+                    Email = model.Email,
+                    Password = model.Password,
+                    ConfirmPassword = model.Password
+                };
+                try
+                {
+                    var client = DBWebApiHttpClient.GetClient();
+
+                    string dataJSON = JsonConvert.SerializeObject(data);
+                    HttpContent content = new StringContent(dataJSON, System.Text.Encoding.Unicode, "application/json");
+
+                    var response = await client.PostAsync("api/Account/Register", content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return Ok(response);
+                    }
+                    else
+                    {
+                        return BadRequest("Ocorreu um erro: " + response.StatusCode);
+                    }
+                }
+                catch
+                {
+                    return BadRequest("Ocorreu um erro.");
+                }
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
+            // If we got this far, something failed, redisplay form
+            return BadRequest(ModelState);
         }
 
         // POST api/Account/RegisterExternal

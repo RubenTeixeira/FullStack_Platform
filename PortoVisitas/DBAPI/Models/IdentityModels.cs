@@ -1,11 +1,9 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using MySql.Data.Entity;
 using ClassLibrary.Models;
+using DBAPI.DAL;
 
 namespace DBAPI.Models
 {
@@ -15,7 +13,7 @@ namespace DBAPI.Models
     {
 
         public ApplicationDbContext()
-            : base("DBContext", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
         }
         
@@ -24,12 +22,32 @@ namespace DBAPI.Models
             return new ApplicationDbContext();
         }
 
+        static ApplicationDbContext()
+        {
+            Database.SetInitializer(new MySqlInitializer());
+            DbConfiguration.SetConfiguration(new MySql.Data.Entity.MySqlEFConfiguration());
+        }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<POI>().HasMany(p => p.ConnectedPOIs ).WithMany().Map(m =>
+            {
+                m.MapLeftKey("POIID");
+                m.MapRightKey("ConnectedPOIID");
+                m.ToTable("Caminho");
+            });
+
+            modelBuilder.Entity<ApplicationUser>().Property(u => u.UserName).IsUnicode(false);
+            modelBuilder.Entity<ApplicationUser>().Property(u => u.Email).IsUnicode(false);
+            modelBuilder.Entity<IdentityRole>().Property(r => r.Name).HasMaxLength(255);
+
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
 
-        public System.Data.Entity.DbSet<ClassLibrary.Models.POI> POIs { get; set; }
+        public DbSet<POI> POIs { get; set; }
+
     }
 }
