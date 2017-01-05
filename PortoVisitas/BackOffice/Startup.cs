@@ -1,8 +1,7 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-
-[assembly: OwinStartupAttribute("BackOfficeConfig",typeof(BackOffice.Startup))]
+[assembly: OwinStartupAttribute(typeof(BackOffice.Startup))]
 namespace BackOffice
 {
     public partial class Startup
