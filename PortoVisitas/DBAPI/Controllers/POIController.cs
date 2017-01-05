@@ -56,7 +56,7 @@ namespace DBAPI.Controllers
                 return BadRequest();
             }
 
-            unitOfWork.POIRepository.UpdatePOI(pOI);
+            await unitOfWork.POIRepository.UpdatePOI(pOI);
 
             try
             {

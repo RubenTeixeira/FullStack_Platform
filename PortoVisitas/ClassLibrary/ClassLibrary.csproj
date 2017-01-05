@@ -111,6 +111,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ConnectedPOIViewModel.cs" />
+    <Compile Include="ViewModels\POIViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -26,11 +26,11 @@ namespace DBAPI.DAL
                   "users"));
 
                 // if MigrationHistory table is not there (which is the case first time we run) - create it
-                if (migrationHistoryTableExists.FirstOrDefault() == 0)
-                {
-                    context.Database.Delete();
-                    context.Database.Create();
-                }
+                //if (migrationHistoryTableExists.FirstOrDefault() == 0)
+                //{
+                //    context.Database.Delete();
+                //    context.Database.Create();
+                //}
             }
         }
     }

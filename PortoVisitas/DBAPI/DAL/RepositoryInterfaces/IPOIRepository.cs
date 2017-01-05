@@ -15,7 +15,7 @@ namespace DBAPI.DAL.RepositoryInterfaces
         Task<POI> FindPOIByIDAsync(int? poiID);
         Task<int> CreatePOI(POI poi);
         Task<bool> DeletePOI(int poiID);
-        void UpdatePOI(POI poi);
+        Task<bool> UpdatePOI(POI poi);
         bool POIExists(int id);
 
         POI ConvertDTOToModel(POIDTO dto);

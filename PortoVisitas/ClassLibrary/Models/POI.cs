@@ -39,6 +39,5 @@ namespace ClassLibrary.Models
         {
             ConnectedPOIs = new List<POI>();
         }
-
     }
 }

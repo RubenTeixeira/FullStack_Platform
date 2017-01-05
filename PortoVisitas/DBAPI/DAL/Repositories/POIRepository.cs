@@ -53,15 +53,34 @@ namespace DBAPI.DAL.Repositories
                 return false;
             }
 
+            context.Database.ExecuteSqlCommand("delete from Caminho where POIID = {0}", poi.POIID);
+            await context.SaveChangesAsync();
+
+            context.Database.ExecuteSqlCommand("delete from Caminho where ConnectedPOIID = {0}", poi.POIID);
+            await context.SaveChangesAsync();
+
             context.POIs.Remove(poi);
             await context.SaveChangesAsync();
 
             return true;
         }
 
-        public void UpdatePOI(POI poi)
+        public async Task<bool> UpdatePOI(POI poi)
         {
+
+            context.Database.ExecuteSqlCommand("delete from Caminho where POIID = {0}", poi.POIID);
+            await context.SaveChangesAsync();
+
             context.Entry(poi).State = EntityState.Modified;
+
+            foreach (POI connected in poi.ConnectedPOIs) { 
+                context.Database.ExecuteSqlCommand("Insert Into Caminho (POIID,ConnectedPOIID)" +
+                    "Values('" + poi.POIID + "','" + connected.POIID + "')");
+            }
+
+            await context.SaveChangesAsync();
+
+            return true;
         }
 
         public bool POIExists(int id)

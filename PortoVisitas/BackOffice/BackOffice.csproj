@@ -295,6 +295,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\POI\Index.cshtml" />
     <Content Include="Views\POI\Create.cshtml" />
+    <Content Include="Views\POI\Edit.cshtml" />
+    <Content Include="Views\POI\Delete.cshtml" />
+    <Content Include="Views\POI\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

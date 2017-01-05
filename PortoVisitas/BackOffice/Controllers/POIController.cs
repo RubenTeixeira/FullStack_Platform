@@ -1,10 +1,12 @@
 ﻿using ClassLibrary.DTO;
 using ClassLibrary.Helpers;
 using ClassLibrary.Models;
+using ClassLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -19,7 +21,6 @@ namespace BackOffice.Controllers
         // GET: POI
         public async Task<ActionResult> Index()
         {
-
             client = PVWebApiHttpClient.GetClient();
 
             IEnumerable<POIDTO> pois = null;
@@ -41,16 +42,28 @@ namespace BackOffice.Controllers
         }
 
         // GET: POI/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            POI pOI = await getPOIByID(id);
+
+            if (pOI == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(pOI);
         }
 
         // GET: POI/Create
         public async Task<ActionResult> Create()
         {
 
-            ViewBag.PoiList = await getPOIList();
+            ViewBag.PoiList = await getPOIList(null);
 
             return View();
         }
@@ -60,7 +73,7 @@ namespace BackOffice.Controllers
         public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
         {
 
-            ViewBag.PoiList = await getPOIList();
+            ViewBag.PoiList = await getPOIList(null);
 
             var connectedForm = Request.Form["ConnectedPOIs"];
             parseConnectedPOIs(pOI, connectedForm);
@@ -78,50 +91,94 @@ namespace BackOffice.Controllers
         }
 
         // GET: POI/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int? id)
         {
-            return View();
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            POI pOI = await getPOIByID(id);
+
+            if (pOI == null)
+            {
+                return HttpNotFound();
+            }
+
+            POIViewModel poiModel = new POIViewModel();
+            List<POI> poiList = await getPOIList(pOI.POIID);
+            buildPOIViewModel(poiModel,pOI,poiList);
+
+            return View(poiModel);
         }
 
         // POST: POI/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
         {
-            try
-            {
-                // TODO: Add update logic here
 
+            POIViewModel poiModel = new POIViewModel();
+            List<POI> poiList = await getPOIList(pOI.POIID);
+
+            var connectedForm = Request.Form["connectedPoi.SelectedItemIds"];
+            parseConnectedPOIs(pOI, connectedForm);
+
+            buildPOIViewModel(poiModel, pOI, poiList);
+
+            client = PVWebApiHttpClient.GetClient();
+            var responseHttp = await client.PutAsJsonAsync("api/POI/"+id, pOI);
+
+            if (responseHttp.IsSuccessStatusCode)
+            {
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(poiModel);
         }
 
         // GET: POI/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            POI pOI = await getPOIByID(id);
+
+            if (pOI == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(pOI);
         }
 
         // POST: POI/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
 
+            client = PVWebApiHttpClient.GetClient();
+            var responseHttp = await client.DeleteAsync("api/POI/" + id);
+
+            if (responseHttp.IsSuccessStatusCode)
+            {
                 return RedirectToAction("Index");
             }
-            catch
+
+            POI pOI = await getPOIByID(id);
+
+            if (pOI == null)
             {
-                return View();
+                return HttpNotFound();
             }
+
+            return View(pOI);
         }
 
-        public async Task<List<POI>> getPOIList()
+        public async Task<List<POI>> getPOIList(int? id)
         {
             client = PVWebApiHttpClient.GetClient();
 
@@ -137,9 +194,35 @@ namespace BackOffice.Controllers
             foreach (POIDTO poiDTO in pois)
             {
                 POI poi = DTOConverters.ConvertDTOToModel(poiDTO);
-                poiList.Add(poi);
+                if( id != null && poi.POIID != id)
+                {
+                    poiList.Add(poi);
+                }
+
+                if(id == null)
+                {
+                    poiList.Add(poi);
+                }
+
             }
             return poiList;
+        }
+
+        public async Task<POI> getPOIByID(int? id)
+        {
+            client = PVWebApiHttpClient.GetClient();
+
+            POIDTO poiDTO = null;
+            var response = await client.GetAsync("api/POI/" + id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                poiDTO = await response.Content.ReadAsAsync<POIDTO>();
+            }
+
+            POI pOI = DTOConverters.ConvertDTOToModel(poiDTO);
+
+            return pOI;
         }
 
         public void parseConnectedPOIs(POI pOI, Object connectedForm)
@@ -162,6 +245,21 @@ namespace BackOffice.Controllers
                     }
                 }
             }
+        }
+
+        public void buildPOIViewModel(POIViewModel poiModel, POI pOI, List<POI> poiList)
+        {
+            poiModel.poi = pOI;
+
+            ConnectedPOIViewModel poiSelectedModel = new ConnectedPOIViewModel();
+            IEnumerable<int> selectedItemsArray = pOI.ConnectedPOIs.Select(x => x.POIID).ToArray();
+            ViewBag.Selected = selectedItemsArray;
+
+            poiSelectedModel.SelectedItemIds = selectedItemsArray;
+
+            poiSelectedModel.Items = poiList;
+
+            poiModel.connectedPoi = poiSelectedModel;
         }
     }
 

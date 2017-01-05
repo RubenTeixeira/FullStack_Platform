@@ -35,9 +35,22 @@ namespace PVAPI.Controllers
         }
 
         // GET: api/POI/5
-        public string Get(int id)
+        [ResponseType(typeof(POIDTO))]
+        public async Task<IHttpActionResult> Get(int id)
         {
-            return "value";
+
+            client = DBWebApiHttpClient.GetClient();
+
+            POIDTO poiDTO = null;
+            var response = await client.GetAsync("api/POI/"+id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                poiDTO = await response.Content.ReadAsAsync<POIDTO>();
+                return Ok(poiDTO);
+            }
+
+            return BadRequest();
         }
 
         // POST: api/POI
@@ -58,13 +71,37 @@ namespace PVAPI.Controllers
         }
 
         // PUT: api/POI/5
-        public void Put(int id, [FromBody]string value)
+        [ResponseType(typeof(POIDTO))]
+        public async Task<IHttpActionResult> PutPOI(int id, POI pOI)
         {
+            client = DBWebApiHttpClient.GetClient();
+            var response = await client.PutAsJsonAsync("api/POI/"+id, pOI);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                var objResponse1 = JsonConvert.DeserializeObject<POIDTO>(result);
+                return Ok(objResponse1);
+            }
+
+            return BadRequest();
         }
 
         // DELETE: api/POI/5
-        public void Delete(int id)
+        [ResponseType(typeof(POIDTO))]
+        public async Task<IHttpActionResult> Delete(int id)
         {
+            client = DBWebApiHttpClient.GetClient();
+            var response = await client.DeleteAsync("api/POI/" + id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                var objResponse1 = JsonConvert.DeserializeObject<POIDTO>(result);
+                return Ok(objResponse1);
+            }
+
+            return BadRequest();
         }
     }
 }
