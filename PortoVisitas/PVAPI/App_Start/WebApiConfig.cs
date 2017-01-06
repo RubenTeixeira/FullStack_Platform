@@ -17,7 +17,7 @@ namespace PVAPI
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-            config.Filters.Add(new PVAPI.Filters.RequireHttpsAttribute());
+            //config.Filters.Add(new PVAPI.Filters.RequireHttpsAttribute());
 
 
             config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;

@@ -11,7 +11,7 @@ namespace ClassLibrary.Helpers
 {
     public class PVWebApiHttpClient
     {
-        public const string WebApiBaseAddress = "https://10.8.11.86/PVAPI/";
+        public const string WebApiBaseAddress = "http://10.8.11.86/PVAPI/";
 
         public static HttpClient GetClient()
         {
