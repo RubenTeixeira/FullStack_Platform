@@ -111,6 +111,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\ConnectedPOIViewModel.cs" />
     <Compile Include="ViewModels\POIViewModel.cs" />
   </ItemGroup>
@@ -122,7 +123,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Global.pt-PT.resx" />
+    <EmbeddedResource Include="Resources\Global.pt.resx" />
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.Designer.cs</LastGenOutput>
