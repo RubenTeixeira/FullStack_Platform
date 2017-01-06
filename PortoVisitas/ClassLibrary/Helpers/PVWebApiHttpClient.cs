@@ -47,6 +47,7 @@ namespace ClassLibrary.Helpers
         {
             var session = HttpContext.Current.Session;
             session["token"] = null;
+            session["username"] = null;
         }
     }
 }

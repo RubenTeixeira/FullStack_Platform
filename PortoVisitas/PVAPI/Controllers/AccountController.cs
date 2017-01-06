@@ -70,15 +70,16 @@ namespace PVAPI.Controllers
 
             {
                 var client = DBWebApiHttpClient.GetClient();
+
                 string username = model.Email;
                 string password = model.Password;
 
-                HttpContent content = new StringContent(
-"grant_type=password&username=" + username + "&password=" + password,
-System.Text.Encoding.UTF8,
-"application/x-www-form-urlencoded");
+                HttpContent content = new StringContent("grant_type=password&username=" + username + "&password=" + password,
+                     System.Text.Encoding.UTF8,
+                     "application/x-www-form-urlencoded");
 
-                var response = await client.PostAsync("/Token", content);
+                var response = await client.PostAsync("Token", content);
+
                 if (response.IsSuccessStatusCode)
                 {
 
@@ -87,9 +88,8 @@ System.Text.Encoding.UTF8,
                 }
                 else
                 {
-                    return BadRequest("Ocorreu um erro: " + response.StatusCode);
+                    return BadRequest("Ocorreu um erro: " + content.ReadAsStringAsync().ToString()+ " " + response.StatusCode);
                 }
-
             
             }
             catch

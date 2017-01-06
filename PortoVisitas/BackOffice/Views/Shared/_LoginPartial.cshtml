@@ -1,12 +1,13 @@
 ﻿@using Microsoft.AspNet.Identity
 @{var session = HttpContext.Current.Session;
- if (session["username"] != null)
-{
+    if (session["username"] != null)
+    {
         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new
         {
             id = "logoutForm",
-            @class = "navbar-right" }))
-    {
+            @class = "navbar-right"
+        }))
+        {
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
@@ -26,4 +27,5 @@
     <li>@Html.ActionLink(BackOffice.Resources.Global.Login, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     
 </ul>
+        }
     }

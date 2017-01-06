@@ -58,6 +58,7 @@ namespace BackOffice.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            PVWebApiHttpClient.clearToken();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
