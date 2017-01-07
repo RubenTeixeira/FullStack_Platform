@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNet.Identity
+@{var session = HttpContext.Current.Session;
+    if (session["username"] != null)
+    {
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new
+        {
+            id = "logoutForm",
+            @class = "navbar-right"
+        }))
+        {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Hello " + session["username"] + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
+    </ul>
+        }
+    }
+    else
+    {
+    <ul class="nav navbar-nav navbar-right">
+    
+    <li>@Html.ActionLink(BackOffice.Resources.Global.Register, "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    
+    <li>@Html.ActionLink(BackOffice.Resources.Global.Login, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    
+</ul>
+        }
+    }

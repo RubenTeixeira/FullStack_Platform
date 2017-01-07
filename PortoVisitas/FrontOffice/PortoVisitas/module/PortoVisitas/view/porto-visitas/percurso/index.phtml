@@ -1,0 +1,32 @@
+<?php
+$title = 'Percursos';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+ <a href="<?php echo $this->url('percurso', array('action'=>'add'));?>">Adicionar novo percurso</a>
+</p>
+
+<table class="table">
+	<tr>
+		<th>Descricao</th>
+		<th>Data</th>
+		<th>Criador</th>
+		<th>&nbsp;</th>
+	</tr>
+	<?php foreach ($percursos as $percurso) : ?>
+	<tr>
+ 		<td><?php echo $this->escapeHtml($percurso['descricao']);?></td>
+ 		<td><?php echo $this->escapeHtml($percurso['data']);?></td>
+ 		<td><?php echo $this->escapeHtml($percurso['email']);?></td>
+	 	<td>
+	 		<a href="<?php echo $this->url('pontopercurso',
+                array('action'=>'index', 'id' => $percurso['id']));?>">Selecionar</a>
+			<a href="<?php echo $this->url('percurso',
+                array('action'=>'edit', 'id' => $percurso['id']));?>">Editar</a>
+ 			<a href="<?php echo $this->url('percurso',
+                array('action'=>'delete', 'id' => $percurso['id']));?>">Apagar</a>
+		</td>
+	</tr>
+<?php endforeach; ?>
+</table>
