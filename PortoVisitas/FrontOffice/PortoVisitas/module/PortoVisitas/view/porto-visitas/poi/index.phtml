@@ -1,0 +1,53 @@
+<?php
+$title = 'Pontos de Interesse';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+ <a href="<?php echo $this->url('poi', array('action'=>'add'));?>">Sugerir um Ponto de interesse</a>
+</p>
+
+<table class="table">
+	<tr>
+		<th>Nome</th>
+		<th>Descricao</th>
+		<th>Horario de Funcionamento</th>
+		<th>Coordenadas</th>
+		<th>Hashtags</th>
+		<th>&nbsp;</th>
+	</tr>
+	<?php foreach ($pois as $poi) : ?>
+	<tr>
+ 		<td><?php echo $this->escapeHtml($poi->Name);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->Description);?></td>
+ 		<?php
+ 		     $openDate = date_parse($poi->OpenHour);
+ 		     $opens = $openDate['hour'].":".$openDate['minute'];
+ 		     $closeDate = date_parse($poi->CloseHour);
+ 		     $closes = $closeDate['hour'].":".$closeDate['minute'];
+ 		     $schedule = date('H:i',strtotime($opens))." - ".date ('H:i',strtotime($closes));
+ 		?>
+ 		<td><?php echo $this->escapeHtml($schedule);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->GPS_Lat.",".$poi->GPS_Long);?></td>
+ 		<td>
+ 			<?php foreach ($poi->Hashtags as $tag) {
+ 			        echo $this->escapeHtml("#".$tag->Text." ");
+ 			      }
+ 			?>
+ 		</td>
+ 		<?php
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            if (isset($_SESSION['user'])) {
+         ?>            
+ 			<td>
+	 			<a href="<?php echo $this->url('poi',
+                    array('action'=>'addTag', 'id' => $poi->ID));?>">Tag</a>
+        	</td>
+        <?php
+            }
+        ?>
+	</tr>
+<?php endforeach; ?>
+</table>
