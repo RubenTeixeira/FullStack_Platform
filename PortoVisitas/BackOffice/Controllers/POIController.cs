@@ -124,7 +124,7 @@ namespace BackOffice.Controllers
 
         // POST: POI/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
         {
 
             POIViewModel poiModel = new POIViewModel();
@@ -133,13 +133,13 @@ namespace BackOffice.Controllers
             var connectedForm = Request.Form["connectedPoi.SelectedItemIds"];
             parseConnectedPOIs(pOI, connectedForm);
 
-            buildPOIViewModel(poiModel, pOI, poiList);
-
-            string openHour = Request.Form["OpenHour"];
+            string openHour = Request.Form["poi.OpenHour"];
             pOI.OpenHour = Convert.ToDateTime(openHour);
 
-            string closeHour = Request.Form["CloseHour"];
+            string closeHour = Request.Form["poi.CloseHour"];
             pOI.CloseHour = Convert.ToDateTime(closeHour);
+
+            buildPOIViewModel(poiModel, pOI, poiList);
 
             client = PVWebApiHttpClient.GetClient();
             var responseHttp = await client.PutAsJsonAsync("api/POI/"+id, pOI);

@@ -121,7 +121,7 @@ namespace BackOffice.Controllers
             PercursoViewModel percursoModel = new PercursoViewModel();
             List<POI> poiList = await getPOIList(null);
 
-            var connectedForm = Request.Form["connectedPoi.SelectedItemIds"];
+            var connectedForm = Request.Form["percursoPoi.SelectedItemIds"];
             parsePercursoPOIs(percurso, connectedForm);
 
             buildPercursoViewModel(percursoModel, percurso, poiList);
