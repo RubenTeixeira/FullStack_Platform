@@ -20,6 +20,8 @@ class Poi
     public $creator;
 
     public $approved;
+    
+    public $hashtags;
 
     public $connectedPoi;
 
@@ -34,6 +36,7 @@ class Poi
         $this->gps_long = (! empty($data['gps_long'])) ? $data['gps_long'] : null;
         $this->creator = (! empty($data['creator'])) ? $data['creator'] : null;
         $this->approved = (! empty($data['approved'])) ? $data['approved'] : null;
+        $this->hashtags = (! empty($data['hashtags'])) ? $data['hashtags'] : null;
         $this->connectedPoi = (! empty($data['connectedPoi'])) ? $data['connectedPoi'] : null;
     }
 

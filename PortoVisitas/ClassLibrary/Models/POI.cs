@@ -51,9 +51,12 @@ namespace ClassLibrary.Models
         [Display(Name = "ConnectedPOIs", ResourceType = typeof(Resources.POI))]
         public virtual ICollection<POI> ConnectedPOIs { get; set; }
 
+        public virtual ICollection<Hashtag> Hashtags { get; set; }
+
         public POI()
         {
             ConnectedPOIs = new List<POI>();
+            Hashtags = new List<Hashtag>();
         }
     }
 }

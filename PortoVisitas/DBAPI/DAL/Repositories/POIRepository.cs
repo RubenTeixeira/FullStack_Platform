@@ -22,7 +22,7 @@ namespace DBAPI.DAL.Repositories
 
         public Task<List<POI>> FindPOIs()
         {
-            return context.POIs.Include(p => p.ConnectedPOIs).ToListAsync();
+            return context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).ToListAsync();
         }
 
         public Task<POI> FindPOIByIDAsync(int? poiID)
@@ -73,7 +73,8 @@ namespace DBAPI.DAL.Repositories
 
             context.Entry(poi).State = EntityState.Modified;
 
-            foreach (POI connected in poi.ConnectedPOIs) { 
+            foreach (POI connected in poi.ConnectedPOIs)
+            {
                 context.Database.ExecuteSqlCommand("Insert Into Caminho (POIID,ConnectedPOIID)" +
                     "Values('" + poi.POIID + "','" + connected.POIID + "')");
             }
@@ -94,9 +95,14 @@ namespace DBAPI.DAL.Repositories
             throw new NotImplementedException();
         }
 
+        public Hashtag ConvertDTOToModel(HashtagDTO dto)
+        {
+            throw new NotImplementedException();
+        }
+
         public POIDTO ConvertModelToDTO(POI poi)
         {
-            var dto = new POIDTO()
+            POIDTO dto = new POIDTO()
             {
                 ID = poi.POIID,
                 Name = poi.Name,
@@ -107,8 +113,9 @@ namespace DBAPI.DAL.Repositories
                 GPS_Long = poi.GPS_Long,
                 Creator = poi.Creator,
                 Approved = poi.Approved
+                ConnectedPOI = new List<POIConnectedDTO>(),
+                Hashtags = this.ConvertModelListToDTO(poi.Hashtags)
             };
-
 
             foreach (POI connected in poi.ConnectedPOIs)
             {
@@ -123,34 +130,39 @@ namespace DBAPI.DAL.Repositories
             return dto;
         }
 
-        public List<POIDTO> ConvertModelListToDTO(List<POI> modelList)
+        public HashtagDTO ConvertModelToDTO(Hashtag tag)
+        {
+            var dto = new HashtagDTO();
+            dto.HashtagID = tag.HashtagID;
+            dto.Text = tag.Text;
+            return dto;
+        }
+
+        public List<POIDTO> ConvertModelListToDTO(ICollection<POI> modelList)
         {
             List<POIDTO> list = new List<POIDTO>();
             foreach (POI poi in modelList)
             {
-                var dto = new POIDTO()
-                {
-                    ID = poi.POIID,
-                    Name = poi.Name,
-                    Description = poi.Description,
-                    OpenHour = poi.OpenHour,
-                    CloseHour = poi.CloseHour,
-                    GPS_Lat = poi.GPS_Lat,
-                    GPS_Long = poi.GPS_Long,
-                    Creator = poi.Creator,
-                    Approved = poi.Approved
-                };
+                var dto = this.ConvertModelToDTO(poi);
+                //var dto = new POIDTO()
+                //{
+                //    ID = poi.POIID,
+                //    Name = poi.Name,
+                //    Description = poi.Description,
+                //    GPS_Lat = poi.GPS_Lat,
+                //    GPS_Long = poi.GPS_Long,
+                //};
+                list.Add(dto);
+            }
+            return list;
+        }
 
-                foreach (POI connected in poi.ConnectedPOIs)
-                {
-                    POIConnectedDTO poiCon = new POIConnectedDTO();
-
-                    poiCon.ID = connected.POIID;
-                    poiCon.Name = connected.Name;
-
-                    dto.ConnectedPOI.Add(poiCon);
-                }
-
+        public List<HashtagDTO> ConvertModelListToDTO(ICollection<Hashtag> hashtags)
+        {
+            List<HashtagDTO> list = new List<HashtagDTO>();
+            foreach (Hashtag tag in hashtags)
+            {
+                HashtagDTO dto = this.ConvertModelToDTO(tag);
                 list.Add(dto);
             }
             return list;
@@ -178,5 +190,7 @@ namespace DBAPI.DAL.Repositories
 
             GC.SuppressFinalize(this);
         }
+
+
     }
 }

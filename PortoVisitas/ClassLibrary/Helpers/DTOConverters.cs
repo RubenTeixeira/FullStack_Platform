@@ -19,6 +19,8 @@ namespace ClassLibrary.Helpers
             poi.Description = dto.Description;
             poi.GPS_Lat = dto.GPS_Lat;
             poi.GPS_Long = dto.GPS_Long;
+            poi.ConnectedPOIs = new List<POI>();
+            poi.Hashtags = new List<Hashtag>();
 
             if(dto.ConnectedPOI != null) { 
                 foreach (POIConnectedDTO poiDTO in dto.ConnectedPOI)
@@ -40,6 +42,19 @@ namespace ClassLibrary.Helpers
             if (dto.Approved != null)
             {
                 poi.Approved= dto.Approved;
+            }
+
+            if (dto.Hashtags != null)
+            {
+                foreach (HashtagDTO tagDTO in dto.Hashtags)
+                {
+                    Hashtag tag = new Hashtag();
+                    tag.HashtagID = tagDTO.HashtagID;
+                    tag.Text = tagDTO.Text;
+                    tag.ReferencedPOIs = new List<POI>();
+                    tag.ReferencedPOIs.Add(poi);
+                    poi.Hashtags.Add(tag);
+                }
             }
 
             return poi;

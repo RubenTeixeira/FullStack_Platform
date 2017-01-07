@@ -262,6 +262,10 @@
     <Compile Include="Migrations\201701041912473_Initial.Designer.cs">
       <DependentUpon>201701041912473_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701071401579_Added Hashtags.cs" />
+    <Compile Include="Migrations\201701071401579_Added Hashtags.Designer.cs">
+      <DependentUpon>201701071401579_Added Hashtags.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201701071516495_percurso.cs" />
     <Compile Include="Migrations\201701071516495_percurso.Designer.cs">
       <DependentUpon>201701071516495_percurso.cs</DependentUpon>
@@ -356,6 +360,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201701041912473_Initial.resx">
       <DependentUpon>201701041912473_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701071401579_Added Hashtags.resx">
+      <DependentUpon>201701071401579_Added Hashtags.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701071516495_percurso.resx">
       <DependentUpon>201701071516495_percurso.cs</DependentUpon>

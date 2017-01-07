@@ -27,6 +27,7 @@ namespace ClassLibrary.DTO
         public string Creator { get; set; }
         public string Approved { get; set; }
         public List<POIConnectedDTO> ConnectedPOI { get; set; }
+        public List<HashtagDTO> Hashtags { get; set; }
 
         public POIDTO()
         {

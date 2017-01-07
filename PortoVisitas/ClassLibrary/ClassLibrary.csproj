@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\PercursoDTO.cs" />
+    <Compile Include="DTO\HashtagDTO.cs" />
     <Compile Include="DTO\POIConnectedDTO.cs" />
     <Compile Include="DTO\POIDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Helpers\DTOConverters.cs" />
     <Compile Include="Helpers\PVWebApiHttpClient.cs" />
     <Compile Include="Helpers\TokenResponse.cs" />
+    <Compile Include="Models\Hashtag.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Percurso.cs" />
     <Compile Include="Models\POI.cs" />
