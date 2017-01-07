@@ -180,7 +180,8 @@ namespace BackOffice.Controllers
                 {
                     Email = model.Email,
                     Password = model.Password,
-                    ConfirmPassword = model.Password
+                    ConfirmPassword = model.Password,
+                    Role = "Gestor"
                 };
                 try
                 {

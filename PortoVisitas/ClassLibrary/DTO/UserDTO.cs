@@ -10,5 +10,6 @@ namespace ClassLibrary.DTO
     {
         public string ID { get; set; }
         public string Username { get; set; }
+        public ICollection<string> Roles { get; set; }
     }
 }

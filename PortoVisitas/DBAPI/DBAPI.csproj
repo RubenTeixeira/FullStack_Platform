@@ -270,6 +270,10 @@
     <Compile Include="Migrations\201701071516495_percurso.Designer.cs">
       <DependentUpon>201701071516495_percurso.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701072145248_Roles.cs" />
+    <Compile Include="Migrations\201701072145248_Roles.Designer.cs">
+      <DependentUpon>201701072145248_Roles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -366,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701071516495_percurso.resx">
       <DependentUpon>201701071516495_percurso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701072145248_Roles.resx">
+      <DependentUpon>201701072145248_Roles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -376,7 +376,8 @@ namespace PVAPI.Controllers
                 {
                     Email = model.Email,
                     Password = model.Password,
-                    ConfirmPassword = model.Password
+                    ConfirmPassword = model.Password,
+                    Role = model.Role
                 };
                 try
                 {
