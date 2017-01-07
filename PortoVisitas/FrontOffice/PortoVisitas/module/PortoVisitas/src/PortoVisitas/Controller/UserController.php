@@ -76,10 +76,7 @@ class UserController extends AbstractActionController
                 $user->exchangeArray($form->getData());
                 $error = WebApiService::Register($user->email, $user->password);
                 if ($error != null) {
-                    echo "ERROR: ".$error->Message."\r\n";
-                    foreach ($error->ModelState as $states)
-                        foreach ($states as $msg)
-                            echo $msg."\r\n";
+                    echo $error;
                 } else {
                     // start session with newly created user
                     $this->startSession($user->email, $user->password);

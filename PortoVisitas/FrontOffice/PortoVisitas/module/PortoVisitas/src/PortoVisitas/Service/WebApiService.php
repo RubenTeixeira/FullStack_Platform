@@ -8,24 +8,26 @@ use Zend\Json\Json;
 class WebApiService
 {
 
-    public static $enderecoBase = 'https://localhost:44329';
+    public static $enderecoBase = 'http://10.8.11.86/PVAPI';
 
     public static function Login($username, $password)
     {
         $enderecoBase = WebApiService::$enderecoBase;
-        $client = new Client($enderecoBase . '/Token');
+        $client = new Client($enderecoBase . '/api/Account/Login');
         $client->setMethod(Request::METHOD_POST);
-        $data = "grant_type=password&username=$username&password=$password";
+        $data = "email=$username&password=$password&rememberme=false";
         $len = strlen($data);
+        //echo "STRING: ".$data;
         $client->setHeaders(array(
             'Content-Type' => 'application/x-www-form-urlencoded',
             'Content-Length' => $len
         ));
-        $client->setOptions([
-            'sslverifypeer' => false
-        ]);
+//         $client->setOptions([
+//             'sslverifypeer' => false
+//         ]);
         $client->setRawBody($data);
         $response = $client->send();
+        //echo "BODY: ".$response->getBody();
         $body = Json::decode($response->getBody());
         if (! empty($body->access_token)) {
             return $body->access_token;
@@ -44,16 +46,18 @@ class WebApiService
             'Content-Type' => 'application/x-www-form-urlencoded',
             'Content-Length' => $len
         ));
-        $client->setOptions([
-            'sslverifypeer' => false
-        ]);
+//         $client->setOptions([
+//             'sslverifypeer' => false
+//         ]);
         $client->setRawBody($data);
         $response = $client->send();
         if (! empty($response->getBody()) ) {
             $body = Json::decode($response->getBody(), false);
-            return $body;
-        } else
-            return null;
+            if ($body->IsSuccessStatusCode)
+                return null;
+            else
+                return $body;
+        }
     }
 
     public static function getPois()
@@ -67,9 +71,9 @@ class WebApiService
             'Authorization' => $bearer_token
         ));
         */
-        $client->setOptions([
-            'sslverifypeer' => false
-        ]);
+//         $client->setOptions([
+//             'sslverifypeer' => false
+//         ]);
         
         $response = $client->send();
         $body = $response->getBody();
