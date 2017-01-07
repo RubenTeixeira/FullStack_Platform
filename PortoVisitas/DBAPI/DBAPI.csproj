@@ -261,6 +261,10 @@
     <Compile Include="Migrations\201701041912473_Initial.Designer.cs">
       <DependentUpon>201701041912473_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701071401579_Added Hashtags.cs" />
+    <Compile Include="Migrations\201701071401579_Added Hashtags.Designer.cs">
+      <DependentUpon>201701071401579_Added Hashtags.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -351,6 +355,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201701041912473_Initial.resx">
       <DependentUpon>201701041912473_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701071401579_Added Hashtags.resx">
+      <DependentUpon>201701071401579_Added Hashtags.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
