@@ -1,6 +1,9 @@
 <?php
 namespace PortoVisitas\Model;
 
+use Zend\InputFilter\InputFilterInterface;
+use Zend\InputFilter\InputFilter;
+
 class Hashtag
 {
 
