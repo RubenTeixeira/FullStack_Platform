@@ -37,13 +37,19 @@ namespace ClassLibrary.Helpers
             return (TokenResponse)session["token"];
         }
 
-         public static void storeUsername(string username)
+        public static void storeUsername(string username)
         {
             var session = HttpContext.Current.Session;
             session["username"] = username;
         }
 
-    public static void clearToken()
+        public static string getUsername()
+        {
+            var session = HttpContext.Current.Session;
+            return (string) session["username"];
+        }
+
+        public static void clearToken()
         {
             var session = HttpContext.Current.Session;
             session["token"] = null;

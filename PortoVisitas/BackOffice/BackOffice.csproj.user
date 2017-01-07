@@ -12,6 +12,7 @@
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
     <ProjectView>ShowAllFiles</ProjectView>
     <NameOfLastUsedPublishProfile>Isep</NameOfLastUsedPublishProfile>
+    <WebStackScaffolding_DbContextTypeFullName>BackOffice.Models.ApplicationDbContext</WebStackScaffolding_DbContextTypeFullName>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

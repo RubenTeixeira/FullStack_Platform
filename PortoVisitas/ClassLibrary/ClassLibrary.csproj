@@ -96,6 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\PercursoDTO.cs" />
     <Compile Include="DTO\POIConnectedDTO.cs" />
     <Compile Include="DTO\POIDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
@@ -104,12 +105,33 @@
     <Compile Include="Helpers\PVWebApiHttpClient.cs" />
     <Compile Include="Helpers\TokenResponse.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Percurso.cs" />
     <Compile Include="Models\POI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Global.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Global.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Percurso.pt.Designer.cs">
+      <DependentUpon>Percurso.pt.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Percurso.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Percurso.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\POI.pt.Designer.cs">
+      <DependentUpon>POI.pt.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\POI.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>POI.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\ConnectedPOIViewModel.cs" />
@@ -127,6 +149,22 @@
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Percurso.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Percurso.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Percurso.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Percurso.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\POI.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>POI.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\POI.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>POI.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

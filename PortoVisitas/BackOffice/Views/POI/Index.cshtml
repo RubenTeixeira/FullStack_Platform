@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(ClassLibrary.Resources.Global.CreateNew, "Create")
 </p>
 <table class="table">
     <tr>
@@ -33,12 +33,12 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Creator.UserName)
+                @Html.DisplayFor(modelItem => item.Creator)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.POIID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.POIID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.POIID })
+                @Html.ActionLink(ClassLibrary.Resources.Global.Edit, "Edit", new { id = item.POIID }) |
+                @Html.ActionLink(ClassLibrary.Resources.Global.Details, "Details", new { id = item.POIID }) |
+                @Html.ActionLink(ClassLibrary.Resources.Global.Delete, "Delete", new { id = item.POIID })
             </td>
         </tr>
     }

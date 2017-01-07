@@ -11,6 +11,7 @@ namespace DBAPI.DAL
         private ApplicationDbContext context = new ApplicationDbContext();
 
         private IPOIRepository poiRepository;
+        private IPercursoRepository percursoRepository;
 
         public IPOIRepository POIRepository
         {
@@ -21,6 +22,18 @@ namespace DBAPI.DAL
                     this.poiRepository = new POIRepository(context);
                 }
                 return poiRepository;
+            }
+        }
+
+        public IPercursoRepository PercursoRepository
+        {
+            get
+            {
+                if (this.percursoRepository == null)
+                {
+                    this.percursoRepository = new PercursoRepository(context);
+                }
+                return percursoRepository;
             }
         }
 

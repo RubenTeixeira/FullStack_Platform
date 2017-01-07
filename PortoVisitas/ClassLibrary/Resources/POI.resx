@@ -117,19 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
+  <data name="Approved" xml:space="preserve">
+    <value>Approved By</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="CloseHour" xml:space="preserve">
+    <value>Closing Hour</value>
   </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Logout</value>
+  <data name="ConnectedPOIs" xml:space="preserve">
+    <value>Connected POIs</value>
   </data>
-  <data name="Register" xml:space="preserve">
-    <value>Register</value>
+  <data name="Creator" xml:space="preserve">
+    <value>Creator</value>
   </data>
-  <data name="RegisterNewUser" xml:space="preserve">
-    <value>Register as a new user</value>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="GPS_Lat" xml:space="preserve">
+    <value>GPS_Lat</value>
+  </data>
+  <data name="GPS_Long" xml:space="preserve">
+    <value>GPS_Long</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="OpenHour" xml:space="preserve">
+    <value>Openning Hour</value>
+  </data>
+  <data name="POI_Description_Error" xml:space="preserve">
+    <value>The description can not be more than 250 characters</value>
+  </data>
+  <data name="POI_Lat_Error" xml:space="preserve">
+    <value>Invalid Latitude</value>
+  </data>
+  <data name="POI_Long_Error" xml:space="preserve">
+    <value>Invalid Longitude</value>
+  </data>
+  <data name="POI_Name_Error" xml:space="preserve">
+    <value>Name can not be more than 50 characters</value>
   </data>
 </root>

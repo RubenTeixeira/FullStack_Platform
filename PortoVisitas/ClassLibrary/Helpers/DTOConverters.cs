@@ -34,14 +34,12 @@ namespace ClassLibrary.Helpers
 
             if (dto.Creator != null)
             {
-                poi.Creator.Id = dto.Creator.ID;
-                poi.Creator.UserName = dto.Creator.Username;
+                poi.Creator = dto.Creator;
             }
 
             if (dto.Approved != null)
             {
-                poi.Approved.Id = dto.Approved.ID;
-                poi.Approved.UserName = dto.Approved.Username;
+                poi.Approved= dto.Approved;
             }
 
             return poi;

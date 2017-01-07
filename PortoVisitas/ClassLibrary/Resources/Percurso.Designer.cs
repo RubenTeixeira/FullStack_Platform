@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BackOffice.Resources {
+namespace ClassLibrary.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace BackOffice.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Global {
+    public class Percurso {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Global() {
+        internal Percurso() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace BackOffice.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BackOffice.Resources.Global", typeof(Global).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ClassLibrary.Resources.Percurso", typeof(Percurso).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,56 @@ namespace BackOffice.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Language.
+        ///   Looks up a localized string similar to Created By.
         /// </summary>
-        public static string Language {
+        public static string Creator {
             get {
-                return ResourceManager.GetString("Language", resourceCulture);
+                return ResourceManager.GetString("Creator", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
-        public static string Login {
+        public static string Description {
             get {
-                return ResourceManager.GetString("Login", resourceCulture);
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logout.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
-        public static string Logout {
+        public static string Name {
             get {
-                return ResourceManager.GetString("Logout", resourceCulture);
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Register.
+        ///   Looks up a localized string similar to The description can not be more than 250 characters.
         /// </summary>
-        public static string Register {
+        public static string Percurso_Description_Error {
             get {
-                return ResourceManager.GetString("Register", resourceCulture);
+                return ResourceManager.GetString("Percurso_Description_Error", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Register as a new user.
+        ///   Looks up a localized string similar to Name can not be more than 50 characters.
         /// </summary>
-        public static string RegisterNewUser {
+        public static string Percurso_Name_Error {
             get {
-                return ResourceManager.GetString("RegisterNewUser", resourceCulture);
+                return ResourceManager.GetString("Percurso_Name_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to POIs of Route.
+        /// </summary>
+        public static string PercursoPOIs {
+            get {
+                return ResourceManager.GetString("PercursoPOIs", resourceCulture);
             }
         }
     }

@@ -22,14 +22,14 @@ namespace ClassLibrary.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Global {
+    public class POI {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Global() {
+        internal POI() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ClassLibrary.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ClassLibrary.Resources.Global", typeof(Global).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ClassLibrary.Resources.POI", typeof(POI).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +61,119 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create.
+        ///   Looks up a localized string similar to Approved By.
         /// </summary>
-        public static string Create {
+        public static string Approved {
             get {
-                return ResourceManager.GetString("Create", resourceCulture);
+                return ResourceManager.GetString("Approved", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create New.
+        ///   Looks up a localized string similar to Closing Hour.
         /// </summary>
-        public static string CreateNew {
+        public static string CloseHour {
             get {
-                return ResourceManager.GetString("CreateNew", resourceCulture);
+                return ResourceManager.GetString("CloseHour", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to Connected POIs.
         /// </summary>
-        public static string Delete {
+        public static string ConnectedPOIs {
             get {
-                return ResourceManager.GetString("Delete", resourceCulture);
+                return ResourceManager.GetString("ConnectedPOIs", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete this?.
+        ///   Looks up a localized string similar to Creator.
         /// </summary>
-        public static string DeleteConfirm {
+        public static string Creator {
             get {
-                return ResourceManager.GetString("DeleteConfirm", resourceCulture);
+                return ResourceManager.GetString("Creator", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Details.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
-        public static string Details {
+        public static string Description {
             get {
-                return ResourceManager.GetString("Details", resourceCulture);
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to GPS_Lat.
         /// </summary>
-        public static string Edit {
+        public static string GPS_Lat {
             get {
-                return ResourceManager.GetString("Edit", resourceCulture);
+                return ResourceManager.GetString("GPS_Lat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Route.
+        ///   Looks up a localized string similar to GPS_Long.
         /// </summary>
-        public static string Percurso {
+        public static string GPS_Long {
             get {
-                return ResourceManager.GetString("Percurso", resourceCulture);
+                return ResourceManager.GetString("GPS_Long", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to POI.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
-        public static string POI {
+        public static string Name {
             get {
-                return ResourceManager.GetString("POI", resourceCulture);
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Return to List.
+        ///   Looks up a localized string similar to Openning Hour.
         /// </summary>
-        public static string ReturnToList {
+        public static string OpenHour {
             get {
-                return ResourceManager.GetString("ReturnToList", resourceCulture);
+                return ResourceManager.GetString("OpenHour", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to The description can not be more than 250 characters.
         /// </summary>
-        public static string Save {
+        public static string POI_Description_Error {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("POI_Description_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Latitude.
+        /// </summary>
+        public static string POI_Lat_Error {
+            get {
+                return ResourceManager.GetString("POI_Lat_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Longitude.
+        /// </summary>
+        public static string POI_Long_Error {
+            get {
+                return ResourceManager.GetString("POI_Long_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name can not be more than 50 characters.
+        /// </summary>
+        public static string POI_Name_Error {
+            get {
+                return ResourceManager.GetString("POI_Name_Error", resourceCulture);
             }
         }
     }

@@ -40,6 +40,13 @@ namespace DBAPI.Models
                 m.ToTable("Caminho");
             });
 
+            modelBuilder.Entity<Percurso>().HasMany(p => p.PercursoPOIs).WithMany().Map(m =>
+            {
+                m.MapLeftKey("PercursoID");
+                m.MapRightKey("POIID");
+                m.ToTable("Percurso_POI");
+            });
+
             modelBuilder.Entity<ApplicationUser>().Property(u => u.UserName).IsUnicode(false);
             modelBuilder.Entity<ApplicationUser>().Property(u => u.Email).IsUnicode(false);
             modelBuilder.Entity<IdentityRole>().Property(r => r.Name).HasMaxLength(255);
@@ -48,6 +55,7 @@ namespace DBAPI.Models
         }
 
         public DbSet<POI> POIs { get; set; }
+        public DbSet<Percurso> Percursos { get; set; }
 
     }
 }

@@ -101,9 +101,12 @@ namespace DBAPI.DAL.Repositories
                 ID = poi.POIID,
                 Name = poi.Name,
                 Description = poi.Description,
+                OpenHour = poi.OpenHour,
+                CloseHour = poi.CloseHour,
                 GPS_Lat = poi.GPS_Lat,
-                GPS_Long = poi.GPS_Long
-
+                GPS_Long = poi.GPS_Long,
+                Creator = poi.Creator,
+                Approved = poi.Approved
             };
 
 
@@ -130,9 +133,24 @@ namespace DBAPI.DAL.Repositories
                     ID = poi.POIID,
                     Name = poi.Name,
                     Description = poi.Description,
+                    OpenHour = poi.OpenHour,
+                    CloseHour = poi.CloseHour,
                     GPS_Lat = poi.GPS_Lat,
                     GPS_Long = poi.GPS_Long,
+                    Creator = poi.Creator,
+                    Approved = poi.Approved
                 };
+
+                foreach (POI connected in poi.ConnectedPOIs)
+                {
+                    POIConnectedDTO poiCon = new POIConnectedDTO();
+
+                    poiCon.ID = connected.POIID;
+                    poiCon.Name = connected.Name;
+
+                    dto.ConnectedPOI.Add(poiCon);
+                }
+
                 list.Add(dto);
             }
             return list;

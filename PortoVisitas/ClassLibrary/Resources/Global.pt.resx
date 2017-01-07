@@ -117,16 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="POI_Description_Error" xml:space="preserve">
-    <value>A descrição não pode ter mais de 250 caracteres</value>
+  <data name="Create" xml:space="preserve">
+    <value>Criar</value>
   </data>
-  <data name="POI_Lat_Error" xml:space="preserve">
-    <value>Latitude Inválida</value>
+  <data name="CreateNew" xml:space="preserve">
+    <value>Criar Novo</value>
   </data>
-  <data name="POI_Long_Error" xml:space="preserve">
-    <value>Longitude Inválida</value>
+  <data name="Delete" xml:space="preserve">
+    <value>Eliminar</value>
   </data>
-  <data name="POI_Name_Error" xml:space="preserve">
-    <value>O nome não pode ter mais de 50 caracters</value>
+  <data name="DeleteConfirm" xml:space="preserve">
+    <value>Tem a certeza que pretende eliminar este conteúdo?</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Detalhes</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Percurso" xml:space="preserve">
+    <value>Percurso</value>
+  </data>
+  <data name="POI" xml:space="preserve">
+    <value>POI</value>
+  </data>
+  <data name="ReturnToList" xml:space="preserve">
+    <value>Voltar a Lista</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
   </data>
 </root>

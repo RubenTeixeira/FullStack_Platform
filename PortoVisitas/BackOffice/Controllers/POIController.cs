@@ -70,13 +70,16 @@ namespace BackOffice.Controllers
 
         // POST: POI/Create
         [HttpPost]
-        public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
         {
 
             ViewBag.PoiList = await getPOIList(null);
 
             var connectedForm = Request.Form["ConnectedPOIs"];
             parseConnectedPOIs(pOI, connectedForm);
+
+            pOI.Creator = PVWebApiHttpClient.getUsername();
+            pOI.Approved = PVWebApiHttpClient.getUsername();
 
             client = PVWebApiHttpClient.GetClient();
             var responseHttp = await client.PostAsJsonAsync("api/POI", pOI);
@@ -115,7 +118,7 @@ namespace BackOffice.Controllers
 
         // POST: POI/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
         {
 
             POIViewModel poiModel = new POIViewModel();
