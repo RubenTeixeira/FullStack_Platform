@@ -44,5 +44,37 @@ namespace ClassLibrary.Helpers
 
             return poi;
         }
+
+        public static Percurso ConvertDTOToModel(PercursoDTO dto)
+        {
+            Percurso p = new Percurso();
+
+            p.PercursoID = dto.ID;
+            p.Name = dto.Name;
+            p.Description = dto.Description;
+
+            if (dto.PercursoPOI != null)
+            {
+                foreach (POIDTO poiDTO in dto.PercursoPOI)
+                {
+                    POI poiCon = new POI();
+
+                    poiCon.POIID = poiDTO.ID;
+                    poiCon.Name = poiDTO.Name;
+                    poiCon.Description = poiDTO.Description;
+                    poiCon.GPS_Lat = poiDTO.GPS_Lat;
+                    poiCon.GPS_Long = poiDTO.GPS_Long;
+
+                    p.PercursoPOIs.Add(poiCon);
+                }
+            }
+
+            if (dto.Creator != null)
+            {
+                p.Creator = dto.Creator;
+            }
+
+            return p;
+        }
     }
 }
