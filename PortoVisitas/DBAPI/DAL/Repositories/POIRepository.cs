@@ -112,7 +112,7 @@ namespace DBAPI.DAL.Repositories
                 GPS_Lat = poi.GPS_Lat,
                 GPS_Long = poi.GPS_Long,
                 Creator = poi.Creator,
-                Approved = poi.Approved
+                Approved = poi.Approved,
                 ConnectedPOI = new List<POIConnectedDTO>(),
                 Hashtags = this.ConvertModelListToDTO(poi.Hashtags)
             };
