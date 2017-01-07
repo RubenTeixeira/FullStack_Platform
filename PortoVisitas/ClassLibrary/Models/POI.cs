@@ -14,9 +14,9 @@ namespace ClassLibrary.Models
         [Required]
         [Display(Name = "Name", ResourceType = typeof(Resources.POI))]
         [StringLength(50, ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Name_Error")]
-        public string Name{ get; set; }
+        public string Name { get; set; }
 
-        [StringLength(250, ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Description_Error" )]
+        [StringLength(250, ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Description_Error")]
         [Display(Name = "Description", ResourceType = typeof(Resources.POI))]
         public string Description { get; set; }
 
@@ -33,12 +33,14 @@ namespace ClassLibrary.Models
         public DateTime CloseHour { get; set; }
 
         [Required]
-        [RegularExpression(@"([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Lat_Error")]
+        [RegularExpression(@"[-]?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Lat_Error")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         [Display(Name = "GPS_Lat", ResourceType = typeof(Resources.POI))]
         public decimal GPS_Lat { get; set; }
 
         [Required]
-        [RegularExpression(@"([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Long_Error")]
+        [RegularExpression(@"[-]?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Long_Error")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         [Display(Name = "GPS_Long", ResourceType = typeof(Resources.POI))]
         public decimal GPS_Long { get; set; }
 

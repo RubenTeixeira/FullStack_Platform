@@ -17,6 +17,8 @@ namespace ClassLibrary.Helpers
             poi.POIID = dto.ID;
             poi.Name = dto.Name;
             poi.Description = dto.Description;
+            poi.OpenHour = dto.OpenHour;
+            poi.CloseHour = dto.CloseHour;
             poi.GPS_Lat = dto.GPS_Lat;
             poi.GPS_Long = dto.GPS_Long;
             poi.ConnectedPOIs = new List<POI>();

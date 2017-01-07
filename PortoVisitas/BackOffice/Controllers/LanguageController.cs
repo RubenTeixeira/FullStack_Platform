@@ -16,9 +16,9 @@ namespace BackOffice.Controllers
             return View();
         }
 
-        public ActionResult Change(String lang)
+        public ActionResult Change(string lang)
         {
-            if(lang != null)
+            if (lang != null)
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(lang);
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);

@@ -4,7 +4,6 @@ using ClassLibrary.Models;
 using ClassLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,34 +13,34 @@ using System.Web.Mvc;
 
 namespace BackOffice.Controllers
 {
-    public class POIController : Controller
+    public class PercursoController : Controller
     {
         static HttpClient client;
 
-        // GET: POI
+        // GET: Percurso
         public async Task<ActionResult> Index()
         {
             client = PVWebApiHttpClient.GetClient();
 
-            IEnumerable<POIDTO> pois = null;
-            var response = await client.GetAsync("api/POI/");
+            IEnumerable<PercursoDTO> percursos = null;
+            var response = await client.GetAsync("api/Percurso/");
 
             if (response.IsSuccessStatusCode)
             {
-                pois = await response.Content.ReadAsAsync<IEnumerable<POIDTO>>();
+                percursos = await response.Content.ReadAsAsync<IEnumerable<PercursoDTO>>();
             }
 
-            List<POI> poiList = new List<POI>();
-            foreach (POIDTO poiDTO in pois)
+            List<Percurso> percursosList = new List<Percurso>();
+            foreach (PercursoDTO percursoDTO in percursos)
             {
-                POI poi = DTOConverters.ConvertDTOToModel(poiDTO);
-                poiList.Add(poi);
+                Percurso percurso = DTOConverters.ConvertDTOToModel(percursoDTO);
+                percursosList.Add(percurso);
             }
 
-            return View(poiList);
+            return View(percursosList);
         }
 
-        // GET: POI/Details/5
+        // GET: Percurso/Details/5
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,17 +48,17 @@ namespace BackOffice.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            POI pOI = await getPOIByID(id);
+            Percurso percurso = await getPercursoByID(id);
 
-            if (pOI == null)
+            if (percurso == null)
             {
                 return HttpNotFound();
             }
 
-            return View(pOI);
+            return View(percurso);
         }
 
-        // GET: POI/Create
+        // GET: Percurso/Create
         public async Task<ActionResult> Create()
         {
 
@@ -68,27 +67,20 @@ namespace BackOffice.Controllers
             return View();
         }
 
-        // POST: POI/Create
+        // POST: Percurso/Create
         [HttpPost]
-        public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Create([Bind(Include = "PercursoID,Name,Description,PercursoPOIs")] Percurso percurso)
         {
 
             ViewBag.PoiList = await getPOIList(null);
 
-            var connectedForm = Request.Form["ConnectedPOIs"];
-            parseConnectedPOIs(pOI, connectedForm);
+            var connectedForm = Request.Form["PercursoPOIs"];
+            parsePercursoPOIs(percurso, connectedForm);
 
-            string openHour = Request.Form["OpenHour"];
-            pOI.OpenHour = Convert.ToDateTime(openHour);
-
-            string closeHour = Request.Form["CloseHour"];
-            pOI.CloseHour = Convert.ToDateTime(closeHour);
-
-            pOI.Creator = PVWebApiHttpClient.getUsername();
-            pOI.Approved = PVWebApiHttpClient.getUsername();
+            percurso.Creator = PVWebApiHttpClient.getUsername();
 
             client = PVWebApiHttpClient.GetClient();
-            var responseHttp = await client.PostAsJsonAsync("api/POI", pOI);
+            var responseHttp = await client.PostAsJsonAsync("api/Percurso", percurso);
 
             if (responseHttp.IsSuccessStatusCode)
             {
@@ -99,60 +91,53 @@ namespace BackOffice.Controllers
 
         }
 
-        // GET: POI/Edit/5
+        // GET: Percurso/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            POI pOI = await getPOIByID(id);
+            Percurso percurso = await getPercursoByID(id);
 
-            if (pOI == null)
+            if (percurso == null)
             {
                 return HttpNotFound();
             }
 
-            POIViewModel poiModel = new POIViewModel();
-            List<POI> poiList = await getPOIList(pOI.POIID);
-            buildPOIViewModel(poiModel,pOI,poiList);
+            PercursoViewModel percursoModel = new PercursoViewModel();
+            List<POI> poiList = await getPOIList(null);
+            buildPercursoViewModel(percursoModel, percurso, poiList);
 
-            return View(poiModel);
+            return View(percursoModel);
         }
 
-        // POST: POI/Edit/5
+        // POST: Percurso/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "PercursoID,Name,Description,PercursoPOIs")] Percurso percurso)
         {
 
-            POIViewModel poiModel = new POIViewModel();
-            List<POI> poiList = await getPOIList(pOI.POIID);
+            PercursoViewModel percursoModel = new PercursoViewModel();
+            List<POI> poiList = await getPOIList(null);
 
             var connectedForm = Request.Form["connectedPoi.SelectedItemIds"];
-            parseConnectedPOIs(pOI, connectedForm);
+            parsePercursoPOIs(percurso, connectedForm);
 
-            buildPOIViewModel(poiModel, pOI, poiList);
-
-            string openHour = Request.Form["OpenHour"];
-            pOI.OpenHour = Convert.ToDateTime(openHour);
-
-            string closeHour = Request.Form["CloseHour"];
-            pOI.CloseHour = Convert.ToDateTime(closeHour);
+            buildPercursoViewModel(percursoModel, percurso, poiList);
 
             client = PVWebApiHttpClient.GetClient();
-            var responseHttp = await client.PutAsJsonAsync("api/POI/"+id, pOI);
+            var responseHttp = await client.PutAsJsonAsync("api/Percurso/" + id, percurso);
 
             if (responseHttp.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
 
-            return View(poiModel);
+            return View(percursoModel);
         }
 
-        // GET: POI/Delete/5
+        // GET: Percurso/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -160,38 +145,39 @@ namespace BackOffice.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            POI pOI = await getPOIByID(id);
+            Percurso percurso = await getPercursoByID(id);
 
-            if (pOI == null)
+            if (percurso == null)
             {
                 return HttpNotFound();
             }
 
-            return View(pOI);
+            return View(percurso);
         }
 
-        // POST: POI/Delete/5
+        // POST: Percurso/Delete/5
         [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
 
             client = PVWebApiHttpClient.GetClient();
-            var responseHttp = await client.DeleteAsync("api/POI/" + id);
+            var responseHttp = await client.DeleteAsync("api/Percurso/" + id);
 
             if (responseHttp.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
 
-            POI pOI = await getPOIByID(id);
+            Percurso percurso = await getPercursoByID(id);
 
-            if (pOI == null)
+            if (percurso == null)
             {
                 return HttpNotFound();
             }
 
-            return View(pOI);
+            return View(percurso);
         }
+
 
         public async Task<List<POI>> getPOIList(int? id)
         {
@@ -209,12 +195,12 @@ namespace BackOffice.Controllers
             foreach (POIDTO poiDTO in pois)
             {
                 POI poi = DTOConverters.ConvertDTOToModel(poiDTO);
-                if( id != null && poi.POIID != id)
+                if (id != null && poi.POIID != id)
                 {
                     poiList.Add(poi);
                 }
 
-                if(id == null)
+                if (id == null)
                 {
                     poiList.Add(poi);
                 }
@@ -223,32 +209,32 @@ namespace BackOffice.Controllers
             return poiList;
         }
 
-        public async Task<POI> getPOIByID(int? id)
+        public async Task<Percurso> getPercursoByID(int? id)
         {
             client = PVWebApiHttpClient.GetClient();
 
-            POIDTO poiDTO = null;
-            var response = await client.GetAsync("api/POI/" + id);
+            PercursoDTO percursoDTO = null;
+            var response = await client.GetAsync("api/Percurso/" + id);
 
             if (response.IsSuccessStatusCode)
             {
-                poiDTO = await response.Content.ReadAsAsync<POIDTO>();
+                percursoDTO = await response.Content.ReadAsAsync<PercursoDTO>();
             }
 
-            POI pOI = DTOConverters.ConvertDTOToModel(poiDTO);
+            Percurso percurso = DTOConverters.ConvertDTOToModel(percursoDTO);
 
-            return pOI;
+            return percurso;
         }
 
-        public void parseConnectedPOIs(POI pOI, Object connectedForm)
+        public void parsePercursoPOIs(Percurso percurso, Object connectedForm)
         {
             if (connectedForm != null)
             {
-                string[] connectedPOIs = connectedForm.ToString().Split(',');
+                string[] percursoPOIs = connectedForm.ToString().Split(',');
 
-                if (connectedPOIs.Count() != 0)
+                if (percursoPOIs.Count() != 0)
                 {
-                    foreach (string id in connectedPOIs)
+                    foreach (string id in percursoPOIs)
                     {
                         POI connected = new POI();
                         connected.POIID = Int32.Parse(id);
@@ -256,26 +242,25 @@ namespace BackOffice.Controllers
                         connected.GPS_Lat = 1.0M;
                         connected.GPS_Long = 1.0M;
 
-                        pOI.ConnectedPOIs.Add(connected);
+                        percurso.PercursoPOIs.Add(connected);
                     }
                 }
             }
         }
 
-        public void buildPOIViewModel(POIViewModel poiModel, POI pOI, List<POI> poiList)
+        public void buildPercursoViewModel(PercursoViewModel percursoModel, Percurso percurso, List<POI> poiList)
         {
-            poiModel.poi = pOI;
+            percursoModel.percurso = percurso;
 
             ConnectedPOIViewModel poiSelectedModel = new ConnectedPOIViewModel();
-            IEnumerable<int> selectedItemsArray = pOI.ConnectedPOIs.Select(x => x.POIID).ToArray();
+            IEnumerable<int> selectedItemsArray = percurso.PercursoPOIs.Select(x => x.POIID).ToArray();
             ViewBag.Selected = selectedItemsArray;
 
             poiSelectedModel.SelectedItemIds = selectedItemsArray;
 
             poiSelectedModel.Items = poiList;
 
-            poiModel.connectedPoi = poiSelectedModel;
+            percursoModel.percursoPoi = poiSelectedModel;
         }
     }
-
 }

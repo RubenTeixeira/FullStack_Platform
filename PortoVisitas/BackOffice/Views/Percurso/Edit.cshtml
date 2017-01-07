@@ -1,0 +1,61 @@
+﻿@model ClassLibrary.ViewModels.PercursoViewModel
+
+@{
+    ViewBag.Title = ClassLibrary.Resources.Global.Edit;
+}
+
+<h2>@ClassLibrary.Resources.Global.Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@ClassLibrary.Resources.Global.Percurso</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.percurso.PercursoID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.percurso.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.percurso.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.percurso.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.percurso.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.percurso.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.percurso.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.percurso.PercursoPOIs, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ListBoxFor(x => x.percursoPoi.SelectedItemIds,
+                new SelectList(
+                    Model.percursoPoi.Items,
+                    "POIID",
+                    "Name"), htmlAttributes: new { @style = "min-width:280px;max-width:420px" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value=@ClassLibrary.Resources.Global.Save class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink(ClassLibrary.Resources.Global.ReturnToList, "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

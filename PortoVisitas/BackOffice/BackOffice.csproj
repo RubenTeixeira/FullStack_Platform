@@ -211,6 +211,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PercursoController.cs" />
     <Compile Include="Controllers\POIController.cs" />
+    <Compile Include="Helpers\DecimalModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -295,10 +296,14 @@
     <Content Include="Views\POI\Delete.cshtml" />
     <Content Include="Views\POI\Details.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
+    <Content Include="Views\Percurso\Create.cshtml" />
+    <Content Include="Views\Percurso\Delete.cshtml" />
+    <Content Include="Views\Percurso\Details.cshtml" />
+    <Content Include="Views\Percurso\Edit.cshtml" />
+    <Content Include="Views\Percurso\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Percurso\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

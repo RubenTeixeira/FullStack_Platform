@@ -126,6 +126,9 @@
   <data name="Logout" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="Percurso" xml:space="preserve">
+    <value>Route</value>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>

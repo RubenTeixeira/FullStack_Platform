@@ -133,10 +133,10 @@
     <value>Descrição</value>
   </data>
   <data name="GPS_Lat" xml:space="preserve">
-    <value>GPS_Lat</value>
+    <value>Latitude</value>
   </data>
   <data name="GPS_Long" xml:space="preserve">
-    <value>GPS_Long</value>
+    <value>Longitude</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Nome</value>

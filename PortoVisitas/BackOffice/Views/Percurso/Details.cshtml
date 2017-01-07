@@ -1,0 +1,63 @@
+﻿@model ClassLibrary.Models.Percurso
+
+    @{
+        ViewBag.Title = ClassLibrary.Resources.Global.Details;
+    }
+
+    <h2>@ClassLibrary.Resources.Global.Details</h2>
+
+    <div>
+        <h4>@ClassLibrary.Resources.Global.Percurso</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Creator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Creator)
+        </dd>
+
+    </dl>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PercursoPOIs)
+        </dt>
+
+        <dd>
+        </dd>
+        @{
+            foreach (ClassLibrary.Models.POI connected in Model.PercursoPOIs)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+
+                <dd>
+                    @Html.DisplayName(connected.Name)
+                </dd>
+            }
+        }
+    </dl>
+</div>
+<p>
+    @Html.ActionLink(ClassLibrary.Resources.Global.Edit, "Edit", new { id = Model.PercursoID }) |
+    @Html.ActionLink(ClassLibrary.Resources.Global.ReturnToList, "Index")
+</p>

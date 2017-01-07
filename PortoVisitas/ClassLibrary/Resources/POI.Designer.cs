@@ -106,7 +106,7 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GPS_Lat.
+        ///   Looks up a localized string similar to Latitude.
         /// </summary>
         public static string GPS_Lat {
             get {
@@ -115,7 +115,7 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GPS_Long.
+        ///   Looks up a localized string similar to Longitude.
         /// </summary>
         public static string GPS_Long {
             get {

@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\ConnectedPOIViewModel.cs" />
+    <Compile Include="ViewModels\PercursoViewModel.cs" />
     <Compile Include="ViewModels\POIViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

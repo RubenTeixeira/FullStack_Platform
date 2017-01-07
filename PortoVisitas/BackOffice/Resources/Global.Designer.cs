@@ -88,6 +88,15 @@ namespace BackOffice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Route.
+        /// </summary>
+        public static string Percurso {
+            get {
+                return ResourceManager.GetString("Percurso", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         public static string Register {
