@@ -16,10 +16,23 @@ namespace DBAPI.Controllers
         private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: api/POI
+        [Route("api/POI")]
         [ResponseType(typeof(List<POIDTO>))]
         public async Task<IHttpActionResult> GetPOI()
         {
             List<POI> listPoi = await unitOfWork.POIRepository.FindPOIs();
+
+            List<POIDTO> list = unitOfWork.POIRepository.ConvertModelListToDTO(listPoi);
+
+            return Ok(list);
+        }
+
+        // GET: api/POI
+        [ResponseType(typeof(List<POIDTO>))]
+        [Route("api/POIToApprove")]
+        public async Task<IHttpActionResult> GetPOIToApprove()
+        {
+            List<POI> listPoi = await unitOfWork.POIRepository.FindPOIsToApprove();
 
             List<POIDTO> list = unitOfWork.POIRepository.ConvertModelListToDTO(listPoi);
 

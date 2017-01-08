@@ -12,6 +12,7 @@ namespace DBAPI.DAL.RepositoryInterfaces
     public interface IPOIRepository : IDisposable
     {
         Task<List<POI>> FindPOIs();
+        Task<List<POI>> FindPOIsToApprove();
         Task<POI> FindPOIByIDAsync(int? poiID);
         Task<int> CreatePOI(POI poi);
         Task<bool> DeletePOI(int poiID);

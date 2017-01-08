@@ -16,7 +16,7 @@ namespace BackOffice.Controllers
             return View();
         }
 
-        public ActionResult Change(string lang)
+        public ActionResult Change(string lang,string url)
         {
             if (lang != null)
             {
@@ -28,7 +28,7 @@ namespace BackOffice.Controllers
             cookie.Value = lang;
             Response.Cookies.Add(cookie);
 
-            return View("Index");
+            return Redirect(url);
 
         }
     }
