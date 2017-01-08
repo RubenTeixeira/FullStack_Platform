@@ -14,15 +14,16 @@ namespace DBAPI.DAL.Repositories
     public class POIRepository : IDisposable, IPOIRepository
     {
         ApplicationDbContext context;
+        HashtagRepository tagRepo = null;
 
         public POIRepository(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        public Task<List<POI>> FindPOIs()
+        public async Task<List<POI>> FindPOIs()
         {
-            return context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).ToListAsync();
+            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).ToListAsync();
         }
 
         public Task<POI> FindPOIByIDAsync(int? poiID)
@@ -69,8 +70,25 @@ namespace DBAPI.DAL.Repositories
         {
 
             context.Database.ExecuteSqlCommand("delete from Caminho where POIID = {0}", poi.POIID);
-            context.Database.ExecuteSqlCommand("delete from HashtagPOI where POIID = {0}", poi.POIID);
+            context.Database.ExecuteSqlCommand("delete from POIHashtag where POI_POIID = {0}", poi.POIID);
             await context.SaveChangesAsync();
+
+            foreach (Hashtag tag in poi.Hashtags)
+            {
+                Hashtag existingTag = null;
+                try
+                {
+                    await getHashtagRepository().FindHashtagAsync(tag.Text);
+                    tag.HashtagID = existingTag.HashtagID;
+                }
+                catch (Exception)
+                {
+                    await getHashtagRepository().CreateHashtag(tag);
+                }
+
+                context.Database.ExecuteSqlCommand("Insert Into POIHashtag (POI_POIID,Hashtag_HashtagID)" +
+                    "Values('" + poi.POIID + "','" + tag.HashtagID + "')");
+            }
 
             context.Entry(poi).State = EntityState.Modified;
 
@@ -80,11 +98,7 @@ namespace DBAPI.DAL.Repositories
                     "Values('" + poi.POIID + "','" + connected.POIID + "')");
             }
 
-            foreach (Hashtag tag in poi.Hashtags)
-            {
-                context.Database.ExecuteSqlCommand("Insert Into HashtagPOI (POI_POIID,Hashtag_HashtagID)" +
-                    "Values('" + poi.POIID + "','" + tag.HashtagID + "')");
-            }
+
 
             await context.SaveChangesAsync();
 
@@ -98,11 +112,6 @@ namespace DBAPI.DAL.Repositories
 
 
         public POI ConvertDTOToModel(POIDTO dto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Hashtag ConvertDTOToModel(HashtagDTO dto)
         {
             throw new NotImplementedException();
         }
@@ -121,7 +130,7 @@ namespace DBAPI.DAL.Repositories
                 Creator = poi.Creator,
                 Approved = poi.Approved,
                 ConnectedPOI = new List<POIConnectedDTO>(),
-                Hashtags = this.ConvertModelListToDTO(poi.Hashtags)
+                Hashtags = getHashtagRepository().ConvertModelListToDTO(poi.Hashtags)
             };
 
             foreach (POI connected in poi.ConnectedPOIs)
@@ -137,13 +146,7 @@ namespace DBAPI.DAL.Repositories
             return dto;
         }
 
-        public HashtagDTO ConvertModelToDTO(Hashtag tag)
-        {
-            var dto = new HashtagDTO();
-            dto.HashtagID = tag.HashtagID;
-            dto.Text = tag.Text;
-            return dto;
-        }
+
 
         public List<POIDTO> ConvertModelListToDTO(ICollection<POI> modelList)
         {
@@ -164,15 +167,11 @@ namespace DBAPI.DAL.Repositories
             return list;
         }
 
-        public List<HashtagDTO> ConvertModelListToDTO(ICollection<Hashtag> hashtags)
+        private HashtagRepository getHashtagRepository()
         {
-            List<HashtagDTO> list = new List<HashtagDTO>();
-            foreach (Hashtag tag in hashtags)
-            {
-                HashtagDTO dto = this.ConvertModelToDTO(tag);
-                list.Add(dto);
-            }
-            return list;
+            if (this.tagRepo == null)
+                this.tagRepo = new HashtagRepository(this.context);
+            return this.tagRepo;
         }
 
         private bool disposedValue = false;

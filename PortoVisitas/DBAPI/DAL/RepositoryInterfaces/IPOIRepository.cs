@@ -21,10 +21,6 @@ namespace DBAPI.DAL.RepositoryInterfaces
         POI ConvertDTOToModel(POIDTO dto);
         POIDTO ConvertModelToDTO(POI poi);
         List<POIDTO> ConvertModelListToDTO(ICollection<POI> modelList);
-
-        Hashtag ConvertDTOToModel(HashtagDTO dto);
-        HashtagDTO ConvertModelToDTO(Hashtag tag);
-        List<HashtagDTO> ConvertModelListToDTO(ICollection<Hashtag> hashtags);
     }
 
 }

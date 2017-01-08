@@ -249,8 +249,10 @@
     <Compile Include="DAL\MySqlConfiguration.cs" />
     <Compile Include="DAL\MySqlHistoryContext.cs" />
     <Compile Include="DAL\MySqlInitializer.cs" />
+    <Compile Include="DAL\Repositories\HashtagRepository.cs" />
     <Compile Include="DAL\Repositories\PercursoRepository.cs" />
     <Compile Include="DAL\Repositories\POIRepository.cs" />
+    <Compile Include="DAL\RepositoryInterfaces\IHashtagRepository.cs" />
     <Compile Include="DAL\RepositoryInterfaces\IPercursoRepository.cs" />
     <Compile Include="DAL\RepositoryInterfaces\IPOIRepository.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />

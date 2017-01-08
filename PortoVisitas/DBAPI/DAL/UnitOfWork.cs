@@ -12,6 +12,7 @@ namespace DBAPI.DAL
 
         private IPOIRepository poiRepository;
         private IPercursoRepository percursoRepository;
+        private IHashtagRepository tagRepository;
 
         public IPOIRepository POIRepository
         {
@@ -34,6 +35,18 @@ namespace DBAPI.DAL
                     this.percursoRepository = new PercursoRepository(context);
                 }
                 return percursoRepository;
+            }
+        }
+
+        public IHashtagRepository HashtagRepository
+        {
+            get
+            {
+                if (this.tagRepository == null)
+                {
+                    this.tagRepository = new HashtagRepository(context);
+                }
+                return tagRepository;
             }
         }
 
