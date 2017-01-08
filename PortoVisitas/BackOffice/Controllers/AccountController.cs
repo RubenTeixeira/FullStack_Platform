@@ -10,6 +10,8 @@ using ClassLibrary.Helpers;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Web.Script.Serialization;
+using ClassLibrary.DTO;
+using System.Diagnostics;
 
 namespace BackOffice.Controllers
 {
@@ -58,7 +60,7 @@ namespace BackOffice.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            PVWebApiHttpClient.clearToken();
+            //PVWebApiHttpClient.clearToken();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -94,25 +96,42 @@ namespace BackOffice.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string dataResponse = await response.Content.ReadAsStringAsync();
-                                        //use JavaScriptSerializer from System.Web.Script.Serialization
-                    JavaScriptSerializer JSserializer = new JavaScriptSerializer();
-                                        //deserialize to your class
-                    TokenResponse tokenResponse = JSserializer.Deserialize<TokenResponse>(dataResponse);
+                    TokenResponse tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
 
                     PVWebApiHttpClient.storeToken(tokenResponse);
                     PVWebApiHttpClient.storeUsername(tokenResponse.Username);
 
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    return Content("Ocorreu um erro: " + response.StatusCode);
+                    return View(model);
+                }
+
+                client = PVWebApiHttpClient.GetClient();
+
+                response = await client.GetAsync("api/Account/getUserRole?email="+PVWebApiHttpClient.getUsername());
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string dataResponse = await response.Content.ReadAsStringAsync();
+                    //use JavaScriptSerializer from System.Web.Script.Serialization
+                    JavaScriptSerializer JSserializer = new JavaScriptSerializer();
+                    //deserialize to your class
+                    UserDTO userResponse = JSserializer.Deserialize<UserDTO>(dataResponse);
+
+                    PVWebApiHttpClient.storeRoles(userResponse.Roles);
+
+                    return RedirectToLocal(returnUrl);
+                }
+                else
+                {
+                    return View(model);
                 }
             }
             catch
             {
-                return Content("Ocorreu um erro.");
+                return View(model);
             }
         }
 
@@ -197,12 +216,12 @@ namespace BackOffice.Controllers
                     }
                     else
                     {
-                        return Content("Ocorreu um erro: " + response.StatusCode);
+                        return View(model);
                     }
                 }
                 catch
                 {
-                    return Content("Ocorreu um erro.");
+                    return View(model);
                 }
             }
 
@@ -423,9 +442,8 @@ namespace BackOffice.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
+
+        [AllowAnonymous]
         public ActionResult LogOff()
         {
             PVWebApiHttpClient.clearToken();

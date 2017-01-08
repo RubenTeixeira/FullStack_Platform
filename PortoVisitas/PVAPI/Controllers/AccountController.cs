@@ -19,6 +19,9 @@ using PVAPI.Results;
 using ClassLibrary.Helpers;
 using Newtonsoft.Json;
 using ClassLibrary.ViewModels;
+using ClassLibrary.DTO;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace PVAPI.Controllers
 {
@@ -82,7 +85,6 @@ namespace PVAPI.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-
                     TokenResponse tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
                     return Ok(tokenResponse);
                 }
@@ -438,6 +440,31 @@ namespace PVAPI.Controllers
         //    }
         //    return Ok();
         //}
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("getUserRole")]
+        public async Task<IHttpActionResult> getUserRole(string email)
+        {
+            var client = DBWebApiHttpClient.GetClient();
+
+            string[] header = (string[]) Request.Headers.GetValues("Authorization");
+            string[] headerArray = header[0].Split(' ');
+            string accessToken = headerArray[1];
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+
+            var response = await client.GetAsync("api/Account/getUserRole?email="+email);
+            if (response.IsSuccessStatusCode)
+            {
+                UserDTO userResponse = await response.Content.ReadAsAsync<UserDTO>();
+                return Ok(userResponse);
+            }
+            else
+            {
+                return BadRequest("Ocorreu um erro: " + response.StatusCode + " " + accessToken);
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

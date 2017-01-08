@@ -1,4 +1,5 @@
-﻿using ClassLibrary.DTO;
+﻿using BackOffice.Helpers;
+using ClassLibrary.DTO;
 using ClassLibrary.Helpers;
 using ClassLibrary.Models;
 using ClassLibrary.ViewModels;
@@ -14,6 +15,7 @@ using System.Web.Mvc;
 
 namespace BackOffice.Controllers
 {
+    [AuthorizeUser(UserRole="Gestor")]
     public class POIController : Controller
     {
         static HttpClient client;

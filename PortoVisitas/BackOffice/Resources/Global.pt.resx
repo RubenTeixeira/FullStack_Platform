@@ -123,6 +123,9 @@
   <data name="Login" xml:space="preserve">
     <value>Entrar</value>
   </data>
+  <data name="LoginLocal" xml:space="preserve">
+    <value>Use uma conta local para efetuar login</value>
+  </data>
   <data name="Logout" xml:space="preserve">
     <value>Sair</value>
   </data>
@@ -132,7 +135,13 @@
   <data name="Register" xml:space="preserve">
     <value>Registar</value>
   </data>
+  <data name="RegisterMessage" xml:space="preserve">
+    <value>Criar nova conta</value>
+  </data>
   <data name="RegisterNewUser" xml:space="preserve">
     <value>Registar novo utilizador</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Página de gestão de conteúdos da plataforma Porto Visitas</value>
   </data>
 </root>

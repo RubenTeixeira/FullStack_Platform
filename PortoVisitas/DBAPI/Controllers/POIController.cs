@@ -53,7 +53,7 @@ namespace DBAPI.Controllers
 
             if (id != pOI.POIID)
             {
-                return BadRequest();
+                return BadRequest("ID received is not equal to POI ID");
             }
 
             await unitOfWork.POIRepository.UpdatePOI(pOI);

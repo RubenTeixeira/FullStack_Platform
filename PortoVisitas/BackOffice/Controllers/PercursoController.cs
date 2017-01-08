@@ -1,4 +1,5 @@
-﻿using ClassLibrary.DTO;
+﻿using BackOffice.Helpers;
+using ClassLibrary.DTO;
 using ClassLibrary.Helpers;
 using ClassLibrary.Models;
 using ClassLibrary.ViewModels;
@@ -13,7 +14,8 @@ using System.Web.Mvc;
 
 namespace BackOffice.Controllers
 {
-    
+
+    [AuthorizeUser(UserRole = "Gestor")]
     public class PercursoController : Controller
     {
         static HttpClient client;
@@ -21,11 +23,6 @@ namespace BackOffice.Controllers
         // GET: Percurso
         public async Task<ActionResult> Index()
         {
-            if (!Helpers.Authorization.verifyAuthorization())
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             client = PVWebApiHttpClient.GetClient();
 
             IEnumerable<PercursoDTO> percursos = null;
