@@ -2,6 +2,28 @@
 $title = 'Pontos de Interesse';
 $this->headTitle($title);
 ?>
+
+<script type="text/javascript">
+function addTag(poiId, )
+{
+	var readings = JSON.parse(jsonReadings);
+	var cb = document.getElementById("checkbox_"+readings.id);
+	if (!cb.checked)
+		return;
+	var strHtml = "";
+
+	strHtml += "<p><b>"+readings.first.date+"</b><p>Temperature: "+readings.first.temp+
+	"&#8451 - Wind: "+readings.first.wind+"Km/h - Humidity: "+readings.first.hum+"&#37; <p>";
+	
+	strHtml += "<p><b>"+readings.second.date+"</b><p>Temperature: "+readings.second.temp+
+	"&#8451 - Wind: "+readings.second.wind+"Km/h - Humidity: "+readings.second.hum+"&#37; <p>";
+
+    var weather = document.getElementById("weatherinfo");
+    weather.style.display = "block";
+    weather.innerHTML = strHtml;
+}
+</script>
+
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <p>
  <a href="<?php echo $this->url('poi', array('action'=>'add'));?>">Sugerir um Ponto de interesse</a>

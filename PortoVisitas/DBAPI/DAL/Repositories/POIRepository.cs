@@ -69,6 +69,7 @@ namespace DBAPI.DAL.Repositories
         {
 
             context.Database.ExecuteSqlCommand("delete from Caminho where POIID = {0}", poi.POIID);
+            context.Database.ExecuteSqlCommand("delete from HashtagPOI where POIID = {0}", poi.POIID);
             await context.SaveChangesAsync();
 
             context.Entry(poi).State = EntityState.Modified;
@@ -77,6 +78,12 @@ namespace DBAPI.DAL.Repositories
             {
                 context.Database.ExecuteSqlCommand("Insert Into Caminho (POIID,ConnectedPOIID)" +
                     "Values('" + poi.POIID + "','" + connected.POIID + "')");
+            }
+
+            foreach (Hashtag tag in poi.Hashtags)
+            {
+                context.Database.ExecuteSqlCommand("Insert Into HashtagPOI (POI_POIID,Hashtag_HashtagID)" +
+                    "Values('" + poi.POIID + "','" + tag.HashtagID + "')");
             }
 
             await context.SaveChangesAsync();
