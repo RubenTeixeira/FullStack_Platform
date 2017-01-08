@@ -78,8 +78,9 @@ namespace DBAPI.DAL.Repositories
                 Hashtag existingTag = null;
                 try
                 {
-                    await getHashtagRepository().FindHashtagAsync(tag.Text);
+                    existingTag = await getHashtagRepository().FindHashtagAsync(tag.Text);
                     tag.HashtagID = existingTag.HashtagID;
+                    context.Entry(tag).State = EntityState.Unchanged;
                 }
                 catch (Exception)
                 {
@@ -97,8 +98,6 @@ namespace DBAPI.DAL.Repositories
                 context.Database.ExecuteSqlCommand("Insert Into Caminho (POIID,ConnectedPOIID)" +
                     "Values('" + poi.POIID + "','" + connected.POIID + "')");
             }
-
-
 
             await context.SaveChangesAsync();
 
