@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -20,7 +22,14 @@ namespace ClassLibrary.Helpers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", "OcDTF2pMnLXwsYSMav6tnrSLWweAWJ-v9LGqXwe84rwE3WetGuaCZuypHibQTdnULh5wZSCEgyoyJUFGR6pEBKfjGge_UIVTPt8FJuya--uhVARzpvt1buIOdLOppfmhCQpqC3Gn2ilIi1o9csG9Sk4tv-YPQyhNm7-M3oyexw-wk1IxCU1va626SzLL5vMOcu3kBAL_ledR6PilsV45md2KMxkvUab8h8uI4mBpBhvISfEom2LVgumNFuwJP7mXIIVUQU5wOweQ_f9bXG4RUGoR8SibTaMCLSPdi_YxhTjvV80lnRMsD5p1aaGD2wbQhn3EkuBqeUfW3U7ogaBLKz8M-MF9C25Cd-VRZX_9Cd2cIzuSeewi8Q1uGfhc7prllEBxcZtI8_igpDm-hQBEFr40OD9Mz9mVPpwCNcdOcdSFNyL4Z_xfGltsft2CoB3a3ylZf5sCOKQK6lZzni9ltufW6ArHN3SckZGHfYvSY2znLhpPd59EXgJAgZMevMlD_aLnZTaxKWsTJV_t4g6PNg");
+            var session = HttpContext.Current.Session;
+            if (session["token"] != null)
+            {
+                TokenResponse tokenResponse = getToken();
+                Debug.Write("TESTE " + tokenResponse.AccessToken);
+                client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("bearer", tokenResponse.AccessToken);
+            }
 
             return client;
         }
@@ -35,6 +44,38 @@ namespace ClassLibrary.Helpers
         {
             var session = HttpContext.Current.Session;
             return (TokenResponse)session["token"];
+        }
+
+        public static void storeUsername(string username)
+        {
+            var session = HttpContext.Current.Session;
+            session["username"] = username;
+        }
+
+        public static string getUsername()
+        {
+            var session = HttpContext.Current.Session;
+            return (string) session["username"];
+        }
+
+        public static void storeRoles(ICollection<string> roles)
+        {
+            var session = HttpContext.Current.Session;
+            session["roles"] = roles;
+        }
+
+        public static ICollection<string> getRoles()
+        {
+            var session = HttpContext.Current.Session;
+            return (ICollection<string>) session["roles"];
+        }
+
+        public static void clearToken()
+        {
+            var session = HttpContext.Current.Session;
+            session["token"] = null;
+            session["username"] = null;
+            session["roles"] = null;
         }
     }
 }

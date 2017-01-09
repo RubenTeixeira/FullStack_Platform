@@ -1,22 +1,53 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+@{var session = HttpContext.Current.Session;
+    if (session["username"] != null)
     {
-    @Html.AntiForgeryToken()
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new
+        {
+            id = "logoutForm",
+            @class = "navbar-right"
+        }))
+        {
+            @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    @{
+                        var selectList = new SelectList(
+                            new List<SelectListItem>
+                            {
+                            new SelectListItem {Text = BackOffice.Resources.Global.English, Value = "en"},
+                            new SelectListItem {Text = BackOffice.Resources.Global.Portuguese, Value = "pt"},
+                            }, "Value", "Text");
+                        @Html.DropDownList("Language", selectList, "Language", new { @class = "form-control", @style = "position: relative; display: block; margin: 15px 20px 15px 0px; padding: 0px; width: 100 %; height: 20px;", @onchange = "redirect(this.value)" })
+                    }
+                </li>
+                <li>
+                    @*@Html.ActionLink("Hello " + session["username"] + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })*@
+                    <a href="#">@session["username"]</a>
+                </li>
+                <li>@Html.ActionLink(BackOffice.Resources.Global.Logout, "LogOff", "Account", routeValues: null, htmlAttributes: new { id = "logoutLink" })</li>
+            </ul>
+        }
     }
-}
-else
-{
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+    else
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @{
+                    var selectList = new SelectList(
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem {Text = "Ingles", Value = "en"},
+                            new SelectListItem {Text = "Portugues", Value = "pt"},
+                        }, "Value", "Text");
+                    @Html.DropDownList("Language", selectList, "Language", new { @class = "form-control", @style = "position: relative; display: block; margin: 15px 20px 15px 0px; padding: 0px; width: 100 %; height: 20px;", @onchange = "redirect(this.value)" })
+                }
+            </li>
+            <li>@Html.ActionLink(BackOffice.Resources.Global.Register, "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+
+            <li>@Html.ActionLink(BackOffice.Resources.Global.Login, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+
+        </ul>
+    }
 }

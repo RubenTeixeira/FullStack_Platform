@@ -240,3 +240,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+*.settings/
+PortoVisitas/DBAPI/Properties/PublishProfiles/Test WVM.pubxml
+PortoVisitas/BackOffice/Properties/PublishProfiles/WVM.pubxml
+PortoVisitas/DBAPI/Properties/PublishProfiles/WVM.pubxml
+*.orig

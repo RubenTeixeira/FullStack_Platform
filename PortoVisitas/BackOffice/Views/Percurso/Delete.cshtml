@@ -1,0 +1,70 @@
+﻿@model ClassLibrary.Models.Percurso
+
+@{
+    ViewBag.Title = ClassLibrary.Resources.Global.Delete;
+}
+
+<h2>@ClassLibrary.Resources.Global.Delete</h2>
+
+<h3>@ClassLibrary.Resources.Global.DeleteConfirm</h3>
+<div>
+    <h4>@ClassLibrary.Resources.Global.Percurso</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Creator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Creator)
+        </dd>
+
+    </dl>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PercursoPOIs)
+        </dt>
+
+        <dd>
+        </dd>
+        @{
+            foreach (ClassLibrary.Models.POI connected in Model.PercursoPOIs)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+
+                <dd>
+                    @Html.DisplayName(connected.Name)
+                </dd>
+            }
+        }
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value=@ClassLibrary.Resources.Global.Delete class="btn btn-default" /> |
+            @Html.ActionLink(ClassLibrary.Resources.Global.ReturnToList, "Index")
+        </div>
+    }
+</div>

@@ -17,6 +17,9 @@ using DBAPI.Models;
 using DBAPI.Providers;
 using DBAPI.Results;
 using ClassLibrary.Models;
+using ClassLibrary.DTO;
+using System.Diagnostics;
+using System.Web.Http.Description;
 
 namespace DBAPI.Controllers
 {
@@ -80,7 +83,6 @@ namespace DBAPI.Controllers
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
             if (user == null)
             {
                 return null;
@@ -329,9 +331,17 @@ namespace DBAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            if(!(model.Role.Equals("Gestor") || model.Role.Equals("User")))
+            {
+                return BadRequest("Invalid User Role: " + model.Role);
+            }
+
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+                result = await UserManager.AddToRoleAsync(user.Id, model.Role);
 
             if (!result.Succeeded)
             {
@@ -372,6 +382,23 @@ namespace DBAPI.Controllers
                 return GetErrorResult(result); 
             }
             return Ok();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("getUserRole")]
+        public async Task<UserDTO> getUserRole(string email)
+        {
+
+            ApplicationUser user = await UserManager.FindByNameAsync(email);
+
+            UserDTO dto = new UserDTO();
+
+            dto.ID = user.Id;
+            dto.Username = user.UserName;
+            dto.Roles = await UserManager.GetRolesAsync(user.Id);
+
+            return dto;
         }
 
         protected override void Dispose(bool disposing)

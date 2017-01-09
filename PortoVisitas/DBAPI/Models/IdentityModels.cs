@@ -16,7 +16,7 @@ namespace DBAPI.Models
             : base("DefaultConnection")
         {
         }
-        
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
@@ -33,12 +33,26 @@ namespace DBAPI.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<POI>().HasMany(p => p.ConnectedPOIs ).WithMany().Map(m =>
+            modelBuilder.Entity<POI>().HasMany(p => p.ConnectedPOIs).WithMany().Map(m =>
+           {
+               m.MapLeftKey("POIID");
+               m.MapRightKey("ConnectedPOIID");
+               m.ToTable("Caminho");
+           });
+
+            modelBuilder.Entity<Percurso>().HasMany(p => p.PercursoPOIs).WithMany().Map(m =>
             {
-                m.MapLeftKey("POIID");
-                m.MapRightKey("ConnectedPOIID");
-                m.ToTable("Caminho");
+                m.MapLeftKey("PercursoID");
+                m.MapRightKey("POIID");
+                m.ToTable("Percurso_POI");
             });
+
+            //modelBuilder.Entity<POI>().HasMany(p => p.Hashtags).WithMany().Map(m =>
+            //{
+            //    m.MapLeftKey("Hashtag_HashtagID");
+            //    m.MapRightKey("POI_POIID");
+            //    m.ToTable("HashtagPOI");
+            //});
 
             modelBuilder.Entity<ApplicationUser>().Property(u => u.UserName).IsUnicode(false);
             modelBuilder.Entity<ApplicationUser>().Property(u => u.Email).IsUnicode(false);
@@ -48,6 +62,8 @@ namespace DBAPI.Models
         }
 
         public DbSet<POI> POIs { get; set; }
+        public DbSet<Percurso> Percursos { get; set; }
+        public DbSet<Hashtag> Hashtags { get; set; }
 
     }
 }

@@ -1,5 +1,8 @@
 namespace DBAPI.Migrations
 {
+    using ClassLibrary.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -14,18 +17,25 @@ namespace DBAPI.Migrations
 
         protected override void Seed(DBAPI.Models.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            IdentityResult roleResult;
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            string userRoleName = "User";
+            // Create User Role
+            // Check to see if Role Exists, if not create it
+            if (!roleManager.RoleExists(userRoleName))
+            {
+                roleResult = roleManager.Create(new IdentityRole(userRoleName));
+            }
+
+            string editorRoleName = "Gestor";
+            // Create User Role
+            // Check to see if Role Exists, if not create it
+            if (!roleManager.RoleExists(editorRoleName))
+            {
+                roleResult = roleManager.Create(new IdentityRole(editorRoleName));
+            }
         }
     }
 }

@@ -9,17 +9,16 @@ use Zend\Validator;
 class User
 {
 
-    public $id;
-
     public $email;
 
     public $password;
+    
+    private $role = "User";
 
     protected $inputFilter;
 
     public function exchangeArray($data)
     {
-        $this->id = (! empty($data['id'])) ? $data['id'] : null;
         $this->email = (! empty($data['email'])) ? $data['email'] : null;
         $this->password = (! empty($data['password'])) ? $data['password'] : null;
     }

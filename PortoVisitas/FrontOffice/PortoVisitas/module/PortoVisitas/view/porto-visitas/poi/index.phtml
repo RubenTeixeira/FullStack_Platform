@@ -1,0 +1,157 @@
+
+
+<head>
+<meta charset="utf-8">
+        <?php
+        $title = 'Pontos de Interesse';
+        $this->headTitle($title);
+        ?>
+
+        <?php
+        
+        echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')?>
+
+        <!-- Le styles -->
+        <?php
+        
+        echo $this->headLink(array(
+            'rel' => 'shortcut icon',
+            'type' => 'image/vnd.microsoft.icon',
+            'href' => $this->basePath() . '/img/favicon.ico'
+        ))
+            ->prependStylesheet($this->basePath('css/style.css'))
+            ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+            ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+            ->prependStylesheet($this->basePath('css/jquery.tag-editor.css'))?>
+
+        <!-- Scripts -->
+        <?php
+        
+        echo $this->headScript()
+            ->prependFile($this->basePath('js/jquery.tag-editor.min.js'))
+            ->prependFile($this->basePath('js/jquery.caret.min.js'))
+            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery.min.js'))
+            ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array(
+            'conditional' => 'lt IE 9'
+        ))
+            ->prependFile($this->basePath('js/html5shiv.js'), 'text/javascript', array(
+            'conditional' => 'lt IE 9'
+        ));
+        ?>
+
+	<script type="text/javascript">
+
+	function logTag(field, editor, tags, poiJson) {
+		console.log("Will update "+poiJson['Name']+" with the tags:");
+        for (var i = 0; i < tags.length; i++)
+            console.log(tags[i]);
+
+        console.log(poiJson);
+	}
+	
+	function savePOI(poiJson, tags) {
+		var hashTags = new Array();
+		for (var i = 0; i < tags.length; i++) {
+			var tag = new Object();
+			tag.Text = tags[i];
+			hashTags[i] = tag;
+		}
+		poiJson['Hashtags'] = hashTags;
+		poiJson['POIID'] = poiJson['ID'];
+        delete poiJson['ID'];
+		console.log(poiJson);
+		$.ajax({
+			type: 'PUT',
+			cache: false,
+			url: "http://10.8.11.86/PVAPI/api/POI/"+poiJson['POIID'],
+			data: poiJson,
+			async: true,
+			crossDomain: true,
+// 			success: function (result) {
+// 				handler(result.access_token);
+// 			},
+			error: function (error) {
+				if (error.status == 401) {
+					alert('Unauthorized');
+				} else {
+					alert('Error Updating POI: ' + error.responseText);
+				}
+			}
+		});
+
+	}
+	
+	</script>
+
+    </head>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+ <a href="<?php echo $this->url('poi', array('action'=>'add'));?>">Sugerir um Ponto de interesse</a>
+</p>
+
+<table class="table">
+	<tr>
+		<th>Nome</th>
+		<th>Descricao</th>
+		<th>Horario de Funcionamento</th>
+		<th>Coordenadas</th>
+		<th>Hashtags</th>
+		<th>&nbsp;</th>
+	</tr>
+	<?php foreach ($pois as $poi) : ?>
+	<tr>
+ 		<td><?php echo $this->escapeHtml($poi->Name);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->Description);?></td>
+ 		<?php
+ 		     $openDate = date_parse($poi->OpenHour);
+ 		     $opens = $openDate['hour'].":".$openDate['minute'];
+ 		     $closeDate = date_parse($poi->CloseHour);
+ 		     $closes = $closeDate['hour'].":".$closeDate['minute'];
+ 		     $schedule = date('H:i',strtotime($opens))." - ".date ('H:i',strtotime($closes));
+ 		?>
+ 		<td><?php echo $this->escapeHtml($schedule);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->GPS_Lat.",".$poi->GPS_Long);?></td>
+ 		<td>
+ 		
+ 		<?php
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            if (isset($_SESSION['user'])) {
+         ?>
+ 			<textarea id="hashtags_<?php echo $poi->ID?>" rows="4" cols="50"></textarea>
+ 			<?php
+ 			$tags = array_column($poi->Hashtags, 'Text');
+ 			$htags = json_encode($tags, JSON_HEX_TAG);
+ 			$poiJson = json_encode($poi);
+ 			$this->inlineScript()->captureStart();
+ 			
+ 			echo <<<JS
+    $('#hashtags_$poi->ID').tagEditor({
+                 			    initialTags: $htags,
+                 			    placeholder: 'Enter tags ...',
+                                onChange: function(field, editor, tags) {
+                                    logTag(field, editor, tags, $poiJson);
+                                    savePOI($poiJson, tags);    
+                                }
+
+                });
+JS;
+            $this->inlineScript()->captureEnd();
+     		?>
+
+ 			<?php
+            } else {
+ 			    foreach ($poi->Hashtags as $tag) {
+ 			        echo $this->escapeHtml("#".$tag->Text." ");
+ 			      }
+            }
+ 			?>
+ 		</td>
+	</tr>
+<?php endforeach; ?>
+</table>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Porto Visitas - BackOffice</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -23,6 +23,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("POI", "Index", "POI")</li>
+                    <li>@Html.ActionLink(BackOffice.Resources.Global.Percurso, "Index", "Percurso")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -39,5 +40,11 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script>
+        function redirect(dropDownValue) {
+            var path = window.location.href;
+            document.location = '/BackOffice/Language/Change?lang=' + dropDownValue + "&url=" + path;
+        }
+    </script>
 </body>
 </html>

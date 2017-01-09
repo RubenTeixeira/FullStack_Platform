@@ -10,6 +10,8 @@ using ClassLibrary.Helpers;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Web.Script.Serialization;
+using ClassLibrary.DTO;
+using System.Diagnostics;
 
 namespace BackOffice.Controllers
 {
@@ -58,6 +60,7 @@ namespace BackOffice.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            //PVWebApiHttpClient.clearToken();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -66,7 +69,6 @@ namespace BackOffice.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
@@ -79,36 +81,57 @@ namespace BackOffice.Controllers
             try
             {
                 var client = PVWebApiHttpClient.GetClient();
-                string username = model.Email;
-                string password = model.Password;
 
-                HttpContent content = new StringContent(
-                "grant_type=password&username=" + username + "&password=" + password,
-                System.Text.Encoding.UTF8,
-                "application/x-www-form-urlencoded");
+                var data = new
+                {
+                    Email = model.Email,
+                    Password = model.Password,
+                    RememberMe = model.RememberMe
+                };
 
-                var response = await client.PostAsync("/Token", content);
+                string dataJSON = JsonConvert.SerializeObject(data);
+                HttpContent content = new StringContent(dataJSON, System.Text.Encoding.Unicode, "application/json");
+
+                var response = await client.PostAsync("api/Account/Login", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string data = await response.Content.ReadAsStringAsync();
-                    //use JavaScriptSerializer from System.Web.Script.Serialization
-                    JavaScriptSerializer JSserializer = new JavaScriptSerializer();
-                    //deserialize to your class
-                    TokenResponse tokenResponse = JSserializer.Deserialize<TokenResponse>(data);
+                    TokenResponse tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
 
                     PVWebApiHttpClient.storeToken(tokenResponse);
+                    PVWebApiHttpClient.storeUsername(tokenResponse.Username);
 
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    return Content("Ocorreu um erro: " + response.StatusCode);
+                    return View(model);
+                }
+
+                client = PVWebApiHttpClient.GetClient();
+
+                response = await client.GetAsync("api/Account/getUserRole?email="+PVWebApiHttpClient.getUsername());
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string dataResponse = await response.Content.ReadAsStringAsync();
+                    //use JavaScriptSerializer from System.Web.Script.Serialization
+                    JavaScriptSerializer JSserializer = new JavaScriptSerializer();
+                    //deserialize to your class
+                    UserDTO userResponse = JSserializer.Deserialize<UserDTO>(dataResponse);
+
+                    PVWebApiHttpClient.storeRoles(userResponse.Roles);
+
+                    return RedirectToLocal(returnUrl);
+                }
+                else
+                {
+                    return View(model);
                 }
             }
             catch
             {
-                return Content("Ocorreu um erro.");
+                return View(model);
             }
         }
 
@@ -176,7 +199,8 @@ namespace BackOffice.Controllers
                 {
                     Email = model.Email,
                     Password = model.Password,
-                    ConfirmPassword = model.Password
+                    ConfirmPassword = model.Password,
+                    Role = "Gestor"
                 };
                 try
                 {
@@ -192,12 +216,12 @@ namespace BackOffice.Controllers
                     }
                     else
                     {
-                        return Content("Ocorreu um erro: " + response.StatusCode);
+                        return View(model);
                     }
                 }
                 catch
                 {
-                    return Content("Ocorreu um erro.");
+                    return View(model);
                 }
             }
 
@@ -418,13 +442,11 @@ namespace BackOffice.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+
+        [AllowAnonymous]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            PVWebApiHttpClient.clearToken();
             return RedirectToAction("Index", "Home");
         }
 

@@ -61,38 +61,92 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The description can not be more than 250 characters.
+        ///   Looks up a localized string similar to Create.
         /// </summary>
-        public static string POI_Description_Error {
+        public static string Create {
             get {
-                return ResourceManager.GetString("POI_Description_Error", resourceCulture);
+                return ResourceManager.GetString("Create", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Latitude.
+        ///   Looks up a localized string similar to Create New.
         /// </summary>
-        public static string POI_Lat_Error {
+        public static string CreateNew {
             get {
-                return ResourceManager.GetString("POI_Lat_Error", resourceCulture);
+                return ResourceManager.GetString("CreateNew", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Longitude.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
-        public static string POI_Long_Error {
+        public static string Delete {
             get {
-                return ResourceManager.GetString("POI_Long_Error", resourceCulture);
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name can not be more than 50 characters.
+        ///   Looks up a localized string similar to Are you sure you want to delete this?.
         /// </summary>
-        public static string POI_Name_Error {
+        public static string DeleteConfirm {
             get {
-                return ResourceManager.GetString("POI_Name_Error", resourceCulture);
+                return ResourceManager.GetString("DeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Route.
+        /// </summary>
+        public static string Percurso {
+            get {
+                return ResourceManager.GetString("Percurso", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to POI.
+        /// </summary>
+        public static string POI {
+            get {
+                return ResourceManager.GetString("POI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Return to List.
+        /// </summary>
+        public static string ReturnToList {
+            get {
+                return ResourceManager.GetString("ReturnToList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
     }

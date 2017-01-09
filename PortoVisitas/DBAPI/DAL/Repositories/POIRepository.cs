@@ -14,15 +14,21 @@ namespace DBAPI.DAL.Repositories
     public class POIRepository : IDisposable, IPOIRepository
     {
         ApplicationDbContext context;
+        HashtagRepository tagRepo = null;
 
         public POIRepository(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        public Task<List<POI>> FindPOIs()
+        public async Task<List<POI>> FindPOIs()
         {
-            return context.POIs.Include(p => p.ConnectedPOIs).ToListAsync();
+            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved != null).ToListAsync();
+        }
+
+        public async Task<List<POI>> FindPOIsToApprove()
+        {
+            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved == null).ToListAsync();
         }
 
         public Task<POI> FindPOIByIDAsync(int? poiID)
@@ -69,11 +75,32 @@ namespace DBAPI.DAL.Repositories
         {
 
             context.Database.ExecuteSqlCommand("delete from Caminho where POIID = {0}", poi.POIID);
+            context.Database.ExecuteSqlCommand("delete from POIHashtag where POI_POIID = {0}", poi.POIID);
             await context.SaveChangesAsync();
+
+            foreach (Hashtag tag in poi.Hashtags)
+            {
+                Hashtag existingTag = null;
+                existingTag = await getHashtagRepository().FindHashtagAsync(tag.Text);
+                if (existingTag == null)
+                {
+                    context.Hashtags.Add(tag);
+                } 
+                else
+                {
+                    tag.HashtagID = existingTag.HashtagID;
+                    context.Entry(tag).State = EntityState.Unchanged;
+                }
+                await context.SaveChangesAsync();
+
+                context.Database.ExecuteSqlCommand("Insert Into POIHashtag (POI_POIID,Hashtag_HashtagID)" +
+                    "Values('" + poi.POIID + "','" + tag.HashtagID + "')");
+            }
 
             context.Entry(poi).State = EntityState.Modified;
 
-            foreach (POI connected in poi.ConnectedPOIs) { 
+            foreach (POI connected in poi.ConnectedPOIs)
+            {
                 context.Database.ExecuteSqlCommand("Insert Into Caminho (POIID,ConnectedPOIID)" +
                     "Values('" + poi.POIID + "','" + connected.POIID + "')");
             }
@@ -96,16 +123,20 @@ namespace DBAPI.DAL.Repositories
 
         public POIDTO ConvertModelToDTO(POI poi)
         {
-            var dto = new POIDTO()
+            POIDTO dto = new POIDTO()
             {
                 ID = poi.POIID,
                 Name = poi.Name,
                 Description = poi.Description,
+                OpenHour = poi.OpenHour,
+                CloseHour = poi.CloseHour,
                 GPS_Lat = poi.GPS_Lat,
-                GPS_Long = poi.GPS_Long
-
+                GPS_Long = poi.GPS_Long,
+                Creator = poi.Creator,
+                Approved = poi.Approved,
+                ConnectedPOI = new List<POIConnectedDTO>(),
+                Hashtags = getHashtagRepository().ConvertModelListToDTO(poi.Hashtags)
             };
-
 
             foreach (POI connected in poi.ConnectedPOIs)
             {
@@ -120,22 +151,24 @@ namespace DBAPI.DAL.Repositories
             return dto;
         }
 
-        public List<POIDTO> ConvertModelListToDTO(List<POI> modelList)
+
+
+        public List<POIDTO> ConvertModelListToDTO(ICollection<POI> modelList)
         {
             List<POIDTO> list = new List<POIDTO>();
             foreach (POI poi in modelList)
             {
-                var dto = new POIDTO()
-                {
-                    ID = poi.POIID,
-                    Name = poi.Name,
-                    Description = poi.Description,
-                    GPS_Lat = poi.GPS_Lat,
-                    GPS_Long = poi.GPS_Long,
-                };
+                var dto = this.ConvertModelToDTO(poi);
                 list.Add(dto);
             }
             return list;
+        }
+
+        private HashtagRepository getHashtagRepository()
+        {
+            if (this.tagRepo == null)
+                this.tagRepo = new HashtagRepository(this.context);
+            return this.tagRepo;
         }
 
         private bool disposedValue = false;
@@ -160,5 +193,7 @@ namespace DBAPI.DAL.Repositories
 
             GC.SuppressFinalize(this);
         }
+
+
     }
 }

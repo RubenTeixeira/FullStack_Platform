@@ -11,6 +11,8 @@ namespace DBAPI.DAL
         private ApplicationDbContext context = new ApplicationDbContext();
 
         private IPOIRepository poiRepository;
+        private IPercursoRepository percursoRepository;
+        private IHashtagRepository tagRepository;
 
         public IPOIRepository POIRepository
         {
@@ -21,6 +23,30 @@ namespace DBAPI.DAL
                     this.poiRepository = new POIRepository(context);
                 }
                 return poiRepository;
+            }
+        }
+
+        public IPercursoRepository PercursoRepository
+        {
+            get
+            {
+                if (this.percursoRepository == null)
+                {
+                    this.percursoRepository = new PercursoRepository(context);
+                }
+                return percursoRepository;
+            }
+        }
+
+        public IHashtagRepository HashtagRepository
+        {
+            get
+            {
+                if (this.tagRepository == null)
+                {
+                    this.tagRepository = new HashtagRepository(context);
+                }
+                return tagRepository;
             }
         }
 

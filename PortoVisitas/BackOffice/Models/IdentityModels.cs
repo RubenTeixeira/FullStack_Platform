@@ -29,5 +29,7 @@ namespace BackOffice.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<ClassLibrary.Models.POI> POIs { get; set; }
     }
 }

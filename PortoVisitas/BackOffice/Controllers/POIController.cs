@@ -1,4 +1,5 @@
-﻿using ClassLibrary.DTO;
+﻿using BackOffice.Helpers;
+using ClassLibrary.DTO;
 using ClassLibrary.Helpers;
 using ClassLibrary.Models;
 using ClassLibrary.ViewModels;
@@ -14,6 +15,7 @@ using System.Web.Mvc;
 
 namespace BackOffice.Controllers
 {
+    [AuthorizeUser(UserRole="Gestor")]
     public class POIController : Controller
     {
         static HttpClient client;
@@ -70,13 +72,22 @@ namespace BackOffice.Controllers
 
         // POST: POI/Create
         [HttpPost]
-        public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
         {
 
             ViewBag.PoiList = await getPOIList(null);
 
             var connectedForm = Request.Form["ConnectedPOIs"];
             parseConnectedPOIs(pOI, connectedForm);
+
+            string openHour = Request.Form["OpenHour"];
+            pOI.OpenHour = Convert.ToDateTime(openHour);
+
+            string closeHour = Request.Form["CloseHour"];
+            pOI.CloseHour = Convert.ToDateTime(closeHour);
+
+            pOI.Creator = PVWebApiHttpClient.getUsername();
+            pOI.Approved = PVWebApiHttpClient.getUsername();
 
             client = PVWebApiHttpClient.GetClient();
             var responseHttp = await client.PostAsJsonAsync("api/POI", pOI);
@@ -115,7 +126,7 @@ namespace BackOffice.Controllers
 
         // POST: POI/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs,Hashtags")] POI pOI)
         {
 
             POIViewModel poiModel = new POIViewModel();
@@ -123,6 +134,12 @@ namespace BackOffice.Controllers
 
             var connectedForm = Request.Form["connectedPoi.SelectedItemIds"];
             parseConnectedPOIs(pOI, connectedForm);
+
+            string openHour = Request.Form["poi.OpenHour"];
+            pOI.OpenHour = Convert.ToDateTime(openHour);
+
+            string closeHour = Request.Form["poi.CloseHour"];
+            pOI.CloseHour = Convert.ToDateTime(closeHour);
 
             buildPOIViewModel(poiModel, pOI, poiList);
 

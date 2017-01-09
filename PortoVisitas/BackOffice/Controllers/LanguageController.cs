@@ -16,9 +16,9 @@ namespace BackOffice.Controllers
             return View();
         }
 
-        public ActionResult Change(String lang)
+        public ActionResult Change(string lang,string url)
         {
-            if(lang != null)
+            if (lang != null)
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(lang);
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
@@ -28,7 +28,7 @@ namespace BackOffice.Controllers
             cookie.Value = lang;
             Response.Cookies.Add(cookie);
 
-            return View("Index");
+            return Redirect(url);
 
         }
     }

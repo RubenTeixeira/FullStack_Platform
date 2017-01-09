@@ -11,6 +11,7 @@ using System.Net.Http.Formatting;
 using System.Web.Http.Description;
 using ClassLibrary.Models;
 using Newtonsoft.Json;
+using System.Web.Http.Cors;
 
 namespace PVAPI.Controllers
 {
@@ -20,6 +21,7 @@ namespace PVAPI.Controllers
 
         // GET: api/POI
         [ResponseType(typeof(POIDTO))]
+        [Route("api/POI")]
         public async Task<IHttpActionResult> Get()
         {
             client = DBWebApiHttpClient.GetClient();
@@ -30,6 +32,24 @@ namespace PVAPI.Controllers
             if (response.IsSuccessStatusCode)
             {
                pois = await response.Content.ReadAsAsync<IEnumerable<POIDTO>>();
+                return Ok(pois);
+            }
+
+            return BadRequest(response.ToString());
+        }
+
+        [ResponseType(typeof(POIDTO))]
+        [Route("api/POIToApprove")]
+        public async Task<IHttpActionResult> GetPOIToApprove()
+        {
+            client = DBWebApiHttpClient.GetClient();
+
+            IEnumerable<POIDTO> pois = null;
+            var response = await client.GetAsync("api/POIToApprove/");
+
+            if (response.IsSuccessStatusCode)
+            {
+                pois = await response.Content.ReadAsAsync<IEnumerable<POIDTO>>();
                 return Ok(pois);
             }
 
@@ -86,7 +106,7 @@ namespace PVAPI.Controllers
                 return Ok(objResponse1);
             }
 
-            return BadRequest();
+            return BadRequest("PVAPI: Malformed request; "+response.ReasonPhrase);
         }
 
         // DELETE: api/POI/5
