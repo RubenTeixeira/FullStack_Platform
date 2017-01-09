@@ -118,7 +118,7 @@ namespace BackOffice.Controllers
 
         // POST: Percurso/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, [Bind(Include = "PercursoID,Name,Description,PercursoPOIs")] Percurso percurso)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "PercursoID,Name,Description,Creator,PercursoPOIs")] Percurso percurso)
         {
 
             PercursoViewModel percursoModel = new PercursoViewModel();
@@ -244,6 +244,7 @@ namespace BackOffice.Controllers
                         connected.Name = "Dummy";
                         connected.GPS_Lat = 1.0M;
                         connected.GPS_Long = 1.0M;
+                        connected.Altitude = 15;
 
                         percurso.PercursoPOIs.Add(connected);
                     }

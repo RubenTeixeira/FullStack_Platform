@@ -133,6 +133,15 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hashtags.
+        /// </summary>
+        public static string Hashtags {
+            get {
+                return ResourceManager.GetString("Hashtags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {

@@ -141,6 +141,9 @@
   <data name="GPS_Long" xml:space="preserve">
     <value>Longitude</value>
   </data>
+  <data name="Hashtags" xml:space="preserve">
+    <value>Hashtags</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Nome</value>
   </data>
