@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>@ClassLibrary.Resources.Global.POI</h4>
         <hr />
@@ -18,7 +18,6 @@
         @Html.HiddenFor(model => model.poi.POIID)
         @Html.HiddenFor(model => model.poi.Creator)
         @Html.HiddenFor(model => model.poi.Approved)
-        @Html.HiddenFor(model => model.poi.Hashtags)
 
         <div class="form-group">
             @Html.LabelFor(model => model.poi.Name, htmlAttributes: new { @class = "control-label col-md-2" })

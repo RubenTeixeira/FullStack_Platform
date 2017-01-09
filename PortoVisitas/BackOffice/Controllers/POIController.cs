@@ -3,12 +3,14 @@ using ClassLibrary.DTO;
 using ClassLibrary.Helpers;
 using ClassLibrary.Models;
 using ClassLibrary.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -130,7 +132,18 @@ namespace BackOffice.Controllers
         {
 
             POIViewModel poiModel = new POIViewModel();
-            List<POI> poiList = await getPOIList(pOI.POIID);
+            List<POI> poiList = await getPOIList(null);
+            POI poiAux = new POI();
+
+            foreach(POI p in poiList)
+            {
+                if(p.POIID == pOI.POIID)
+                {
+                    poiAux = p;
+                }
+            }
+
+            poiList.Remove(poiAux);
 
             var connectedForm = Request.Form["connectedPoi.SelectedItemIds"];
             parseConnectedPOIs(pOI, connectedForm);
@@ -143,8 +156,15 @@ namespace BackOffice.Controllers
 
             buildPOIViewModel(poiModel, pOI, poiList);
 
-            client = PVWebApiHttpClient.GetClient();
-            var responseHttp = await client.PutAsJsonAsync("api/POI/"+id, pOI);
+            pOI.Hashtags = poiAux.Hashtags;
+
+            foreach(Hashtag h in pOI.Hashtags)
+            {
+                h.ReferencedPOIs = new List<POI>();
+            }
+            
+
+            var responseHttp = await client.PutAsJsonAsync("api/POI/" + id, pOI);
 
             if (responseHttp.IsSuccessStatusCode)
             {

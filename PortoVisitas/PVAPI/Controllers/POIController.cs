@@ -102,6 +102,7 @@ namespace PVAPI.Controllers
         public async Task<IHttpActionResult> PutPOI(int id, POI pOI)
         {
             client = DBWebApiHttpClient.GetClient();
+
             var response = await client.PutAsJsonAsync("api/POI/"+id, pOI);
 
             if (response.IsSuccessStatusCode)
