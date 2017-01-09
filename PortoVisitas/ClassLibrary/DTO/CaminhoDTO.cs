@@ -9,13 +9,9 @@ namespace ClassLibrary.DTO
 {
     public class CaminhoDTO
     {
-        
-        public int ID { get; set; }
         public int POIID { get; set; }
 
         public int ConnectedPOIID { get; set; }
-
-        public int Inclinacao { get; set; }
         
     }
 }

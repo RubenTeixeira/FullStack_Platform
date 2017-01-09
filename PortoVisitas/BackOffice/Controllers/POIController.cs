@@ -158,12 +158,6 @@ namespace BackOffice.Controllers
 
             pOI.Hashtags = poiAux.Hashtags;
 
-            foreach(Hashtag h in pOI.Hashtags)
-            {
-                h.ReferencedPOIs = new List<POI>();
-            }
-            
-
             var responseHttp = await client.PutAsJsonAsync("api/POI/" + id, pOI);
 
             if (responseHttp.IsSuccessStatusCode)

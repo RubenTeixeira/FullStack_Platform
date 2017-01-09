@@ -21,7 +21,7 @@ namespace DBAPI.DAL.Repositories
 
         public async Task<List<CaminhoDTO>> FindCaminhos()
         {
-            return await context.Database.SqlQuery<CaminhoDTO>("select POIID,ConnectedPOIID from caminho").ToListAsync();
+            return await context.Database.SqlQuery<CaminhoDTO>("select POIID,ConnectedPOIID from Caminho").ToListAsync();
         }
 
         private bool disposedValue = false;

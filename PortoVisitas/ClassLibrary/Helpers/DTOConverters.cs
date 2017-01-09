@@ -55,7 +55,6 @@ namespace ClassLibrary.Helpers
                     tag.HashtagID = tagDTO.HashtagID;
                     tag.Text = tagDTO.Text;
                     tag.ReferencedPOIs = new List<POI>();
-                    tag.ReferencedPOIs.Add(poi);
                     poi.Hashtags.Add(tag);
                 }
             }
