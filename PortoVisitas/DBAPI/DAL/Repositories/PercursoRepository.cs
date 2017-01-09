@@ -131,6 +131,11 @@ namespace DBAPI.DAL.Repositories
             GC.SuppressFinalize(this);
         }
 
+        public Task<List<Percurso>> FindPercursosByUser(string user)
+        {
+            return context.Percursos.Include(p => p.PercursoPOIs).Where( p => p.Creator == user).ToListAsync();
+        }
+
         public Task<Percurso> FindPercursoByIDAsync(int? percursoID)
         {
             return context.Percursos.FindAsync(percursoID);

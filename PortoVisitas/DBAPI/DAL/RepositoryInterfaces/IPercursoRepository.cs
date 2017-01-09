@@ -12,6 +12,7 @@ namespace DBAPI.DAL.RepositoryInterfaces
     public interface IPercursoRepository : IDisposable
     {
         Task<List<Percurso>> FindPercursos();
+        Task<List<Percurso>> FindPercursosByUser(string user);
         Task<Percurso> FindPercursoByIDAsync(int? percursoID);
         Task<int> CreatePercurso(Percurso percurso);
         Task<bool> DeletePercurso(int percursoID);

@@ -28,6 +28,18 @@ namespace DBAPI.Controllers
             return Ok(list);
         }
 
+        [Authorize]
+        [Route("api/PercursoUser")]
+        [ResponseType(typeof(List<PercursoDTO>))]
+        public async Task<IHttpActionResult> GetUserPercurso(string email)
+        {
+            List<Percurso> listPercursos = await unitOfWork.PercursoRepository.FindPercursosByUser(email);
+
+            List<PercursoDTO> list = unitOfWork.PercursoRepository.ConvertModelListToDTO(listPercursos);
+
+            return Ok(list);
+        }
+
         // GET: api/Percurso/5
         [ResponseType(typeof(PercursoDTO))]
         public async Task<IHttpActionResult> GetPercurso(int id)
