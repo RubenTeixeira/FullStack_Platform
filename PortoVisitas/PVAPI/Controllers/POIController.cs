@@ -21,6 +21,7 @@ namespace PVAPI.Controllers
 
         // GET: api/POI
         [ResponseType(typeof(POIDTO))]
+        [Route("api/POI")]
         public async Task<IHttpActionResult> Get()
         {
             client = DBWebApiHttpClient.GetClient();
@@ -31,6 +32,24 @@ namespace PVAPI.Controllers
             if (response.IsSuccessStatusCode)
             {
                pois = await response.Content.ReadAsAsync<IEnumerable<POIDTO>>();
+                return Ok(pois);
+            }
+
+            return BadRequest(response.ToString());
+        }
+
+        [ResponseType(typeof(POIDTO))]
+        [Route("api/POIToApprove")]
+        public async Task<IHttpActionResult> GetPOIToApprove()
+        {
+            client = DBWebApiHttpClient.GetClient();
+
+            IEnumerable<POIDTO> pois = null;
+            var response = await client.GetAsync("api/POIToApprove/");
+
+            if (response.IsSuccessStatusCode)
+            {
+                pois = await response.Content.ReadAsAsync<IEnumerable<POIDTO>>();
                 return Ok(pois);
             }
 

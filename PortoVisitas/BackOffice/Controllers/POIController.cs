@@ -126,7 +126,7 @@ namespace BackOffice.Controllers
 
         // POST: POI/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs,Hashtags")] POI pOI)
         {
 
             POIViewModel poiModel = new POIViewModel();

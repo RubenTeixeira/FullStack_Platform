@@ -23,7 +23,12 @@ namespace DBAPI.DAL.Repositories
 
         public async Task<List<POI>> FindPOIs()
         {
-            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).ToListAsync();
+            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved != null).ToListAsync();
+        }
+
+        public async Task<List<POI>> FindPOIsToApprove()
+        {
+            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved == null).ToListAsync();
         }
 
         public Task<POI> FindPOIByIDAsync(int? poiID)

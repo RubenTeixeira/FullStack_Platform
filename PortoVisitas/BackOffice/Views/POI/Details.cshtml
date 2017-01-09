@@ -96,6 +96,27 @@
             }
         }
     </dl>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Hashtags)
+        </dt>
+
+        <dd>
+        </dd>
+        @{
+            foreach (ClassLibrary.Models.Hashtag hash in Model.Hashtags)
+            {
+                <dt>
+                    @Html.DisplayName(ClassLibrary.Resources.Hashtag.Text)
+                </dt>
+
+                <dd>
+                    @Html.DisplayName(hash.Text)
+                </dd>
+            }
+        }
+    </dl>
 </div>
 <p>
     @Html.ActionLink(ClassLibrary.Resources.Global.Edit, "Edit", new { id = Model.POIID }) |
