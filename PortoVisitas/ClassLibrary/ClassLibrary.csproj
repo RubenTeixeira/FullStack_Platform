@@ -96,6 +96,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\CaminhoDTO.cs" />
+    <Compile Include="DTO\DecisionHelperDTO.cs" />
     <Compile Include="DTO\POIConnectedDTO.cs" />
     <Compile Include="DTO\POIDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
