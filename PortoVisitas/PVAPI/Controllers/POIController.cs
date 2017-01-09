@@ -11,6 +11,7 @@ using System.Net.Http.Formatting;
 using System.Web.Http.Description;
 using ClassLibrary.Models;
 using Newtonsoft.Json;
+using System.Web.Http.Cors;
 
 namespace PVAPI.Controllers
 {

@@ -17,17 +17,12 @@ class WebApiService
         $client->setMethod(Request::METHOD_POST);
         $data = "email=$username&password=$password&rememberme=false";
         $len = strlen($data);
-        //echo "STRING: ".$data;
         $client->setHeaders(array(
             'Content-Type' => 'application/x-www-form-urlencoded',
             'Content-Length' => $len
         ));
-//         $client->setOptions([
-//             'sslverifypeer' => false
-//         ]);
         $client->setRawBody($data);
         $response = $client->send();
-        //echo "BODY: ".$response->getBody();
         $body = Json::decode($response->getBody());
         if (! empty($body->access_token)) {
             return $body->access_token;
@@ -40,15 +35,12 @@ class WebApiService
         $enderecoBase = WebApiService::$enderecoBase;
         $client = new Client($enderecoBase . '/api/Account/Register');
         $client->setMethod(Request::METHOD_POST);
-        $data = "email=$mail&password=$password&confirmpassword=$password";
+        $data = "email=$mail&password=$password&confirmpassword=$password&role=User";
         $len = strlen($data);
         $client->setHeaders(array(
             'Content-Type' => 'application/x-www-form-urlencoded',
             'Content-Length' => $len
         ));
-//         $client->setOptions([
-//             'sslverifypeer' => false
-//         ]);
         $client->setRawBody($data);
         $response = $client->send();
         if (! empty($response->getBody()) ) {
@@ -65,16 +57,13 @@ class WebApiService
         
         $client = new Client(WebApiService::$enderecoBase . '/api/POI');
         $client->setMethod(Request::METHOD_GET);
-        /*
-        $bearer_token = 'Bearer ' . $_SESSION['token'];
-        $client->setHeaders(array(
-            'Authorization' => $bearer_token
-        ));
-        */
+//         $bearer_token = 'Bearer ' . $_SESSION['token'];
+//         $client->setHeaders(array(
+//             'Authorization' => $bearer_token
+//         ));
 //         $client->setOptions([
 //             'sslverifypeer' => false
 //         ]);
-        
         $response = $client->send();
         $body = $response->getBody();
         $pois = Json::decode($response->getBody(), false);

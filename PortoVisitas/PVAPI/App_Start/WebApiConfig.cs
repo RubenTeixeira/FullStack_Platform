@@ -6,6 +6,7 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using System.Web.Http.Cors;
 
 namespace PVAPI
 {
@@ -26,6 +27,8 @@ namespace PVAPI
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            config.EnableCors(new EnableCorsAttribute("*", "*", "GET, POST, OPTIONS, PUT, DELETE"));
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

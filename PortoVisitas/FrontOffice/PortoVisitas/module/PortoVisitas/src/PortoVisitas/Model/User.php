@@ -12,6 +12,8 @@ class User
     public $email;
 
     public $password;
+    
+    private $role = "User";
 
     protected $inputFilter;
 
