@@ -44,6 +44,11 @@ namespace ClassLibrary.Models
         [Display(Name = "GPS_Long", ResourceType = typeof(Resources.POI))]
         public decimal GPS_Long { get; set; }
 
+        [Required]
+        [RegularExpression(@"[1][0-9][0-9]|[1-2][1-6][0-9]|[1][5-9]|[2-9][0-9]|270", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Altitude_Error")]
+        [Display(Name = "Altitude", ResourceType = typeof(Resources.POI))]
+        public int Altitude { get; set; }
+
         [Display(Name = "Creator", ResourceType = typeof(Resources.POI))]
         public string Creator { get; set; }
 

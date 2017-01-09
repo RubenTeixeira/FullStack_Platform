@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Altitude" xml:space="preserve">
+    <value>Altitude</value>
+  </data>
   <data name="Approved" xml:space="preserve">
     <value>Aprovado Por</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="OpenHour" xml:space="preserve">
     <value>Hora de Abertura</value>
+  </data>
+  <data name="POI_Altitude_Error" xml:space="preserve">
+    <value>Altitude Inválida</value>
   </data>
   <data name="POI_Description_Error" xml:space="preserve">
     <value>A descrição não pode ter mais de 250 caracteres</value>

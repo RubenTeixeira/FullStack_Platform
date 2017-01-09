@@ -24,14 +24,17 @@ namespace ClassLibrary.DTO
 
         public decimal GPS_Lat { get; set; }
         public decimal GPS_Long { get; set; }
+        public int Altitude { get; set; }
         public string Creator { get; set; }
         public string Approved { get; set; }
+
         public List<POIConnectedDTO> ConnectedPOI { get; set; }
         public List<HashtagDTO> Hashtags { get; set; }
 
         public POIDTO()
         {
             ConnectedPOI = new List<POIConnectedDTO>();
+            Hashtags = new List<HashtagDTO>();
         }
 
     }

@@ -43,6 +43,8 @@ namespace DBAPI.Controllers
         }
 
         // GET: api/POI/5
+        [HttpGet]
+        [Route("api/POI/{id}")]
         [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> GetPOI(int id)
         {
@@ -59,6 +61,8 @@ namespace DBAPI.Controllers
         }
 
         // PUT: api/POI/5
+        [HttpPut]
+        [Route("api/POI/{id}")]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutPOI(int id, POI pOI)
         {
@@ -103,22 +107,39 @@ namespace DBAPI.Controllers
         }
 
         // POST: api/POI
+        [HttpPost]
+        [Route("api/POI")]
         [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> PostPOI(POI pOI)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var allErrors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
+                string problems = "";
+                foreach (string error in allErrors)
+                {
+                    problems += " _____ " + error;
+                }
+                return BadRequest("Invalid model object: " + problems);
             }
 
             await unitOfWork.POIRepository.CreatePOI(pOI);
 
-            var dto = unitOfWork.POIRepository.ConvertModelToDTO(pOI);
-
-            return CreatedAtRoute("DefaultApi", new { id = pOI.POIID }, dto);
+            try
+            {
+                var dto = unitOfWork.POIRepository.ConvertModelToDTO(pOI);
+                return CreatedAtRoute("DefaultApi", new { id = pOI.POIID }, dto);
+            }
+            catch
+            {
+                return BadRequest("exception");
+            }
+           
         }
 
         // DELETE: api/POI/5
+        [HttpDelete]
+        [Route("api/POI/{id}")]
         [ResponseType(typeof(POI))]
         public async Task<IHttpActionResult> DeletePOI(int id)
         {

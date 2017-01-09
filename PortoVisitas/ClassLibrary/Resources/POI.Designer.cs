@@ -61,6 +61,15 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Altitude.
+        /// </summary>
+        public static string Altitude {
+            get {
+                return ResourceManager.GetString("Altitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approved By.
         /// </summary>
         public static string Approved {
@@ -138,6 +147,15 @@ namespace ClassLibrary.Resources {
         public static string OpenHour {
             get {
                 return ResourceManager.GetString("OpenHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Altitude.
+        /// </summary>
+        public static string POI_Altitude_Error {
+            get {
+                return ResourceManager.GetString("POI_Altitude_Error", resourceCulture);
             }
         }
         

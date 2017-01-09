@@ -254,6 +254,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CaminhoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PercursoController.cs" />
     <Compile Include="Controllers\POIController.cs" />
@@ -261,9 +262,11 @@
     <Compile Include="DAL\MySqlConfiguration.cs" />
     <Compile Include="DAL\MySqlHistoryContext.cs" />
     <Compile Include="DAL\MySqlInitializer.cs" />
+    <Compile Include="DAL\Repositories\CaminhoRepository.cs" />
     <Compile Include="DAL\Repositories\HashtagRepository.cs" />
     <Compile Include="DAL\Repositories\PercursoRepository.cs" />
     <Compile Include="DAL\Repositories\POIRepository.cs" />
+    <Compile Include="DAL\RepositoryInterfaces\ICaminhoRepository.cs" />
     <Compile Include="DAL\RepositoryInterfaces\IHashtagRepository.cs" />
     <Compile Include="DAL\RepositoryInterfaces\IPercursoRepository.cs" />
     <Compile Include="DAL\RepositoryInterfaces\IPOIRepository.cs" />
@@ -287,6 +290,10 @@
     <Compile Include="Migrations\201701072145248_Roles.cs" />
     <Compile Include="Migrations\201701072145248_Roles.Designer.cs">
       <DependentUpon>201701072145248_Roles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701091200571_AltitudePOI.cs" />
+    <Compile Include="Migrations\201701091200571_AltitudePOI.Designer.cs">
+      <DependentUpon>201701091200571_AltitudePOI.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -387,6 +394,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701072145248_Roles.resx">
       <DependentUpon>201701072145248_Roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701091200571_AltitudePOI.resx">
+      <DependentUpon>201701091200571_AltitudePOI.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

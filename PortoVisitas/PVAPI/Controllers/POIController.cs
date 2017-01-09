@@ -57,6 +57,8 @@ namespace PVAPI.Controllers
         }
 
         // GET: api/POI/5
+        [HttpGet]
+        [Route("api/POI/{id}")]
         [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> Get(int id)
         {
@@ -76,6 +78,8 @@ namespace PVAPI.Controllers
         }
 
         // POST: api/POI
+        [HttpPost]
+        [Route("api/POI")]
         [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> PostPOI(POI pOI)
         {
@@ -84,15 +88,16 @@ namespace PVAPI.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadAsStringAsync();
-                var objResponse1 = JsonConvert.DeserializeObject<POIDTO>(result);
-                return Ok(objResponse1);
+                POIDTO poiDTO = await response.Content.ReadAsAsync<POIDTO>();
+                return Ok(poiDTO);
             }
 
-            return BadRequest();
+            return BadRequest("Error "+response.StatusCode);
         }
 
         // PUT: api/POI/5
+        [HttpPut]
+        [Route("api/POI/{id}")]
         [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> PutPOI(int id, POI pOI)
         {
@@ -110,6 +115,8 @@ namespace PVAPI.Controllers
         }
 
         // DELETE: api/POI/5
+        [HttpDelete]
+        [Route("api/POI/{id}")]
         [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> Delete(int id)
         {

@@ -117,49 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Altitude" xml:space="preserve">
-    <value>Altitude</value>
+  <data name="Target" xml:space="preserve">
+    <value>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</value>
   </data>
-  <data name="Approved" xml:space="preserve">
-    <value>Approved By</value>
-  </data>
-  <data name="CloseHour" xml:space="preserve">
-    <value>Closing Hour</value>
-  </data>
-  <data name="ConnectedPOIs" xml:space="preserve">
-    <value>Connected POIs</value>
-  </data>
-  <data name="Creator" xml:space="preserve">
-    <value>Creator</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="GPS_Lat" xml:space="preserve">
-    <value>Latitude</value>
-  </data>
-  <data name="GPS_Long" xml:space="preserve">
-    <value>Longitude</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="OpenHour" xml:space="preserve">
-    <value>Openning Hour</value>
-  </data>
-  <data name="POI_Altitude_Error" xml:space="preserve">
-    <value>Invalid Altitude</value>
-  </data>
-  <data name="POI_Description_Error" xml:space="preserve">
-    <value>The description can not be more than 250 characters</value>
-  </data>
-  <data name="POI_Lat_Error" xml:space="preserve">
-    <value>Invalid Latitude</value>
-  </data>
-  <data name="POI_Long_Error" xml:space="preserve">
-    <value>Invalid Longitude</value>
-  </data>
-  <data name="POI_Name_Error" xml:space="preserve">
-    <value>Name can not be more than 50 characters</value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>

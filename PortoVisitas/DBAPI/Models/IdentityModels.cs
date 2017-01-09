@@ -33,7 +33,7 @@ namespace DBAPI.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<POI>().HasMany(p => p.ConnectedPOIs).WithMany().Map(m =>
+           modelBuilder.Entity<POI>().HasMany(p => p.ConnectedPOIs).WithMany().Map(m =>
            {
                m.MapLeftKey("POIID");
                m.MapRightKey("ConnectedPOIID");

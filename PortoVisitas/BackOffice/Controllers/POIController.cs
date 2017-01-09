@@ -72,7 +72,7 @@ namespace BackOffice.Controllers
 
         // POST: POI/Create
         [HttpPost]
-        public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,Altitude,ConnectedPOIs")] POI pOI)
         {
 
             ViewBag.PoiList = await getPOIList(null);
@@ -126,7 +126,7 @@ namespace BackOffice.Controllers
 
         // POST: POI/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,ConnectedPOIs,Hashtags")] POI pOI)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,Altitude,Creator,Approved,ConnectedPOIs,Hashtags")] POI pOI)
         {
 
             POIViewModel poiModel = new POIViewModel();
@@ -257,6 +257,7 @@ namespace BackOffice.Controllers
                         connected.Name = "Dummy";
                         connected.GPS_Lat = 1.0M;
                         connected.GPS_Long = 1.0M;
+                        connected.Altitude = 15;
 
                         pOI.ConnectedPOIs.Add(connected);
                     }

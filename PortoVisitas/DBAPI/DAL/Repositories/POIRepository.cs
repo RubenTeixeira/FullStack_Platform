@@ -46,6 +46,7 @@ namespace DBAPI.DAL.Repositories
             context.POIs.Add(poi);
             await context.SaveChangesAsync();
             context.Entry(poi).Collection(x => x.ConnectedPOIs).Load();
+            context.Entry(poi).Collection(x => x.Hashtags).Load();
 
             return 1;
         }
@@ -132,6 +133,7 @@ namespace DBAPI.DAL.Repositories
                 CloseHour = poi.CloseHour,
                 GPS_Lat = poi.GPS_Lat,
                 GPS_Long = poi.GPS_Long,
+                Altitude = poi.Altitude,
                 Creator = poi.Creator,
                 Approved = poi.Approved,
                 ConnectedPOI = new List<POIConnectedDTO>(),
