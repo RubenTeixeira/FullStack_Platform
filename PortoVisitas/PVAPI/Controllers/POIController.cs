@@ -79,7 +79,7 @@ namespace PVAPI.Controllers
 
         // POST: api/POI
         [HttpPost]
-        [Route("api/POI")]
+        [Route("api/POI", Name="PostPOI")]
         [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> PostPOI(POI pOI)
         {

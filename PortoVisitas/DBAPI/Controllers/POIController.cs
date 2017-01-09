@@ -108,7 +108,7 @@ namespace DBAPI.Controllers
 
         // POST: api/POI
         [HttpPost]
-        [Route("api/POI")]
+        [Route("api/POI", Name = "PostPOI")]
         [ResponseType(typeof(POIDTO))]
         public async Task<IHttpActionResult> PostPOI(POI pOI)
         {
@@ -128,7 +128,7 @@ namespace DBAPI.Controllers
             try
             {
                 var dto = unitOfWork.POIRepository.ConvertModelToDTO(pOI);
-                return CreatedAtRoute("DefaultApi", new { id = pOI.POIID }, dto);
+                return CreatedAtRoute("PostPOI", new { id = pOI.POIID }, dto);
             }
             catch
             {
