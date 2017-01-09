@@ -62,7 +62,6 @@
 		poiJson['Hashtags'] = hashTags;
 		poiJson['POIID'] = poiJson['ID'];
         delete poiJson['ID'];
-		console.log(poiJson);
 		$.ajax({
 			type: 'PUT',
 			cache: false,
@@ -97,8 +96,9 @@
 	<tr>
 		<th>Nome</th>
 		<th>Descricao</th>
-		<th>Horario de Funcionamento</th>
+		<th>Horario</th>
 		<th>Coordenadas</th>
+		<th>Altitude (m)</th>
 		<th>Hashtags</th>
 		<th>&nbsp;</th>
 	</tr>
@@ -115,6 +115,7 @@
  		?>
  		<td><?php echo $this->escapeHtml($schedule);?></td>
  		<td><?php echo $this->escapeHtml($poi->GPS_Lat.",".$poi->GPS_Long);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->Altitude);?></td>
  		<td>
  		
  		<?php
@@ -135,7 +136,7 @@
                  			    initialTags: $htags,
                  			    placeholder: 'Enter tags ...',
                                 onChange: function(field, editor, tags) {
-                                    logTag(field, editor, tags, $poiJson);
+                                    //logTag(field, editor, tags, $poiJson);
                                     savePOI($poiJson, tags);    
                                 }
 

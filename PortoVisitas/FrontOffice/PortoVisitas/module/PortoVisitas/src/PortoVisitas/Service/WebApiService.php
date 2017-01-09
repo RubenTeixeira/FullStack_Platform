@@ -54,20 +54,35 @@ class WebApiService
 
     public static function getPois()
     {
-        
         $client = new Client(WebApiService::$enderecoBase . '/api/POI');
         $client->setMethod(Request::METHOD_GET);
-//         $bearer_token = 'Bearer ' . $_SESSION['token'];
-//         $client->setHeaders(array(
-//             'Authorization' => $bearer_token
-//         ));
-//         $client->setOptions([
-//             'sslverifypeer' => false
-//         ]);
         $response = $client->send();
         $body = $response->getBody();
         $pois = Json::decode($response->getBody(), false);
         return $pois;
+    }
+    
+    public static function savePoi($poi)
+    {
+        $enderecoBase = WebApiService::$enderecoBase;
+        $client = new Client($enderecoBase . '/api/POI');
+        $client->setMethod(Request::METHOD_POST);
+        $data = json_encode($poi);
+        $len = strlen($data);
+        $client->setHeaders(array(
+            'Content-Type' => 'application/json',
+            'Content-Length' => $len
+        ));
+        $client->setRawBody($data);
+        echo var_dump($data);
+        $response = $client->send();
+        if (! empty($response->getBody()) ) {
+            $body = Json::decode($response->getBody(), false);
+            if ($body->IsSuccessStatusCode)
+                return null;
+                else
+                    return $body;
+        }
     }
     
     public static function getPercursos()

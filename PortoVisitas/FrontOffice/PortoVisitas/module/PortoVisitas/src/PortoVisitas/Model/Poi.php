@@ -7,7 +7,7 @@ use Zend\InputFilter\InputFilter;
 class Poi
 {
 
-    public $id;
+    public $poiid;
 
     public $name;
 
@@ -16,28 +16,37 @@ class Poi
     public $gps_lat;
 
     public $gps_long;
+    
+    public $openHour;
+    
+    public $closeHour;
 
     public $creator;
 
     public $approved;
-    
+
     public $hashtags;
 
     public $connectedPoi;
+
+    public $altitude;
 
     protected $inputFilter;
 
     public function exchangeArray($data)
     {
-        $this->id = (! empty($data['id'])) ? $data['id'] : null;
+        $this->poiid = (! empty($data['poiid'])) ? $data['poiid'] : null;
         $this->name = (! empty($data['name'])) ? $data['name'] : null;
         $this->description = (! empty($data['description'])) ? $data['description'] : null;
         $this->gps_lat = (! empty($data['gps_lat'])) ? $data['gps_lat'] : null;
         $this->gps_long = (! empty($data['gps_long'])) ? $data['gps_long'] : null;
+        $this->openHour = (! empty($data['openHour'])) ? $data['openHour'] : null;
+        $this->closeHour = (! empty($data['closeHour'])) ? $data['closeHour'] : null;
         $this->creator = (! empty($data['creator'])) ? $data['creator'] : null;
         $this->approved = (! empty($data['approved'])) ? $data['approved'] : null;
         $this->hashtags = (! empty($data['hashtags'])) ? $data['hashtags'] : null;
         $this->connectedPoi = (! empty($data['connectedPoi'])) ? $data['connectedPoi'] : null;
+        $this->altitude = (! empty($data['altitude'])) ? $data['altitude'] : null;
     }
 
     public function getArrayCopy()
@@ -104,22 +113,29 @@ class Poi
             $inputFilter->add(array(
                 'name' => 'gps_lat',
                 'required' => true,
-                'filters' => array(
-                    array(
-                        'name' => 'Float'
-                    )
-                )
             ));
             
             $inputFilter->add(array(
                 'name' => 'gps_long',
                 'required' => true,
-                'filters' => array(
-                    array(
-                        'name' => 'Float'
-                    )
-                )
             ));
+            
+            $inputFilter->add(array(
+                'name' => 'openHour',
+                'required' => true,
+            ));
+            
+            $inputFilter->add(array(
+                'name' => 'closeHour',
+                'required' => true,
+            ));
+            
+            $inputFilter->add(array(
+                'name' => 'altitude',
+                'required' => true,
+            ));
+            
+            $this->inputFilter = $inputFilter;
         }
         return $this->inputFilter;
     }

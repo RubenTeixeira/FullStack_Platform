@@ -1,0 +1,71 @@
+
+        <?php
+        $title = 'Sugerir Ponto de Interesse';
+        $this->headTitle($title);
+        
+        echo $this->headLink()
+        ->prependStylesheet($this->basePath('css/jquery.tag-editor.css'));
+        
+        echo $this->headScript()
+            ->prependFile($this->basePath('js/jquery.tag-editor.min.js'))
+            ->prependFile($this->basePath('js/jquery.caret.min.js'));
+        ?>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$form->setAttribute('action',$this->url('poi', array('action' => 'add')));
+$form->prepare();
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('poiid'));
+echo $this->formHidden($form->get('creator'));?>
+<div class="form-group">
+<?php echo $this->formRow($form->get('name'));
+echo "<br/>";?>
+</div>
+<div class="form-group">
+<?php echo $this->formRow($form->get('description'));
+echo "<br/>";?>
+</div>
+<div class="form-group">
+<?php echo $this->formRow($form->get('openHour'));
+echo "<br/>";?>
+</div>
+<div class="form-group">
+<?php echo $this->formRow($form->get('closeHour'));
+echo "<br/>";?>
+</div>
+<div class="form-group">
+<?php echo $this->formRow($form->get('gps_lat'));
+echo "<br/>";?>
+</div>
+<div class="form-group">
+<?php echo $this->formRow($form->get('gps_long'));
+echo "<br/>";?>
+</div>
+<div class="form-group">
+<?php echo $this->formRow($form->get('altitude'));
+echo "<br/>";?>
+</div>
+<div class="form-group">
+<?php echo $this->formRow($form->get('connectedPoi'));
+echo "<br/>";?>
+</div>
+<div class="form-group">
+<?php echo $this->formRow($form->get('hashtags'));
+
+$this->inlineScript()->captureStart();
+echo <<<JS
+    $('#hashtags').tagEditor({
+                 			    initialTags: [],
+                 			    placeholder: 'Enter tags ...'
+                });
+JS;
+$this->inlineScript()->captureEnd();
+
+echo "<br/>";?>
+</div>
+<div class="form-group">
+<?php echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>
+</div>

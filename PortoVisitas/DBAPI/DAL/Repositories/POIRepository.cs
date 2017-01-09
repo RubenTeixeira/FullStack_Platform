@@ -43,6 +43,12 @@ namespace DBAPI.DAL.Repositories
 
             foreach (POI connected in poi.ConnectedPOIs) { context.Entry(connected).State = EntityState.Unchanged; }
 
+            foreach (Hashtag tag in poi.Hashtags)
+            {   // Wont duplicate hashtags
+                Hashtag existingTag = await getHashtagRepository().FindHashtagAsync(tag.Text);
+                if (existingTag != null) { context.Entry(tag).State = EntityState.Unchanged; }
+            }
+
             context.POIs.Add(poi);
             await context.SaveChangesAsync();
             context.Entry(poi).Collection(x => x.ConnectedPOIs).Load();
