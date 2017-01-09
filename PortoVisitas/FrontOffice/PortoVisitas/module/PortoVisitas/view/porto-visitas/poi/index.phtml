@@ -60,12 +60,14 @@
 			hashTags[i] = tag;
 		}
 		poiJson['Hashtags'] = hashTags;
+		poiJson['POIID'] = poiJson['ID'];
+        delete poiJson['ID'];
 		console.log(poiJson);
 		$.ajax({
 			type: 'PUT',
 			cache: false,
-			url: "http://10.8.11.86/BDAPI/api/POI/"+poiJson['ID'],
-			data: JSON.stringify(poiJson),
+			url: "http://10.8.11.86/PVAPI/api/POI/"+poiJson['POIID'],
+			data: poiJson,
 			async: true,
 			crossDomain: true,
 // 			success: function (result) {
@@ -114,6 +116,13 @@
  		<td><?php echo $this->escapeHtml($schedule);?></td>
  		<td><?php echo $this->escapeHtml($poi->GPS_Lat.",".$poi->GPS_Long);?></td>
  		<td>
+ 		
+ 		<?php
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            if (isset($_SESSION['user'])) {
+         ?>
  			<textarea id="hashtags_<?php echo $poi->ID?>" rows="4" cols="50"></textarea>
  			<?php
  			$tags = array_column($poi->Hashtags, 'Text');
@@ -134,26 +143,15 @@
 JS;
             $this->inlineScript()->captureEnd();
      		?>
- 		<!--  
- 			<?php foreach ($poi->Hashtags as $tag) {
+
+ 			<?php
+            } else {
+ 			    foreach ($poi->Hashtags as $tag) {
  			        echo $this->escapeHtml("#".$tag->Text." ");
  			      }
+            }
  			?>
- 		-->
  		</td>
- 		<?php
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
-            if (isset($_SESSION['user'])) {
-         ?>            
- 			<td>
-	 			<a href="<?php echo $this->url('poi',
-                    array('action'=>'addTag', 'id' => $poi->ID));?>">Tag</a>
-        	</td>
-        <?php
-            }
-        ?>
 	</tr>
 <?php endforeach; ?>
 </table>

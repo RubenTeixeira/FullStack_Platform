@@ -70,7 +70,16 @@ namespace DBAPI.DAL.Repositories
 
         public async Task<Hashtag> FindHashtagAsync(string text)
         {
-            return await context.Hashtags.FirstAsync(h => h.Text.Equals(text));
+            Hashtag tag = null;
+            try
+            {
+                tag = await context.Hashtags.AsNoTracking().FirstAsync(h => h.Text.Equals(text));
+            }
+            catch (Exception)
+            {
+                //...
+            }
+            return tag;
         }
 
         public Task<List<Hashtag>> FindHashtags()

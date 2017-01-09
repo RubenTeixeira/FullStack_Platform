@@ -8,6 +8,9 @@ using ClassLibrary.Models;
 using DBAPI.DAL;
 using ClassLibrary.DTO;
 using System.Diagnostics;
+using System;
+using System.Linq;
+using System.Web.Http.ModelBinding;
 
 namespace DBAPI.Controllers
 {
@@ -61,7 +64,13 @@ namespace DBAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var allErrors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
+                string problems = "";
+                foreach (string error in allErrors)
+                {
+                    problems += " _____ " + error;
+                }
+                return BadRequest("Invalid model object: "+problems);
             }
 
             if (id != pOI.POIID)
@@ -69,25 +78,28 @@ namespace DBAPI.Controllers
                 return BadRequest("ID received is not equal to POI ID");
             }
 
-            await unitOfWork.POIRepository.UpdatePOI(pOI);
-
             try
             {
-                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.POIRepository.UpdatePOI(pOI);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!unitOfWork.POIRepository.POIExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest("Exception ocurred: " + ex.Message);
             }
+            //try
+            //{
+            //    await unitOfWork.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (!unitOfWork.POIRepository.POIExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    return BadRequest("Exception ocurred: "+ex.Message);
+            //}
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return StatusCode(HttpStatusCode.OK);
         }
 
         // POST: api/POI

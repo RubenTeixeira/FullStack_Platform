@@ -14,6 +14,8 @@ namespace PVAPI
     {
         public static void Register(HttpConfiguration config)
         {
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+            
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
@@ -28,7 +30,7 @@ namespace PVAPI
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            config.EnableCors(new EnableCorsAttribute("*", "*", "GET, POST, OPTIONS, PUT, DELETE"));
+            
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

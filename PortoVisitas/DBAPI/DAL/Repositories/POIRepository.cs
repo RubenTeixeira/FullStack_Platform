@@ -81,16 +81,17 @@ namespace DBAPI.DAL.Repositories
             foreach (Hashtag tag in poi.Hashtags)
             {
                 Hashtag existingTag = null;
-                try
+                existingTag = await getHashtagRepository().FindHashtagAsync(tag.Text);
+                if (existingTag == null)
                 {
-                    existingTag = await getHashtagRepository().FindHashtagAsync(tag.Text);
+                    context.Hashtags.Add(tag);
+                } 
+                else
+                {
                     tag.HashtagID = existingTag.HashtagID;
                     context.Entry(tag).State = EntityState.Unchanged;
                 }
-                catch (Exception)
-                {
-                    await getHashtagRepository().CreateHashtag(tag);
-                }
+                await context.SaveChangesAsync();
 
                 context.Database.ExecuteSqlCommand("Insert Into POIHashtag (POI_POIID,Hashtag_HashtagID)" +
                     "Values('" + poi.POIID + "','" + tag.HashtagID + "')");
@@ -158,14 +159,6 @@ namespace DBAPI.DAL.Repositories
             foreach (POI poi in modelList)
             {
                 var dto = this.ConvertModelToDTO(poi);
-                //var dto = new POIDTO()
-                //{
-                //    ID = poi.POIID,
-                //    Name = poi.Name,
-                //    Description = poi.Description,
-                //    GPS_Lat = poi.GPS_Lat,
-                //    GPS_Long = poi.GPS_Long,
-                //};
                 list.Add(dto);
             }
             return list;

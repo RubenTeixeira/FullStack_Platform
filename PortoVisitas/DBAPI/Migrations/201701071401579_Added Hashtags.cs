@@ -17,7 +17,7 @@ namespace DBAPI.Migrations
                 .PrimaryKey(t => t.HashtagID);
             
             CreateTable(
-                "dbo.HashtagPOI",
+                "dbo.POIHashtag",
                 c => new
                     {
                         Hashtag_HashtagID = c.Int(nullable: false),
@@ -33,11 +33,11 @@ namespace DBAPI.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.HashtagPOI", "POI_POIID", "dbo.POI");
-            DropForeignKey("dbo.HashtagPOI", "Hashtag_HashtagID", "dbo.Hashtag");
-            DropIndex("dbo.HashtagPOI", new[] { "POI_POIID" });
-            DropIndex("dbo.HashtagPOI", new[] { "Hashtag_HashtagID" });
-            DropTable("dbo.HashtagPOI");
+            DropForeignKey("dbo.POIHashtag", "POI_POIID", "dbo.POI");
+            DropForeignKey("dbo.POIHashtag", "Hashtag_HashtagID", "dbo.Hashtag");
+            DropIndex("dbo.POIHashtag", new[] { "POI_POIID" });
+            DropIndex("dbo.POIHashtag", new[] { "Hashtag_HashtagID" });
+            DropTable("dbo.POIHashtag");
             DropTable("dbo.Hashtag");
         }
     }

@@ -106,7 +106,7 @@ namespace PVAPI.Controllers
                 return Ok(objResponse1);
             }
 
-            return BadRequest();
+            return BadRequest("PVAPI: Malformed request; "+response.ReasonPhrase);
         }
 
         // DELETE: api/POI/5
