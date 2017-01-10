@@ -151,6 +151,24 @@ namespace BackOffice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rejeitar.
+        /// </summary>
+        public static string Reject {
+            get {
+                return ResourceManager.GetString("Reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate.
+        /// </summary>
+        public static string Validate {
+            get {
+                return ResourceManager.GetString("Validate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Management page for PortoVisitas.
         /// </summary>
         public static string WelcomeMessage {

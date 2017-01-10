@@ -133,6 +133,15 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reject.
+        /// </summary>
+        public static string Reject {
+            get {
+                return ResourceManager.GetString("Reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Return to List.
         /// </summary>
         public static string ReturnToList {
@@ -147,6 +156,15 @@ namespace ClassLibrary.Resources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate.
+        /// </summary>
+        public static string Validate {
+            get {
+                return ResourceManager.GetString("Validate", resourceCulture);
             }
         }
     }

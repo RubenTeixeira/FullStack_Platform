@@ -203,5 +203,14 @@ namespace ClassLibrary.Resources {
                 return ResourceManager.GetString("POI_Name_Error", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration of Visit.
+        /// </summary>
+        public static string VisitDuration {
+            get {
+                return ResourceManager.GetString("VisitDuration", resourceCulture);
+            }
+        }
     }
 }

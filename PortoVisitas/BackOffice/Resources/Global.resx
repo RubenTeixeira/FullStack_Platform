@@ -147,6 +147,12 @@
   <data name="RegisterNewUser" xml:space="preserve">
     <value>Register as a new user</value>
   </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Rejeitar</value>
+  </data>
+  <data name="Validate" xml:space="preserve">
+    <value>Validate</value>
+  </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Management page for PortoVisitas</value>
   </data>

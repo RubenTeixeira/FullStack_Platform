@@ -113,5 +113,14 @@ namespace ClassLibrary.Resources {
                 return ResourceManager.GetString("PercursoPOIs", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Hour.
+        /// </summary>
+        public static string StartHour {
+            get {
+                return ResourceManager.GetString("StartHour", resourceCulture);
+            }
+        }
     }
 }

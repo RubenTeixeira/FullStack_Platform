@@ -10,6 +10,7 @@ namespace ClassLibrary.Helpers
     public class DBWebApiHttpClient
     {
         public const string WebApiBaseAddress = "http://10.8.11.86/BDAPI/";
+        //public static string WebApiBaseAddress = ConfigurationManager.AppSettings["BDAPIURL"];
 
         public static HttpClient GetClient()
         {

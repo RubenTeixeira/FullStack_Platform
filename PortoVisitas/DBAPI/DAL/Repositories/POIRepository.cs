@@ -23,12 +23,17 @@ namespace DBAPI.DAL.Repositories
 
         public async Task<List<POI>> FindPOIs()
         {
-            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved != null).ToListAsync();
+            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved != null && p.Approved!="no").ToListAsync();
         }
 
         public async Task<List<POI>> FindPOIsToApprove()
         {
             return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved == null).ToListAsync();
+        }
+
+        public async Task<List<POI>> FindUserPOIs(string email)
+        {
+            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Creator.Equals(email)).ToListAsync();
         }
 
         public Task<POI> FindPOIByIDAsync(int? poiID)
@@ -140,6 +145,7 @@ namespace DBAPI.DAL.Repositories
                 Description = poi.Description,
                 OpenHour = poi.OpenHour,
                 CloseHour = poi.CloseHour,
+                VisitDuration = poi.VisitDuration,
                 GPS_Lat = poi.GPS_Lat,
                 GPS_Long = poi.GPS_Long,
                 Altitude = poi.Altitude,

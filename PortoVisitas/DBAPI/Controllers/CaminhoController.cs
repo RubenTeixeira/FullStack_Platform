@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.DTO;
+using ClassLibrary.Models;
 using DBAPI.DAL;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,17 @@ namespace DBAPI.Controllers
         [ResponseType(typeof(List<CaminhoDTO>))]
         public async Task<IHttpActionResult> GetCaminho()
         {
-            List<CaminhoDTO> list = await unitOfWork.CaminhoRepository.FindCaminhos();
+            try
+            {
+                List<CaminhoDTO> list = await unitOfWork.CaminhoRepository.FindCaminhos();
+                return Ok(list);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-            return Ok(list);
+
         }
 
     }

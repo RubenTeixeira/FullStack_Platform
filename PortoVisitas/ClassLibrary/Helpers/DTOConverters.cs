@@ -19,6 +19,7 @@ namespace ClassLibrary.Helpers
             poi.Description = dto.Description;
             poi.OpenHour = dto.OpenHour;
             poi.CloseHour = dto.CloseHour;
+            poi.VisitDuration = dto.VisitDuration;
             poi.GPS_Lat = dto.GPS_Lat;
             poi.GPS_Long = dto.GPS_Long;
             poi.Altitude = dto.Altitude;
@@ -69,10 +70,12 @@ namespace ClassLibrary.Helpers
             p.PercursoID = dto.ID;
             p.Name = dto.Name;
             p.Description = dto.Description;
+            p.StartHour = dto.StartHour;
+            p.PercursoPOIsOrder = dto.PercursoPOIsOrder;
 
-            if (dto.PercursoPOI != null)
+            if (dto.PercursoPOIs != null)
             {
-                foreach (POIDTO poiDTO in dto.PercursoPOI)
+                foreach (POIDTO poiDTO in dto.PercursoPOIs)
                 {
                     POI poiCon = new POI();
 
@@ -81,6 +84,7 @@ namespace ClassLibrary.Helpers
                     poiCon.Description = poiDTO.Description;
                     poiCon.GPS_Lat = poiDTO.GPS_Lat;
                     poiCon.GPS_Long = poiDTO.GPS_Long;
+                    poiCon.Altitude = poiDTO.Altitude;
 
                     p.PercursoPOIs.Add(poiCon);
                 }

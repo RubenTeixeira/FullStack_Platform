@@ -21,7 +21,7 @@ namespace ClassLibrary.DTO
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Time)]
         public DateTime CloseHour { get; set; }
-
+        public int VisitDuration { get; set; }
         public decimal GPS_Lat { get; set; }
         public decimal GPS_Long { get; set; }
         public int Altitude { get; set; }

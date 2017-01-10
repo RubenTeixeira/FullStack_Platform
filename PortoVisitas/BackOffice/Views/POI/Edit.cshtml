@@ -52,6 +52,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.poi.VisitDuration, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.poi.VisitDuration, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.poi.VisitDuration, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.poi.GPS_Lat, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.poi.GPS_Lat, new { htmlAttributes = new { @class = "form-control" } })

@@ -165,4 +165,7 @@
   <data name="POI_Name_Error" xml:space="preserve">
     <value>Name can not be more than 50 characters</value>
   </data>
+  <data name="VisitDuration" xml:space="preserve">
+    <value>Duration of Visit</value>
+  </data>
 </root>

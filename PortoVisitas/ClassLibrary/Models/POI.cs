@@ -33,6 +33,11 @@ namespace ClassLibrary.Models
         public DateTime CloseHour { get; set; }
 
         [Required]
+        [Range(0,480)]
+        [Display(Name = "VisitDuration", ResourceType = typeof(Resources.POI))]
+        public int VisitDuration { get; set; }
+
+        [Required]
         [RegularExpression(@"[-]?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Lat_Error")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         [Display(Name = "GPS_Lat", ResourceType = typeof(Resources.POI))]
@@ -45,7 +50,7 @@ namespace ClassLibrary.Models
         public decimal GPS_Long { get; set; }
 
         [Required]
-        [RegularExpression(@"[1][0-9][0-9]|[2][0-6][0-9]|[1][5-9]|[2-9][0-9]|[2][7][0]", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Altitude_Error")]
+        [Range(15, 270, ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Altitude_Error")]
         [Display(Name = "Altitude", ResourceType = typeof(Resources.POI))]
         public int Altitude { get; set; }
 

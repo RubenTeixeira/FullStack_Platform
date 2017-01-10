@@ -147,4 +147,10 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="Validate" xml:space="preserve">
+    <value>Validate</value>
+  </data>
 </root>

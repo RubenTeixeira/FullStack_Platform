@@ -39,6 +39,24 @@ namespace PVAPI.Controllers
         }
 
         [ResponseType(typeof(POIDTO))]
+        [Route("api/UserPOI")]
+        public async Task<IHttpActionResult> GetUserPOI(string email)
+        {
+            client = DBWebApiHttpClient.GetClient();
+
+            IEnumerable<POIDTO> pois = null;
+            var response = await client.GetAsync("api/UserPOI?email="+email);
+
+            if (response.IsSuccessStatusCode)
+            {
+                pois = await response.Content.ReadAsAsync<IEnumerable<POIDTO>>();
+                return Ok(pois);
+            }
+
+            return BadRequest(response.ToString());
+        }
+
+        [ResponseType(typeof(POIDTO))]
         [Route("api/POIToApprove")]
         public async Task<IHttpActionResult> GetPOIToApprove()
         {
