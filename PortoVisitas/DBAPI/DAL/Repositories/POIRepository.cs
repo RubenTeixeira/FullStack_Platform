@@ -31,6 +31,11 @@ namespace DBAPI.DAL.Repositories
             return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved == null).ToListAsync();
         }
 
+        public async Task<List<POI>> FindUserPOIs(string email)
+        {
+            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Creator.Equals(email)).ToListAsync();
+        }
+
         public Task<POI> FindPOIByIDAsync(int? poiID)
         {
             return context.POIs.FindAsync(poiID);

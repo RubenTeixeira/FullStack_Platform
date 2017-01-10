@@ -61,6 +61,18 @@ namespace DBAPI.Controllers
             return Ok(dto);
         }
 
+        
+        [HttpGet]
+        [Route("api/UserPOI")]
+        [ResponseType(typeof(POIDTO))]
+        public async Task<IHttpActionResult> GetUserPOI(string email)
+        {
+            List<POI> poiList = await unitOfWork.POIRepository.FindUserPOIs(email);
+            List<POIDTO> poiDtoList = unitOfWork.POIRepository.ConvertModelListToDTO(poiList);
+
+            return Ok(poiDtoList);
+        }
+
         // PUT: api/POI/5
         [HttpPut]
         [Route("api/POI/{id}")]

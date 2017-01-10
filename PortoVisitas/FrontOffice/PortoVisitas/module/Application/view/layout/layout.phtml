@@ -63,7 +63,7 @@
                     if (isset($_SESSION['user'])) {
                         ?>
                         <ul class="nav navbar-nav navbar-right">
-                        	<li class="active"><a href="<?php echo $this->url('user', array('controller'=>'user', 'action' => 'logout')) ?>"><?php echo $this->translate('LogOut') ?></a></li>
+                        	<li class="active"><a href="<?php echo $this->url('user', array('controller'=>'user', 'action' => 'logout')) ?>"><?php echo $this->translate('Sair') ?></a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 						<li class="active"><a href="<?php echo $this->url('user', array('controller'=>'user', 'action' => 'info')) ?>"><?php echo $this->translate($_SESSION['user']) ?></a></li>
@@ -76,7 +76,7 @@
 							<li class="active"><a href="<?php echo $this->url('user', array('controller'=>'user', 'action' => 'register')) ?>"><?php echo $this->translate('Registo') ?></a></li>
 						</ul>
                         <ul class="nav navbar-nav navbar-right">
-                        	<li class="active"><a href="<?php echo $this->url('user', array('controller'=>'user', 'action' => 'login')) ?>"><?php echo $this->translate('Login') ?></a></li>
+                        	<li class="active"><a href="<?php echo $this->url('user', array('controller'=>'user', 'action' => 'login')) ?>"><?php echo $this->translate('Entrar') ?></a></li>
 						</ul>
 						<?php
                     }
