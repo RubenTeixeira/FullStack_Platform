@@ -181,7 +181,7 @@ namespace BackOffice.Controllers
             return View(percurso);
         }
 
-
+        #region Helpers
         public async Task<List<POI>> getPOIList(int? id)
         {
             client = PVWebApiHttpClient.GetClient();
@@ -245,6 +245,7 @@ namespace BackOffice.Controllers
                         connected.GPS_Lat = 1.0M;
                         connected.GPS_Long = 1.0M;
                         connected.Altitude = 15;
+                        connected.VisitDuration = 60;
 
                         percurso.PercursoPOIs.Add(connected);
                     }
@@ -267,4 +268,5 @@ namespace BackOffice.Controllers
             percursoModel.percursoPoi = poiSelectedModel;
         }
     }
+    #endregion
 }

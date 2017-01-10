@@ -147,6 +147,12 @@
   <data name="RegisterNewUser" xml:space="preserve">
     <value>Registar novo utilizador</value>
   </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Rejeitar</value>
+  </data>
+  <data name="Validate" xml:space="preserve">
+    <value>Validar</value>
+  </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Página de gestão de conteúdos da plataforma Porto Visitas</value>
   </data>

@@ -74,7 +74,7 @@ namespace BackOffice.Controllers
 
         // POST: POI/Create
         [HttpPost]
-        public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,Altitude,ConnectedPOIs")] POI pOI)
+        public async Task<ActionResult> Create([Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,VisitDuration,GPS_Lat,GPS_Long,Altitude,ConnectedPOIs")] POI pOI)
         {
 
             ViewBag.PoiList = await getPOIList(null);
@@ -128,7 +128,7 @@ namespace BackOffice.Controllers
 
         // POST: POI/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,GPS_Lat,GPS_Long,Altitude,Creator,Approved,ConnectedPOIs,Hashtags")] POI pOI)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "POIID,Name,Description,OpenHour,CloseHour,VisitDuration,GPS_Lat,GPS_Long,Altitude,Creator,Approved,ConnectedPOIs,Hashtags")] POI pOI)
         {
 
             POIViewModel poiModel = new POIViewModel();
@@ -209,6 +209,7 @@ namespace BackOffice.Controllers
             return View(pOI);
         }
 
+        #region Helpers
         public async Task<List<POI>> getPOIList(int? id)
         {
             client = PVWebApiHttpClient.GetClient();
@@ -239,7 +240,7 @@ namespace BackOffice.Controllers
             return poiList;
         }
 
-        public async Task<POI> getPOIByID(int? id)
+        public static async Task<POI> getPOIByID(int? id)
         {
             client = PVWebApiHttpClient.GetClient();
 
@@ -272,6 +273,7 @@ namespace BackOffice.Controllers
                         connected.GPS_Lat = 1.0M;
                         connected.GPS_Long = 1.0M;
                         connected.Altitude = 15;
+                        connected.VisitDuration = 60;
 
                         pOI.ConnectedPOIs.Add(connected);
                     }
@@ -294,5 +296,5 @@ namespace BackOffice.Controllers
             poiModel.connectedPoi = poiSelectedModel;
         }
     }
-
+    #endregion
 }

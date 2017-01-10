@@ -299,6 +299,10 @@
     <Compile Include="Migrations\201701092341019_Added hashtag unique index.Designer.cs">
       <DependentUpon>201701092341019_Added hashtag unique index.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701101145059_Added_POI_VisitDuration.cs" />
+    <Compile Include="Migrations\201701101145059_Added_POI_VisitDuration.Designer.cs">
+      <DependentUpon>201701101145059_Added_POI_VisitDuration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -404,6 +408,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701092341019_Added hashtag unique index.resx">
       <DependentUpon>201701092341019_Added hashtag unique index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701101145059_Added_POI_VisitDuration.resx">
+      <DependentUpon>201701101145059_Added_POI_VisitDuration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

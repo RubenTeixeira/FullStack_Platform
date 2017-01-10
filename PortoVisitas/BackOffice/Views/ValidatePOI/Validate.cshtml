@@ -1,12 +1,11 @@
 ﻿@model ClassLibrary.Models.POI
 
 @{
-    ViewBag.Title = ClassLibrary.Resources.Global.Delete;
+    ViewBag.Title = ClassLibrary.Resources.Global.Validate;
 }
 
-<h2>@ClassLibrary.Resources.Global.Delete</h2>
+<h2>@ClassLibrary.Resources.Global.Validate</h2>
 
-<h3>@ClassLibrary.Resources.Global.DeleteConfirm</h3>
 <div>
     <h4>@ClassLibrary.Resources.Global.POI</h4>
     <hr />
@@ -41,14 +40,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.CloseHour)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VisitDuration)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.VisitDuration)
         </dd>
 
         <dt>
@@ -93,11 +84,54 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ConnectedPOIs)
+        </dt>
+
+        <dd>
+        </dd>
+        @{
+            foreach (ClassLibrary.Models.POI connected in Model.ConnectedPOIs)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+
+                <dd>
+                    @Html.DisplayName(connected.Name)
+                </dd>
+            }
+        }
+    </dl>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Hashtags)
+        </dt>
+
+        <dd>
+        </dd>
+        @{
+            foreach (ClassLibrary.Models.Hashtag hash in Model.Hashtags)
+            {
+                <dt>
+                    @Html.DisplayName(ClassLibrary.Resources.Hashtag.Text)
+                </dt>
+
+                <dd>
+                    @Html.DisplayName(hash.Text)
+                </dd>
+            }
+        }
+    </dl>
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value=@ClassLibrary.Resources.Global.Delete class="btn btn-default" /> |
+            <input name="submit" type="submit" id="validate" value=@ClassLibrary.Resources.Global.Validate class="btn btn-default" /> |
+            <input name="submit" type="submit" id="reject" value=@ClassLibrary.Resources.Global.Reject class="btn btn-default" /> |  
             @Html.ActionLink(ClassLibrary.Resources.Global.ReturnToList, "Index")
         </div>
     }

@@ -19,6 +19,7 @@ namespace ClassLibrary.Helpers
             poi.Description = dto.Description;
             poi.OpenHour = dto.OpenHour;
             poi.CloseHour = dto.CloseHour;
+            poi.VisitDuration = dto.VisitDuration;
             poi.GPS_Lat = dto.GPS_Lat;
             poi.GPS_Long = dto.GPS_Long;
             poi.Altitude = dto.Altitude;
@@ -81,6 +82,7 @@ namespace ClassLibrary.Helpers
                     poiCon.Description = poiDTO.Description;
                     poiCon.GPS_Lat = poiDTO.GPS_Lat;
                     poiCon.GPS_Long = poiDTO.GPS_Long;
+                    poiCon.Altitude = poiDTO.Altitude;
 
                     p.PercursoPOIs.Add(poiCon);
                 }

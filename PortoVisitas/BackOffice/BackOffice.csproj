@@ -211,6 +211,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PercursoController.cs" />
     <Compile Include="Controllers\POIController.cs" />
+    <Compile Include="Controllers\ValidatePOIController.cs" />
     <Compile Include="Helpers\AuthorizeUserAttribute.cs" />
     <Compile Include="Helpers\DecimalModelBinder.cs" />
     <Compile Include="Global.asax.cs">
@@ -302,6 +303,8 @@
     <Content Include="Views\Percurso\Details.cshtml" />
     <Content Include="Views\Percurso\Edit.cshtml" />
     <Content Include="Views\Percurso\Index.cshtml" />
+    <Content Include="Views\ValidatePOI\Index.cshtml" />
+    <Content Include="Views\ValidatePOI\Validate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
