@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ClassLibrary.DTO
 {
@@ -8,11 +9,13 @@ namespace ClassLibrary.DTO
         public string Name { get; set; }
         public string Description { get; set; }
         public string Creator { get; set; }
-        public List<POIDTO> PercursoPOI { get; set; }
+        public DateTime StartHour { get; set; }
+        public string PercursoPOIsOrder { get; set; }
+        public List<POIDTO> PercursoPOIs { get; set; }
 
         public PercursoDTO()
         {
-            PercursoPOI = new List<POIDTO>();
+            PercursoPOIs = new List<POIDTO>();
         }
     }
 }

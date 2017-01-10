@@ -70,10 +70,12 @@ namespace ClassLibrary.Helpers
             p.PercursoID = dto.ID;
             p.Name = dto.Name;
             p.Description = dto.Description;
+            p.StartHour = dto.StartHour;
+            p.PercursoPOIsOrder = dto.PercursoPOIsOrder;
 
-            if (dto.PercursoPOI != null)
+            if (dto.PercursoPOIs != null)
             {
-                foreach (POIDTO poiDTO in dto.PercursoPOI)
+                foreach (POIDTO poiDTO in dto.PercursoPOIs)
                 {
                     POI poiCon = new POI();
 

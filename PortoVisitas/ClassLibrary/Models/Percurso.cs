@@ -16,6 +16,12 @@ namespace ClassLibrary.Models
         [Display(Name = "Name", ResourceType = typeof(Resources.Percurso))]
         public string Name { get; set; }
 
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Time)]
+        [Display(Name = "StartHour", ResourceType = typeof(Resources.Percurso))]
+        public DateTime StartHour { get; set; }
+
         [StringLength(250, ErrorMessageResourceType = typeof(Resources.Percurso), ErrorMessageResourceName = "Percurso_Description_Error")]
         [Display(Name = "Description", ResourceType = typeof(Resources.Percurso))]
         public string Description { get; set; }
@@ -23,9 +29,14 @@ namespace ClassLibrary.Models
         [Display(Name = "Creator", ResourceType = typeof(Resources.Percurso))]
         public string Creator { get; set; }
 
+        public string PercursoPOIsOrder { get; set; }
+
         [Required]
         [Display(Name = "PercursoPOIs", ResourceType = typeof(Resources.Percurso))]
         public virtual ICollection<POI> PercursoPOIs { get; set; }
+
+
+
 
         public Percurso()
         {

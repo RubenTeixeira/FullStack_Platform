@@ -74,14 +74,6 @@
             @Html.DisplayFor(model => model.Creator)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Approved)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Approved)
-        </dd>
-
     </dl>
 
     <dl class="dl-horizontal">
@@ -125,14 +117,17 @@
             }
         }
     </dl>
+
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input name="submit" type="submit" id="validate" value=@ClassLibrary.Resources.Global.Validate class="btn btn-default" /> |
-            <input name="submit" type="submit" id="reject" value=@ClassLibrary.Resources.Global.Reject class="btn btn-default" /> |  
-            @Html.ActionLink(ClassLibrary.Resources.Global.ReturnToList, "Index")
+            <input name="submit" type="submit" id="reject" value=@ClassLibrary.Resources.Global.Reject class="btn btn-default" />           
         </div>
     }
+</div>
+<div>
+    @Html.ActionLink(ClassLibrary.Resources.Global.ReturnToList, "Index")
 </div>

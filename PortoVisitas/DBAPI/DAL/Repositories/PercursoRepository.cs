@@ -36,7 +36,10 @@ namespace DBAPI.DAL.Repositories
                     ID = percurso.PercursoID,
                     Name = percurso.Name,
                     Description = percurso.Description,
-                    Creator = percurso.Creator
+                    Creator = percurso.Creator,
+                    StartHour = percurso.StartHour,
+                    PercursoPOIsOrder = percurso.PercursoPOIsOrder
+                    
                 };
 
 
@@ -47,7 +50,7 @@ namespace DBAPI.DAL.Repositories
                     poiCon.ID = connected.POIID;
                     poiCon.Name = connected.Name;
 
-                    dto.PercursoPOI.Add(poiCon);
+                    dto.PercursoPOIs.Add(poiCon);
                 }
 
                 list.Add(dto);
@@ -62,7 +65,10 @@ namespace DBAPI.DAL.Repositories
                 ID = percurso.PercursoID,
                 Name = percurso.Name,
                 Description = percurso.Description,
-                Creator = percurso.Creator
+                Creator = percurso.Creator,
+                StartHour = percurso.StartHour,
+                PercursoPOIsOrder = percurso.PercursoPOIsOrder
+                
             };
 
 
@@ -73,7 +79,7 @@ namespace DBAPI.DAL.Repositories
                 poiCon.ID = connected.POIID;
                 poiCon.Name = connected.Name;
 
-                dto.PercursoPOI.Add(poiCon);
+                dto.PercursoPOIs.Add(poiCon);
             }
 
             return dto;
