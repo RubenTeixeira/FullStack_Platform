@@ -295,6 +295,10 @@
     <Compile Include="Migrations\201701091200571_AltitudePOI.Designer.cs">
       <DependentUpon>201701091200571_AltitudePOI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701092341019_Added hashtag unique index.cs" />
+    <Compile Include="Migrations\201701092341019_Added hashtag unique index.Designer.cs">
+      <DependentUpon>201701092341019_Added hashtag unique index.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -397,6 +401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701091200571_AltitudePOI.resx">
       <DependentUpon>201701091200571_AltitudePOI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701092341019_Added hashtag unique index.resx">
+      <DependentUpon>201701092341019_Added hashtag unique index.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

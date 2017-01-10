@@ -89,7 +89,14 @@
 
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <p>
+<?php
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            if (isset($_SESSION['user'])) {
+         ?>
  <a href="<?php echo $this->url('poi', array('action'=>'add'));?>">Sugerir um Ponto de interesse</a>
+ <?php }?>
 </p>
 
 <table class="table">

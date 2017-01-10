@@ -27,7 +27,7 @@ class Poi
 
     public $hashtags;
 
-    public $connectedPoi;
+    public $connectedPois;
 
     public $altitude;
 
@@ -35,17 +35,27 @@ class Poi
 
     public function exchangeArray($data)
     {
-        $this->poiid = (! empty($data['poiid'])) ? $data['poiid'] : null;
+        if (! empty($data['poiid']))
+            $this->poiid = $data['poiid'];
+        else if (! empty($data['id']))
+            $this->poiid = $data['id'];
+        else
+            $this->poiid = null;
         $this->name = (! empty($data['name'])) ? $data['name'] : null;
         $this->description = (! empty($data['description'])) ? $data['description'] : null;
-        $this->gps_lat = (! empty($data['gps_lat'])) ? $data['gps_lat'] : null;
-        $this->gps_long = (! empty($data['gps_long'])) ? $data['gps_long'] : null;
+        $this->gps_lat = (! empty($data['gps_lat'])) ? $data['gps_lat']+0.0 : null;
+        $this->gps_long = (! empty($data['gps_long'])) ? $data['gps_long']+0.0 : null;
         $this->openHour = (! empty($data['openHour'])) ? $data['openHour'] : null;
         $this->closeHour = (! empty($data['closeHour'])) ? $data['closeHour'] : null;
         $this->creator = (! empty($data['creator'])) ? $data['creator'] : null;
         $this->approved = (! empty($data['approved'])) ? $data['approved'] : null;
         $this->hashtags = (! empty($data['hashtags'])) ? $data['hashtags'] : null;
-        $this->connectedPoi = (! empty($data['connectedPoi'])) ? $data['connectedPoi'] : null;
+        if (! empty($data['connectedPois']))
+            $this->connectedPois = $data['connectedPois'];
+        else if (! empty($data['connectedPoi']))
+            $this->connectedPois = $data['connectedPoi'];
+        else
+            $this->connectedPois = null;
         $this->altitude = (! empty($data['altitude'])) ? $data['altitude'] : null;
     }
 

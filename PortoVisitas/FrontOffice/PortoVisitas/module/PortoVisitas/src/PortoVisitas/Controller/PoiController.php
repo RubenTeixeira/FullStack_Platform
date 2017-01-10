@@ -25,10 +25,10 @@ class PoiController extends AbstractActionController
     {
         $pois = WebApiService::getPois();
         return array(
-            'pois' => $pois,
+            'pois' => $pois
         );
     }
-    
+
     public function addAction()
     {
         $form = new PoiForm();
@@ -47,53 +47,58 @@ class PoiController extends AbstractActionController
                 $this->formatConnectedPois($poi);
                 $this->formatHashtags($poi);
                 $error = WebApiService::savePoi($poi);
-                echo var_dump($error);
-                // Redirect to list of pois
-                //return $this->redirect()->toRoute('poi');
+                
+                if ($error == null) {
+                    $redirectUrl = $this->url()->fromRoute('poi');
+                    
+                    echo '<script type="application/javascript" charset="utf-8">alert("Ponto de Interesse enviado"); window.location.href = "' . $redirectUrl . '";</script>';
+                } else {
+                    echo "Por favor tente novamente.";
+                    echo '<script type="application/javascript">alert("Erro no envio: ' . $error->Message . '");</script>';
+                }
             }
         }
         
         $pois = WebApiService::getPois();
         $options = $this->getPoiOptions($pois);
-        $poiCheckBox = $form->get('connectedPoi');
+        $poiCheckBox = $form->get('connectedPois');
         $poiCheckBox->setValueOptions($options);
         
-        return array('form' => $form);      
+        return array(
+            'form' => $form
+        );
     }
-    
+
     private function getPoiOptions($pois)
     {
         $options = array();
-        foreach ($pois as $poi)
-        {
+        foreach ($pois as $poi) {
             $options[$poi->ID] = $poi->Name;
         }
         return $options;
     }
-    
+
     private function formatConnectedPois($poi)
     {
         $connectedPois = array();
-        foreach ($poi->connectedPoi as $connected)
-        {
-            $poiObj = array();
-            $poiObj['POIID'] = $connected;
-            $poiObj['Name'] = "Dummy";
-            $poiObj['GPS_Lat0'] = 1.0;
-            $poiObj['GPS_Long'] = 1.0;
-            $poiObj['Altitude'] = 15;
-            $connectedPois[] = $poiObj;
+        foreach ($poi->connectedPois as $connected) {
+            $poiObj = new Poi();
+            $poiObj->poiid = intval($connected);
+            $poiObj->name = "Dummy";
+            $poiObj->gps_lat = 1.1;
+            $poiObj->gps_long = 1.1;
+            $poiObj->altitude = 15;
+            $connectedPois[] = $poiObj->getArrayCopy();
         }
-        $poi->connectedPoi = $connectedPois;
+        $poi->connectedPois = $connectedPois;
     }
-    
+
     private function formatHashtags($poi)
     {
         $oldHashtagArr = explode(',', $poi->hashtags);
         var_dump($oldHashtagArr);
         $newHashtagsArr = array();
-        foreach ($oldHashtagArr as $tag)
-        {
+        foreach ($oldHashtagArr as $tag) {
             $hashtag = array();
             $hashtag['Text'] = $tag;
             $newHashtagsArr[] = $hashtag;

@@ -29,7 +29,7 @@ class WebApiService
         } else
             return null;
     }
-    
+
     public static function Register($mail, $password)
     {
         $enderecoBase = WebApiService::$enderecoBase;
@@ -43,7 +43,7 @@ class WebApiService
         ));
         $client->setRawBody($data);
         $response = $client->send();
-        if (! empty($response->getBody()) ) {
+        if (! empty($response->getBody())) {
             $body = Json::decode($response->getBody(), false);
             if ($body->IsSuccessStatusCode)
                 return null;
@@ -61,7 +61,7 @@ class WebApiService
         $pois = Json::decode($response->getBody(), false);
         return $pois;
     }
-    
+
     public static function savePoi($poi)
     {
         $enderecoBase = WebApiService::$enderecoBase;
@@ -74,58 +74,56 @@ class WebApiService
             'Content-Length' => $len
         ));
         $client->setRawBody($data);
-        echo var_dump($data);
+        //var_dump($data);
         $response = $client->send();
-        if (! empty($response->getBody()) ) {
+        if (! empty($response->getBody())) {
             $body = Json::decode($response->getBody(), false);
-            if ($body->IsSuccessStatusCode)
+            if (! empty($body->ID)) // success
                 return null;
-                else
-                    return $body;
+            else
+                return $body;
         }
     }
-    
+
     public static function getPercursos()
     {
         return null;
     }
-    
+
     public static function getPercurso($id)
-    {
-        
-    }
-    
+    {}
+
     public static function savePercurso($percurso)
     {
         return false;
     }
-    
+
     public static function deletePercurso($id)
     {
         return false;
     }
     
-//     public static function getPoi($id){
-//         if (! isset($_SESSION)) {
-//             session_start();
-//         }
-//         if (! isset($_SESSION['access_token'])) {
-//             WebApiServices::Login();
-//         }
-        
-//         $client = new Client(WebApiServices::$enderecoBase . '/api/POIs/' . $id);
-//         $client->setMethod(Request::METHOD_GET);
-//         $bearer_token = 'Bearer ' . $_SESSION['access_token'];
-//         $client->setHeaders(array(
-//             'Authorization' => $bearer_token
-//         ));
-//         $client->setOptions([
-//             'sslverifypeer' => false
-//         ]);
-//         $response = $client->send();
-//         $body = $response->getBody();
-//         $poi = Json::decode($response->getBody(), true);
-//         return $poi;
-//     }
+    // public static function getPoi($id){
+    // if (! isset($_SESSION)) {
+    // session_start();
+    // }
+    // if (! isset($_SESSION['access_token'])) {
+    // WebApiServices::Login();
+    // }
+    
+    // $client = new Client(WebApiServices::$enderecoBase . '/api/POIs/' . $id);
+    // $client->setMethod(Request::METHOD_GET);
+    // $bearer_token = 'Bearer ' . $_SESSION['access_token'];
+    // $client->setHeaders(array(
+    // 'Authorization' => $bearer_token
+    // ));
+    // $client->setOptions([
+    // 'sslverifypeer' => false
+    // ]);
+    // $response = $client->send();
+    // $body = $response->getBody();
+    // $poi = Json::decode($response->getBody(), true);
+    // return $poi;
+    // }
 }
 

@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System;
 using System.Linq;
 using System.Web.Http.ModelBinding;
+using ClassLibrary.Helpers;
 
 namespace DBAPI.Controllers
 {
@@ -90,18 +91,6 @@ namespace DBAPI.Controllers
             {
                 return BadRequest("Exception ocurred: " + ex.Message);
             }
-            //try
-            //{
-            //    await unitOfWork.SaveChangesAsync();
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (!unitOfWork.POIRepository.POIExists(id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    return BadRequest("Exception ocurred: "+ex.Message);
-            //}
 
             return StatusCode(HttpStatusCode.OK);
         }
@@ -123,16 +112,15 @@ namespace DBAPI.Controllers
                 return BadRequest("Invalid model object: " + problems);
             }
 
-            await unitOfWork.POIRepository.CreatePOI(pOI);
-
             try
             {
+                await unitOfWork.POIRepository.CreatePOI(pOI);
                 var dto = unitOfWork.POIRepository.ConvertModelToDTO(pOI);
                 return CreatedAtRoute("PostPOI", new { id = pOI.POIID }, dto);
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("exception");
+                return BadRequest("Exception Occured: "+ex.Message);
             }
            
         }

@@ -69,9 +69,7 @@ class PoiForm extends Form
         $time
         ->setLabel('Hora abertura: ')
         ->setAttributes(array(
-//             'min'  => '00:00:00',
-//             'max'  => '23:59:59',
-            'step' => '60', // seconds; default step interval is 60 seconds
+            'step' => '60',
         ))
         ->setOptions(array(
             'format' => 'H:i'
@@ -81,9 +79,7 @@ class PoiForm extends Form
         $time2
         ->setLabel('Hora encerramento: ')
         ->setAttributes(array(
-//             'min'  => '00:00:00',
-//             'max'  => '23:59:59',
-            'step' => '60', // seconds; default step interval is 60 seconds
+            'step' => '60',
         ))
         ->setOptions(array(
             'format' => 'H:i'
@@ -92,27 +88,6 @@ class PoiForm extends Form
         $this->add($time);
         $this->add($time2);
         
-//         $this->add(array(
-//             'name' => 'openHour',
-//             'type' => 'Time',
-//             'options' => array(
-//                 'label' => 'Hora abertura:',
-//                 'format' => 'H:i:s',
-//             ),
-//             'attributes' => array(
-//                 'min' => '00:00:00',
-//                 'max' => '23:59:59',
-//                 'step' => '60'
-//             )
-//         ));
-        
-//         $this->add(array(
-//             'name' => 'closeHour',
-//             'type' => 'Time',
-//             'options' => array(
-//                 'label' => 'Hora encerramento:'
-//             )
-//         ));
         
         $this->add(array(
             'name' => 'altitude',
@@ -121,13 +96,13 @@ class PoiForm extends Form
                 'label' => 'Altitude:'
             ),
             'attributes' => array(
-                'min' => '0',
-                'max' => '3000',
+                'min' => '15',
+                'max' => '269',
                 'step' => '1'
             )
         ));
         
-        $multiCheck = new MultiCheckbox('connectedPoi');
+        $multiCheck = new MultiCheckbox('connectedPois');
         $multiCheck->setLabel('Ligacoes:');
         $multiCheck->setDisableInArrayValidator(true);
         $this->add($multiCheck);

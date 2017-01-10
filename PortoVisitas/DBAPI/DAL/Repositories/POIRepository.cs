@@ -46,7 +46,10 @@ namespace DBAPI.DAL.Repositories
             foreach (Hashtag tag in poi.Hashtags)
             {   // Wont duplicate hashtags
                 Hashtag existingTag = await getHashtagRepository().FindHashtagAsync(tag.Text);
-                if (existingTag != null) { context.Entry(tag).State = EntityState.Unchanged; }
+                if (existingTag != null) {
+                    tag.HashtagID = existingTag.HashtagID;
+                    context.Entry(tag).State = EntityState.Unchanged;
+                }
             }
 
             context.POIs.Add(poi);

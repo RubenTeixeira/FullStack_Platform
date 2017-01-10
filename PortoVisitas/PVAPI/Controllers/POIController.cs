@@ -92,7 +92,7 @@ namespace PVAPI.Controllers
                 return Ok(poiDTO);
             }
 
-            return BadRequest("Error "+response.StatusCode);
+            return BadRequest("Error "+response.ReasonPhrase);
         }
 
         // PUT: api/POI/5
