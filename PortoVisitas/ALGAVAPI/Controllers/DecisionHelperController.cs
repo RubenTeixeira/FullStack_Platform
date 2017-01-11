@@ -20,22 +20,24 @@ namespace ALGAVAPI.Controllers
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("api/Algav1")]
         // primeiro predicado - findpath recebe
-        public async Task<IHttpActionResult> Algav1(int poiOrigem, int[] listPois, int inclinacaoMax, int startingMinute)
-        {   
+        public async Task<IHttpActionResult> Algav1(int poiOrigem, int[] listPois, int inclinacaoMax, int startingMinute, string tipoVeiculo, int vel)
+        {
             // Carrega base de conhecimento
             await loadsKnowledgeBase();
             // Escreve parametros 1
             File.WriteAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_1.txt", String.Empty);
             File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_1.txt", poiOrigem + "." + System.Environment.NewLine);
             String str = null;
-                foreach (int poisId in listPois)
+            foreach (int poisId in listPois)
             {
-                    str = str + poisId + ",";
+                str = str + poisId + ",";
             }
             str = str.Remove(str.Length - 1);
-            File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_1.txt", "["+ str +"]." + System.Environment.NewLine);
+            File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_1.txt", "[" + str + "]." + System.Environment.NewLine);
             File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_1.txt", inclinacaoMax + "." + System.Environment.NewLine);
             File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_1.txt", startingMinute + "." + System.Environment.NewLine);
+            File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_1.txt", tipoVeiculo + "." + System.Environment.NewLine);
+            File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_1.txt", vel + ".");
 
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
@@ -44,6 +46,7 @@ namespace ALGAVAPI.Controllers
             startInfo.Arguments = "/C C:\\Users\\Gil\\Documents\\IISExpress\\loader_1.pl";
             process.StartInfo = startInfo;
             process.Start();
+            process.WaitForExit();
 
             // Read result
             string[] lines = System.IO.File.ReadAllLines(@"C:\Users\Gil\Documents\IISExpress\Results_1.txt");
@@ -59,7 +62,7 @@ namespace ALGAVAPI.Controllers
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("api/Algav2")]
         // segundo predicado - findRingPathWithMaxHours
-        public async Task<IHttpActionResult> Algav2(int poiOrigem, int maxHorasVisita, int horaInicialVisita)
+        public async Task<IHttpActionResult> Algav2(int poiOrigem, int maxHorasVisita, int horaInicialVisita, int inclinacaoMax, string tipoVeiculo, int vel)
         {
             // Carrega base de conhecimento
             await loadsKnowledgeBase();
@@ -68,6 +71,9 @@ namespace ALGAVAPI.Controllers
             File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_2.txt", poiOrigem + "." + System.Environment.NewLine);
             File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_2.txt", maxHorasVisita + "." + System.Environment.NewLine);
             File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_2.txt", "time(" + horaInicialVisita + ",0,0).");
+            File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_2.txt", inclinacaoMax + "." + System.Environment.NewLine);
+            File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_2.txt", tipoVeiculo + "." + System.Environment.NewLine);
+            File.AppendAllText(@"C:\Users\Gil\Documents\IISExpress\Parameters_2.txt", vel + "." + System.Environment.NewLine);
 
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
@@ -76,6 +82,7 @@ namespace ALGAVAPI.Controllers
             startInfo.Arguments = "/C C:\\Users\\Gil\\Documents\\IISExpress\\loader_2.pl";
             process.StartInfo = startInfo;
             process.Start();
+            process.WaitForExit();
 
 
             // Read result
@@ -120,7 +127,7 @@ namespace ALGAVAPI.Controllers
 
                     file.WriteLine("poi(" + id + "," + "time(" + horaAberturaHora + "," + horaAberturaMinutos + "," +
                                     horaAberturaSegundos + ")" + "," +
-                                    "time(" + horaFechoHora + ", " + horaFechoMinutos + ", " +
+                                    "time(" + horaFechoHora + "," + horaFechoMinutos + "," +
                                     horaFechoSegundos + ")" + ","
                                     + tempoEstimadoVisita + "," + poiLatitude + "," + poiLongitude + ").");
                 }
@@ -152,6 +159,8 @@ namespace ALGAVAPI.Controllers
                     int inclinacao = Convert.ToInt32(((poiFinal.Altitude - poiInicial.Altitude) / distancia));
 
                     file.WriteLine("caminho(" + idCaminho + "," + idPoiInicio + "," + idPoiFinal + "," + inclinacao + ").");
+                    idCaminho++;
+                    file.WriteLine("caminho(" + idCaminho + "," + idPoiFinal + "," + idPoiInicio + "," + "-" + inclinacao + ").");
                     idCaminho++;
                 }
 
