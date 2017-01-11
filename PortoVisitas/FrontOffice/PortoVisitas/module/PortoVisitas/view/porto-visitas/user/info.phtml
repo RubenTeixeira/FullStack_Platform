@@ -89,15 +89,15 @@
 		<?php
           if ($poi->approved == null) {
          ?>
-          <td><font color="blue">Submetido</font></td>
+          <td><b><font color="blue">Submetido</font></b></td>
          <?php
           } else if ($poi->approved == "no") {
           ?>
-          <td><font color="red">Rejeitado</font></td>
+          <td><b><font color="red">Rejeitado</font></b></td>
           <?php
           } else {
           ?>
-          <td><font color="green">Aprovado</font></td>
+          <td><b><font color="green">Aprovado</font></b></td>
           <?php
           }
           ?>

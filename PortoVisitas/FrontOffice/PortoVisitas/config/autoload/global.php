@@ -10,7 +10,56 @@
  * control, so do not include passwords or other sensitive information in this
  * file.
  */
-
 return array(
     // ...
+    
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Percursos',
+                'route' => 'percurso'
+            ),
+            // 'pages' => array(
+            // array(
+            // 'label' => 'Child #1',
+            // 'route' => 'page-1-child',
+            // ),
+            // ),
+            array(
+                'label' => 'Pontos de Interesse',
+                'route' => 'poi'
+            )
+        ),
+        'session' => array(
+            array(
+                'label' => 'Perfil',
+                'route' => 'user',
+                'action' => 'info'
+            ),
+            array(
+                'label' => 'Sair',
+                'route' => 'user',
+                'action' => 'logout'
+            )
+        ),
+        'guest' => array(
+            array(
+                'label' => 'Entrar',
+                'route' => 'user',
+                'action' => 'login'
+            ),
+            array(
+                'label' => 'Registar',
+                'route' => 'user',
+                'action' => 'register'
+            )
+        ),
+    ),
+    
+    'service_manager' => array(
+        'factories' => array(
+            'navigation' => 'Zend\Navigation\Service\NavigationAbstractServiceFactory'
+        )
+    )
 );
+// ...
