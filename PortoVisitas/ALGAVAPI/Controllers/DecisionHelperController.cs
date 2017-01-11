@@ -32,6 +32,7 @@ namespace ALGAVAPI.Controllers
                 await loadsKnowledgeBase();
                 // Escreve parametros 1
 
+                File.WriteAllText(@results1, String.Empty);
                 File.WriteAllText(@parameters1, String.Empty);
                 File.AppendAllText(@parameters1, request.poiOrigem + "." + Environment.NewLine);
 
@@ -77,49 +78,60 @@ namespace ALGAVAPI.Controllers
             }
         }
 
+
         [HttpPost]
         [Route("api/Algav2")]
         // segundo predicado - findRingPathWithMaxHours
         public async Task<IHttpActionResult> Algav2(Algav2DTO request)
         {
-            string parameters2 = ConfigurationManager.AppSettings["PARAMETERS2"];
-            string loader2 = ConfigurationManager.AppSettings["LOADER2"];
-            string results2 = ConfigurationManager.AppSettings["RESULTS2"];
-            // Carrega base de conhecimento
-            await loadsKnowledgeBase();
-            // Escreve parametros 2
-            File.WriteAllText(@parameters2, String.Empty);
-            File.AppendAllText(@parameters2, request.poiOrigem + "." + Environment.NewLine);
-            File.AppendAllText(@parameters2, request.maxHorasVisita + "." + Environment.NewLine);
-            File.AppendAllText(@parameters2, "time(" + request.horaInicialVisita.Hour.ToString() + "," + request.horaInicialVisita.Minute.ToString() + "," + request.horaInicialVisita.Second.ToString() + ").");
-            File.AppendAllText(@parameters2, request.inclinacaoMax + "." + Environment.NewLine);
-            File.AppendAllText(@parameters2, request.tipoVeiculo + "." + Environment.NewLine);
-            File.AppendAllText(@parameters2, request.kilometrosMax + "." + Environment.NewLine);
+            try
+            {
+                string parameters2 = ConfigurationManager.AppSettings["PARAMETERS2"];
+                string loader2 = ConfigurationManager.AppSettings["LOADER2"];
+                string results2 = ConfigurationManager.AppSettings["RESULTS2"];
+                // Carrega base de conhecimento
+                await loadsKnowledgeBase();
 
-            Process process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            //startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;     Esconde janela cmd
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = loader2;
-            process.StartInfo = startInfo;
-            process.Start();
-            process.WaitForExit();
+                File.WriteAllText(@results2, String.Empty);
 
+                // Escreve parametros 2
+                File.WriteAllText(@parameters2, String.Empty);
+                File.AppendAllText(@parameters2, request.poiOrigem + "." + Environment.NewLine);
+                File.AppendAllText(@parameters2, request.maxHorasVisita + "." + Environment.NewLine);
+                File.AppendAllText(@parameters2, "time(" + request.horaInicialVisita.Hour.ToString() + "," + request.horaInicialVisita.Minute.ToString() + "," + request.horaInicialVisita.Second.ToString() + ").");
+                File.AppendAllText(@parameters2, request.inclinacaoMax + "." + Environment.NewLine);
+                File.AppendAllText(@parameters2, request.tipoVeiculo + "." + Environment.NewLine);
+                File.AppendAllText(@parameters2, request.kilometrosMax + "." + Environment.NewLine);
 
-            // Read result
-            string[] lines = File.ReadAllLines(@results2);
-            string line0 = lines[0];
-            string line1 = lines[1];
-            List<int> poisCaminho = new List<int>();
-            poisCaminho = processResultString(line0, poisCaminho);
-            poisCaminho = processResultString(line1, poisCaminho);
+                Process process = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                //startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;     Esconde janela cmd
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = loader2;
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
 
 
-            return Ok(poisCaminho);
+                // Read result
+                string[] lines = File.ReadAllLines(@results2);
+                string line0 = lines[0];
+                string line1 = lines[1];
+                List<int> poisCaminho = new List<int>();
+                poisCaminho = processResultString(line0, poisCaminho);
+                poisCaminho = processResultString(line1, poisCaminho);
+
+
+                return Ok(poisCaminho);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
-        public async Task<bool> loadsKnowledgeBase()
+        private async Task<bool> loadsKnowledgeBase()
         {
 
             string knowledge = ConfigurationManager.AppSettings["KNOWLEDGE"];
@@ -196,7 +208,7 @@ namespace ALGAVAPI.Controllers
         }
 
 
-        public async Task<List<POIDTO>> GetPOIs()
+        private async Task<List<POIDTO>> GetPOIs()
         {
             client = DBWebApiHttpClient.GetClient();
 
@@ -212,7 +224,7 @@ namespace ALGAVAPI.Controllers
             return null;
         }
 
-        public async Task<List<CaminhoDTO>> GetCaminhos()
+        private async Task<List<CaminhoDTO>> GetCaminhos()
         {
             client = DBWebApiHttpClient.GetClient();
 
@@ -228,7 +240,7 @@ namespace ALGAVAPI.Controllers
             return null;
         }
 
-        public static double getDistanceFromLatLonInKm(decimal lat1, decimal lon1, decimal lat2, decimal lon2)
+        private static double getDistanceFromLatLonInKm(decimal lat1, decimal lon1, decimal lat2, decimal lon2)
         {
             var R = 6371; // Radius of the earth in km
             var dLat = deg2rad(lat2 - lat1);  // deg2rad below
@@ -242,12 +254,12 @@ namespace ALGAVAPI.Controllers
             var d = R * c; // Distance in km
             return d;
         }
-        public static double deg2rad(decimal deg)
+        private static double deg2rad(decimal deg)
         {
             return (double)deg * (Math.PI / 180);
         }
 
-        public static List<int> processResultString(string line, List<int> poisCaminho)
+        private static List<int> processResultString(string line, List<int> poisCaminho)
         {
             string[] splits = line.Split(')');       // Splits this -> [ (2,101,102), (3,102,103), (4,103,104)]
                                                      // into this   -> [ (2,101,102  -> ), (3,102,103  -> ..
