@@ -185,13 +185,9 @@ namespace ALGAVAPI.Controllers
                         if (poi.ID == poiFinalID) { poiFinal = poi; }
                     }
 
-                    Debug.Write(poiInicialID);
-                    Debug.Write(poiInicial.ID);
-
-
                     double distancia = 1000 * getDistanceFromLatLonInKm(poiInicial.GPS_Lat, poiInicial.GPS_Long, poiFinal.GPS_Lat, poiFinal.GPS_Long);
                     // Sin (x) = Opposite / Hypotenuse
-                    int inclinacao = Convert.ToInt32(((poiFinal.Altitude - poiInicial.Altitude) / distancia));
+                    int inclinacao = Convert.ToInt32(((poiFinal.Altitude - poiInicial.Altitude) / distancia)*100);
 
                     file.WriteLine("caminho(" + idCaminho + "," + idPoiInicio + "," + idPoiFinal + "," + inclinacao + ").");
                     idCaminho++;
