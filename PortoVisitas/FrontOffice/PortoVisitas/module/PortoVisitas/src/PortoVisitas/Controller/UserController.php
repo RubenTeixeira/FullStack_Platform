@@ -7,6 +7,7 @@ use PortoVisitas\Form\LoginForm;
 use PortoVisitas\Service\WebApiService;
 use PortoVisitas\Form\RegisterForm;
 use PortoVisitas\Model\User;
+use PortoVisitas\Model\Poi;
 
 /**
  * UserController
@@ -56,7 +57,14 @@ class UserController extends AbstractActionController
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        $pois = WebApiService::getUserPois($_SESSION['user']);        
+
+        $poiDTOs = WebApiService::getUserPois($_SESSION['user']);
+        $pois = array();
+        foreach ($poiDTOs as $poiDTO) {
+            $poi = new Poi();
+            $poi->exchangeDTO($poiDTO);
+            $pois[] = $poi;
+        }
         return new ViewModel(array(
             'mail' => $_SESSION['user'],
             'pois' => $pois

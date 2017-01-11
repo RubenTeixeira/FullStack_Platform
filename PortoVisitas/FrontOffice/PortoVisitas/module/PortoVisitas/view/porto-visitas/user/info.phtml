@@ -28,11 +28,9 @@
 	<script type="text/javascript">
 
 	function logTag(field, editor, tags, poiJson) {
-		console.log("Will update "+poiJson['Name']+" with the tags:");
+		console.log("Will update "+poiJson['name']+" with the tags:");
         for (var i = 0; i < tags.length; i++)
             console.log(tags[i]);
-
-        console.log(poiJson);
 	}
 	
 	function savePOI(poiJson, tags) {
@@ -42,35 +40,31 @@
 			tag.Text = tags[i];
 			hashTags[i] = tag;
 		}
-		poiJson['Hashtags'] = hashTags;
-		poiJson['POIID'] = poiJson['ID'];
-        delete poiJson['ID'];
+		poiJson['hashtags'] = hashTags;
 		$.ajax({
 			type: 'PUT',
 			cache: false,
-			url: "http://10.8.11.86/PVAPI/api/POI/"+poiJson['POIID'],
+			url: "http://10.8.11.86/PVAPI/api/POI/"+poiJson['poiid'],
 			data: poiJson,
 			async: true,
 			crossDomain: true,
-// 			success: function (result) {
-// 				handler(result.access_token);
-// 			},
 			error: function (error) {
 				if (error.status == 401) {
 					alert('Unauthorized');
 				} else {
 					alert('Error Updating POI: ' + error.responseText);
 				}
-			}
+			},
 		});
 
 	}
 	
 	</script>
 
-    </head>
+</head>
 
-<h2><?php echo $this->escapeHtml($title); ?></h2><b><font color="grey"><h4><?php echo $this->escapeHtml($mail);?></h4></font></b>
+
+<h3><?php echo $this->escapeHtml($title); ?></h3><h5><b><font color="grey"><?php echo $this->escapeHtml($mail);?></font></b></h5>
 
 <br/>
 <b>
@@ -93,11 +87,11 @@
 	<?php foreach ($pois as $poi) : ?>
 	<tr>
 		<?php
-          if ($poi->Approved == null) {
+          if ($poi->approved == null) {
          ?>
           <td><font color="blue">Submetido</font></td>
          <?php
-          } else if ($poi->Approved == "no") {
+          } else if ($poi->approved == "no") {
           ?>
           <td><font color="red">Rejeitado</font></td>
           <?php
@@ -107,39 +101,39 @@
           <?php
           }
           ?>
- 		<td><?php echo $this->escapeHtml($poi->Name);?></td>
- 		<td style="width: 30%;"><?php echo $this->escapeHtml($poi->Description);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->name);?></td>
+ 		<td style="width: 30%;"><?php echo $this->escapeHtml($poi->description);?></td>
  		<?php
- 		     $openDate = date_parse($poi->OpenHour);
+ 		     $openDate = date_parse($poi->openHour);
  		     $opens = $openDate['hour'].":".$openDate['minute'];
- 		     $closeDate = date_parse($poi->CloseHour);
+ 		     $closeDate = date_parse($poi->closeHour);
  		     $closes = $closeDate['hour'].":".$closeDate['minute'];
  		     $schedule = date('H:i',strtotime($opens))." - ".date ('H:i',strtotime($closes));
  		?>
  		<td><?php echo $this->escapeHtml($schedule);?></td>
- 		<td><?php echo $this->escapeHtml($poi->VisitDuration);?></td>
- 		<td><?php echo $this->escapeHtml($poi->GPS_Lat.",".$poi->GPS_Long);?></td>
- 		<td><?php echo $this->escapeHtml($poi->Altitude);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->visitDuration);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->gps_lat.",".$poi->gps_long);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->altitude);?></td>
  		</tr>
  		
  			<tr>
  		<td colspan="2" style="border:none;text-align:right;">
  			<div class="tagsDiv" style="padding-bottom:30px;">
- 				<label for="hashtags_<?php echo $poi->ID?>">
+ 				<label for="hashtags_<?php echo $poi->poiid?>">
  					<font color="lightgrey" style="font:menu;">Hashtags</font>
  				</label>
  			</div>
  		</td>
  		<td colspan="5" style="border:none;">
-        <input type="text" name="tags_<?php echo $poi->ID?>" id="hashtags_<?php echo $poi->ID?>">
+        <input type="text" name="tags_<?php echo $poi->poiid?>" id="hashtags_<?php echo $poi->poiid?>">
  			<?php
- 			$tags = array_column($poi->Hashtags, 'Text');
+ 			$tags = (null != $poi->hashtags) ? array_column($poi->hashtags, 'Text') : [];
  			$htags = json_encode($tags, JSON_HEX_TAG);
  			$poiJson = json_encode($poi);
  			$this->inlineScript()->captureStart();
  			
  			echo <<<JS
-    $('#hashtags_$poi->ID').tagEditor({
+    $('#hashtags_$poi->poiid').tagEditor({
                  			    initialTags: $htags,
                  			    placeholder: 'Enter tags ...',
                                 onChange: function(field, editor, tags) {

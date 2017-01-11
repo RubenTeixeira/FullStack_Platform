@@ -23,10 +23,17 @@ class PoiController extends AbstractActionController
      */
     public function indexAction()
     {
-        $pois = WebApiService::getPois();
-        return array(
+        $poiDTOs = WebApiService::getPois();
+        $pois = array();
+        foreach ($poiDTOs as $poiDTO) {
+            $poi = new Poi();
+            $poi->exchangeDTO($poiDTO);
+            $pois[] = $poi;
+        }
+        
+        return new ViewModel(array(
             'pois' => $pois
-        );
+        ));
     }
 
     public function addAction()
@@ -44,6 +51,8 @@ class PoiController extends AbstractActionController
                     session_start();
                 }
                 $poi->creator = $_SESSION['user'];
+                
+                // var_dump($poi);
                 $this->formatConnectedPois($poi);
                 $this->formatHashtags($poi);
                 $error = WebApiService::savePoi($poi);
@@ -64,16 +73,16 @@ class PoiController extends AbstractActionController
         $poiCheckBox = $form->get('connectedPois');
         $poiCheckBox->setValueOptions($options);
         
-        return array(
+        return new ViewModel(array(
             'form' => $form
-        );
+        ));
     }
 
     private function getPoiOptions($pois)
     {
         $options = array();
         foreach ($pois as $poi) {
-            $options[$poi->ID] = $poi->Name;
+            $options[$poi['ID']] = $poi['Name'];
         }
         return $options;
     }
@@ -85,9 +94,13 @@ class PoiController extends AbstractActionController
             $poiObj = new Poi();
             $poiObj->poiid = intval($connected);
             $poiObj->name = "Dummy";
-            $poiObj->gps_lat = 1.1;
-            $poiObj->gps_long = 1.1;
+            $poiObj->openHour = "2017-01-11T08:00:00";
+            $poiObj->closeHour = "2017-01-11T18:00:00";
+            $poiObj->gps_lat = 40.1;
+            $poiObj->gps_long = - 8.1;
             $poiObj->altitude = 15;
+            $poiObj->visitDuration = 60;
+            $poiObj->connectedPois = [];
             $connectedPois[] = $poiObj->getArrayCopy();
         }
         $poi->connectedPois = $connectedPois;
@@ -96,7 +109,6 @@ class PoiController extends AbstractActionController
     private function formatHashtags($poi)
     {
         $oldHashtagArr = explode(',', $poi->hashtags);
-        var_dump($oldHashtagArr);
         $newHashtagsArr = array();
         foreach ($oldHashtagArr as $tag) {
             $hashtag = array();

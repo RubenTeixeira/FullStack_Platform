@@ -58,7 +58,8 @@ class WebApiService
         $client->setMethod(Request::METHOD_GET);
         $response = $client->send();
         $body = $response->getBody();
-        $pois = Json::decode($response->getBody(), false);
+        $pois = Json::decode($response->getBody(), true);
+        //var_dump($pois);
         return $pois;
     }
     
@@ -68,7 +69,7 @@ class WebApiService
         $client->setMethod(Request::METHOD_GET);
         $response = $client->send();
         $body = $response->getBody();
-        $pois = Json::decode($response->getBody(), false);
+        $pois = Json::decode($response->getBody(), true);
         return $pois;
     }
 
