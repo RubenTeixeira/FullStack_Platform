@@ -97,6 +97,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\Algav2DTO.cs" />
+    <Compile Include="DTO\Algav1DTO.cs" />
     <Compile Include="DTO\CaminhoDTO.cs" />
     <Compile Include="DTO\DecisionHelperDTO.cs" />
     <Compile Include="DTO\PercursoDTO.cs" />
