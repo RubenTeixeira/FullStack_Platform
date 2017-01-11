@@ -104,5 +104,41 @@ namespace PVAPI.Controllers
 
             return BadRequest();
         }
+
+        [ResponseType(typeof(List<string>))]
+        [HttpPost]
+        [Route("api/Algav1")]
+        public async Task<IHttpActionResult> Algav1(Algav1DTO request)
+        {
+            client = ALGAVWebApiHttpClient.GetClient();
+            var response = await client.PostAsJsonAsync("api/Algav1/",request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                var objResponse1 = JsonConvert.DeserializeObject<List<string>>(result);
+                return Ok(objResponse1);
+            }
+
+            return BadRequest();
+        }
+
+        [ResponseType(typeof(List<string>))]
+        [HttpPost]
+        [Route("api/Algav2")]
+        public async Task<IHttpActionResult> Algav2(Algav2DTO request)
+        {
+            client = ALGAVWebApiHttpClient.GetClient();
+            var response = await client.PostAsJsonAsync("api/Algav2/", request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                var objResponse1 = JsonConvert.DeserializeObject<List<string>>(result);
+                return Ok(objResponse1);
+            }
+
+            return BadRequest();
+        }
     }
 }

@@ -106,6 +106,7 @@
     <Compile Include="DTO\POIConnectedDTO.cs" />
     <Compile Include="DTO\POIDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="Helpers\ALGAVWebApiHttpClient.cs" />
     <Compile Include="Helpers\DBWebApiHttpClient.cs" />
     <Compile Include="Helpers\DTOConverters.cs" />
     <Compile Include="Helpers\PVWebApiHttpClient.cs" />
