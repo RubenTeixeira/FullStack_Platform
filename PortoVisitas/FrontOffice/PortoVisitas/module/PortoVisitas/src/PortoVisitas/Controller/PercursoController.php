@@ -11,6 +11,8 @@ namespace PortoVisitas\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use PortoVisitas\Service\WebApiService;
+use PortoVisitas\Form\PercursoForm;
+
 
 class PercursoController extends AbstractActionController
 {
@@ -19,6 +21,25 @@ class PercursoController extends AbstractActionController
         $percursos = WebApiService::getPercursos();
         return array(
             'percursos' => $percursos,
+        );
+    }
+    
+    public function addAction()
+    {
+        $form = new PercursoForm();
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            echo "IT WOOOOOOORKS...!!!!";
+            return $this->redirect()->toRoute('percurso');
+        }
+//             $pois = WebApiService::getPois();
+//             $options = $this->getPoiOptions($pois);
+//             $poiCheckBox = $form->get('connectedPois');
+//             $poiCheckBox->setValueOptions($options);
+
+        return array(
+            'form' => $form
         );
     }
 }

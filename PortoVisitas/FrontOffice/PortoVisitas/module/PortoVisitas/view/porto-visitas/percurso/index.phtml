@@ -9,6 +9,7 @@ $this->headTitle($title);
 
 <table class="table">
 	<tr>
+		<th>Nome</th>
 		<th>Descricao</th>
 		<th>Data</th>
 		<th>Criador</th>
@@ -16,16 +17,17 @@ $this->headTitle($title);
 	</tr>
 	<?php foreach ($percursos as $percurso) : ?>
 	<tr>
- 		<td><?php echo $this->escapeHtml($percurso['descricao']);?></td>
- 		<td><?php echo $this->escapeHtml($percurso['data']);?></td>
- 		<td><?php echo $this->escapeHtml($percurso['email']);?></td>
+		<td><?php echo $this->escapeHtml($percurso['Name']);?></td>
+ 		<td><?php echo $this->escapeHtml($percurso['Description']);?></td>
+ 		<?php 
+ 		$date = date_parse($percurso['StartHour']);
+ 		$datastr = $date['year']."-".$date['month']."-".$date['day']." ".$date['hour'].":".$date['minute'];
+ 		?>
+ 		<td><?php echo $this->escapeHtml($datastr);?></td>
+ 		<td><?php echo $this->escapeHtml($percurso['Creator']);?></td>
 	 	<td>
-	 		<a href="<?php echo $this->url('pontopercurso',
-                array('action'=>'index', 'id' => $percurso['id']));?>">Selecionar</a>
-			<a href="<?php echo $this->url('percurso',
-                array('action'=>'edit', 'id' => $percurso['id']));?>">Editar</a>
- 			<a href="<?php echo $this->url('percurso',
-                array('action'=>'delete', 'id' => $percurso['id']));?>">Apagar</a>
+	 		<a href="<?php echo $this->url('percurso',
+                array('action'=>'index', 'id' => $percurso['id']));?>">Detalhes</a>
 		</td>
 	</tr>
 <?php endforeach; ?>

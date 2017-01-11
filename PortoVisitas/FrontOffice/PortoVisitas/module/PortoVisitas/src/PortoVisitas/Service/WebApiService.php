@@ -98,7 +98,13 @@ class WebApiService
 
     public static function getPercursos()
     {
-        return null;
+        $client = new Client(WebApiService::$enderecoBase . '/api/Percurso');
+        $client->setMethod(Request::METHOD_GET);
+        $response = $client->send();
+        $body = $response->getBody();
+        $percursos = Json::decode($response->getBody(), true);
+        //var_dump($pois);
+        return $percursos;
     }
 
     public static function getPercurso($id)

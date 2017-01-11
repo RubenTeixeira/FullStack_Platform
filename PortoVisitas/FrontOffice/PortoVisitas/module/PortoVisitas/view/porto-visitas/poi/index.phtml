@@ -72,7 +72,7 @@ $this->headTitle($title);
 		<th>Duracao (min)</th>
 		<th>Coordenadas</th>
 		<th>Altitude (m)</th>
-		<th>&nbsp;</th>
+		
 	</tr>
 	<?php foreach ($pois as $poi) : ?>
 	<tr>
@@ -107,19 +107,19 @@ $this->headTitle($title);
             } else {
                 ?>
                 <tr>
-                <td colspan="1" style="border:none;text-align:right;">
+                <td colspan="1" style="text-align:right;" class="extracell">
                 <div class="tagsDiv" style="padding:5px 0;">
-                <label for="hashtags_<?php echo $poi->ID?>">
+                <label for="hashtags_<?php echo $poi->poiid?>">
                 <font color="lightgrey" style="font:menu;">Hashtags</font>
                 </label>
                 </div>
                 </td>
-                <td colspan="5" style="border:none;padding:15px 0 35px 0;">
+                <td colspan="5" style="padding:15px 0 35px 0;" class="extracell">
                 
             	<?php 
                 if (isset($_SESSION['user'])) {
                 ?>
-            		<input type="text" name="tags_<?php echo $poi->poid?>" id="hashtags_<?php echo $poi->poiid?>">
+            		<input type="text" name="tags_<?php echo $poi->poiid?>" id="hashtags_<?php echo $poi->poiid?>">
      				<?php
      			    $tags = (null != $poi->hashtags) ? array_column($poi->hashtags, 'Text') : [];
      			    $htags = json_encode($tags, JSON_HEX_TAG);

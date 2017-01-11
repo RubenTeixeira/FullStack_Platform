@@ -36,9 +36,18 @@ div.container a.brand {
     padding: 8px 20px 12px 40px;
 }
 
-td .tag-editor {
-	border:none;
+.extracell {
+	border:none !important;
 }
+
+/* .tag-editor {
+	border: none;
+}
+
+.tag-editor:hover {
+	border: 5px black !important;
+	
+} */
 
 span.hashtag {
 	padding-left: 5px; color: #46799b; background: #e0eaf1; white-space: nowrap;
