@@ -13,6 +13,8 @@ class PoiForm extends Form
         // we want to ignore the name passed
         parent::__construct('poi');
         
+        $this->setAttribute('class', 'form-horizontal');
+        
         $this->add(array(
             'name' => 'poiid',
             'type' => 'Hidden'
@@ -26,95 +28,98 @@ class PoiForm extends Form
         $this->add(array(
             'name' => 'name',
             'type' => 'Text',
-            'options' => array(
-                'label' => 'Nome:'
+            'attributes' => array(
+                'class' => 'form-control'
             )
         ));
         
         $this->add(array(
             'name' => 'description',
             'type' => 'Textarea',
-            'options' => array(
-                'label' => 'Descricao:'
+            'attributes' => array(
+                'class' => 'form-control'
             )
         ));
         
         $this->add(array(
             'name' => 'gps_lat',
             'type' => 'Number',
-            'options' => array(
-                'label' => 'Latitude:'
-            ),
             'attributes' => array(
                 'min' => '-120.976200',
                 'max' => '41.250000',
-                'step' => '0.000001'
+                'step' => '0.000001',
+                'class' => 'form-control'
             )
         ));
         
         $this->add(array(
             'name' => 'gps_long',
             'type' => 'Number',
-            'options' => array(
-                'label' => 'Longitude:'
-            ),
             'attributes' => array(
                 'min' => '-31.960000',
                 'max' => '115.840000',
-                'step' => '0.000001'
+                'step' => '0.000001',
+                'class' => 'form-control'
             )
         ));
         
         $time = new Time('openHour');
-        $time
-        ->setLabel('Hora abertura: ')
-        ->setAttributes(array(
+        $time->setAttributes(array(
             'step' => '60',
-        ))
-        ->setOptions(array(
+            'class' => 'form-control'
+        ))->setOptions(array(
             'format' => 'H:i'
         ));
         
         $time2 = new Time('closeHour');
-        $time2
-        ->setLabel('Hora encerramento: ')
-        ->setAttributes(array(
+        $time2->setAttributes(array(
             'step' => '60',
-        ))
-        ->setOptions(array(
+            'class' => 'form-control'
+        ))->setOptions(array(
             'format' => 'H:i'
         ));
         
         $this->add($time);
         $this->add($time2);
         
-        
         $this->add(array(
             'name' => 'altitude',
             'type' => 'Number',
-            'options' => array(
-                'label' => 'Altitude:'
-            ),
             'attributes' => array(
                 'min' => '15',
                 'max' => '269',
-                'step' => '1'
+                'step' => '1',
+                'class' => 'form-control'
             )
         ));
         
         $multiCheck = new MultiCheckbox('connectedPois');
-        $multiCheck->setLabel('Ligacoes:');
         $multiCheck->setDisableInArrayValidator(true);
+//         $multiCheck->setAttributes(array(
+//             //'class' => 'checkbox'
+//         ));
+        $multiCheck->setLabelAttributes(array(
+            'class' => 'checkbox',
+        ));
         $this->add($multiCheck);
         
         $this->add(array(
             'name' => 'hashtags',
             'type' => 'Textarea',
-            'options' => array(
-                'label' => 'Hashtags:'
-            ),
             'attributes' => array(
-                'id' => 'hashtags'
+                'id' => 'hashtags',
+                'class' => 'form-control'
+            )
+        ));
+        
+        $this->add(array(
+            'name' => 'visitDuration',
+            'type' => 'Number',
+            'attributes' => array(
+                'min' => '1',
+                'max' => '480',
+                'step' => '1',
+                'class' => 'form-control'
             )
         ));
         
@@ -123,7 +128,8 @@ class PoiForm extends Form
             'type' => 'Submit',
             'attributes' => array(
                 'value' => 'Submeter',
-                'id' => 'submitbutton'
+                'id' => 'submitbutton',
+                'class' => 'btn btn-primary'
             )
         ));
     }

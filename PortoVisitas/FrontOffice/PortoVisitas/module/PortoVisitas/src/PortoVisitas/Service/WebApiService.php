@@ -61,6 +61,16 @@ class WebApiService
         $pois = Json::decode($response->getBody(), false);
         return $pois;
     }
+    
+    public static function getUserPois($user)
+    {
+        $client = new Client(WebApiService::$enderecoBase . '/api/UserPOI?email='.$user);
+        $client->setMethod(Request::METHOD_GET);
+        $response = $client->send();
+        $body = $response->getBody();
+        $pois = Json::decode($response->getBody(), false);
+        return $pois;
+    }
 
     public static function savePoi($poi)
     {

@@ -5,24 +5,37 @@ use Zend\Form\Form;
 
 class RegisterForm extends Form
 {
-    public function __construct($name = null) {
+
+    public function __construct($name = null)
+    {
         // we want to ignore the name passed
         parent::__construct('user');
-
+        
+        $this->setAttribute('class', 'form-horizontal');
+        
         $this->add(array(
             'name' => 'email',
             'type' => 'Email',
-            'options' => array(
-                'label' => 'Email:' 
-            ),
+            'attributes' => array(
+                'class' => 'form-control'
+            )
         ));
+        
         $this->add(array(
             'name' => 'password',
             'type' => 'Password',
-            'options' => array(
-                'label' => 'Password:'
+            'attributes' => array(
+                'class' => 'form-control'
+            )
+        ));
+        
+        $this->add(array(
+            'name' => 'passwordConfirm',
+            'type' => 'Password',
+            'attributes' => array(
+                'class' => 'form-control'
             ),
-        ));   
+        ));
         
         $this->add(array(
             'name' => 'submit',
@@ -30,7 +43,8 @@ class RegisterForm extends Form
             'attributes' => array(
                 'value' => 'Go',
                 'id' => 'submitbutton',
-            ),
+                'class' => 'btn btn-primary'
+            )
         ));
     }
 }

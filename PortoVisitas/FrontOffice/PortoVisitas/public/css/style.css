@@ -35,3 +35,13 @@ div.container a.brand {
     margin-left: 0;
     padding: 8px 20px 12px 40px;
 }
+
+td .tag-editor {
+	border:none;
+}
+
+span.hashtag {
+	padding-left: 5px; color: #46799b; background: #e0eaf1; white-space: nowrap;
+    overflow: hidden; cursor: pointer; border-radius: 2px 0 0 2px;
+	margin: 8px; padding: 2px 5px;
+}

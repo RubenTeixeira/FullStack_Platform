@@ -3,55 +3,91 @@
         $title = 'Sugerir Ponto de Interesse';
         $this->headTitle($title);
         
-        echo $this->headLink()
-        ->prependStylesheet($this->basePath('css/jquery.tag-editor.css'));
+        echo $this->headLink()->prependStylesheet($this->basePath('css/jquery.tag-editor.css'));
         
         echo $this->headScript()
             ->prependFile($this->basePath('js/jquery.tag-editor.min.js'))
             ->prependFile($this->basePath('js/jquery.caret.min.js'));
         ?>
 
-<h1><?php echo $this->escapeHtml($title); ?></h1>
+<h3><?php echo $this->escapeHtml($title); ?></h3>
+
+
 <?php
-$form->setAttribute('action',$this->url('poi', array('action' => 'add')));
+$form->setAttribute('action', $this->url('poi', array(
+    'action' => 'add'
+)));
 $form->prepare();
 echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('poiid'));
-echo $this->formHidden($form->get('creator'));?>
+echo $this->formHidden($form->get('creator'));
+?>
+
 <div class="form-group">
-<?php echo $this->formRow($form->get('name'));
-echo "<br/>";?>
+	<label for="name" class="control-label col-xs-2">Nome</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('name'));?>
+	</div>
 </div>
+
+
 <div class="form-group">
-<?php echo $this->formRow($form->get('description'));
-echo "<br/>";?>
+	<label for="description" class="control-label col-xs-2">Descricao</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('description'));?>
+	</div>
 </div>
+
 <div class="form-group">
-<?php echo $this->formRow($form->get('openHour'));
-echo "<br/>";?>
+	<label for="openHour" class="control-label col-xs-2">Horario</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+<?php echo $this->formRow($form->get('openHour'));?>
+<h6>ate</h6>
+<?php echo $this->formRow($form->get('closeHour'));?>
+	</div>
 </div>
+
 <div class="form-group">
-<?php echo $this->formRow($form->get('closeHour'));
-echo "<br/>";?>
+	<label for="visitDuration" class="control-label col-xs-2">Duracao</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('visitDuration'));?>
+	</div>
 </div>
+
 <div class="form-group">
-<?php echo $this->formRow($form->get('gps_lat'));
-echo "<br/>";?>
+	<label for="gps_lat" class="control-label col-xs-2">Latitude</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('gps_lat'));?>
+	</div>
 </div>
+
 <div class="form-group">
-<?php echo $this->formRow($form->get('gps_long'));
-echo "<br/>";?>
+	<label for="gps_long" class="control-label col-xs-2">Longitude</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('gps_long'));?>
+	</div>
 </div>
+
 <div class="form-group">
-<?php echo $this->formRow($form->get('altitude'));
-echo "<br/>";?>
+	<label for="altitude" class="control-label col-xs-2">Altitude</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('altitude'));?>
+	</div>
 </div>
+
 <div class="form-group">
-<?php echo $this->formRow($form->get('connectedPois'));
-echo "<br/>";?>
+	<label for="connectedPois" class="control-label col-xs-2">Ligacoes</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('connectedPois'));?>
+	</div>
 </div>
+
 <div class="form-group">
-<?php echo $this->formRow($form->get('hashtags'));
+	<label for="hashtags" class="control-label col-xs-2">Hashtags</label>
+	<div>
+<?php
+
+echo $this->formRow($form->get('hashtags'));
 
 $this->inlineScript()->captureStart();
 echo <<<JS
@@ -61,11 +97,13 @@ echo <<<JS
                 });
 JS;
 $this->inlineScript()->captureEnd();
-
-echo "<br/>";?>
+?>
+	</div>
 </div>
 <div class="form-group">
-<?php echo $this->formSubmit($form->get('submit'));
-echo $this->form()->closeTag();
-?>
+		<div class="col-xs-offset-2 col-xs-10">
+<?php echo $this->formSubmit($form->get('submit'));?>
+	</div>
 </div>
+<?php echo $this->form()->closeTag();?>
+	

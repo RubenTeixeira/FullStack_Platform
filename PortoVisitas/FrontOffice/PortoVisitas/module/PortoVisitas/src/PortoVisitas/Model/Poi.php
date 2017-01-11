@@ -30,6 +30,8 @@ class Poi
     public $connectedPois;
 
     public $altitude;
+    
+    public $visitDuration;
 
     protected $inputFilter;
 
@@ -57,6 +59,7 @@ class Poi
         else
             $this->connectedPois = null;
         $this->altitude = (! empty($data['altitude'])) ? $data['altitude'] : null;
+        $this->visitDuration = (! empty($data['visitDuration'])) ? $data['visitDuration'] : null;
     }
 
     public function getArrayCopy()
@@ -142,6 +145,11 @@ class Poi
             
             $inputFilter->add(array(
                 'name' => 'altitude',
+                'required' => true,
+            ));
+            
+            $inputFilter->add(array(
+                'name' => 'visitDuration',
                 'required' => true,
             ));
             

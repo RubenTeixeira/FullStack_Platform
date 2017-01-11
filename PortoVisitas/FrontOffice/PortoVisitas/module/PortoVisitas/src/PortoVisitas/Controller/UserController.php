@@ -23,7 +23,7 @@ class UserController extends AbstractActionController
         $request = $this->getRequest();
         if (! $request->isPost()) {
             $form = new LoginForm();
-            $form->get('submit')->setValue('Login');
+            $form->get('submit')->setValue('Entrar');
             return array(
                 'form' => $form
             );
@@ -56,15 +56,17 @@ class UserController extends AbstractActionController
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
+        $pois = WebApiService::getUserPois($_SESSION['user']);        
         return new ViewModel(array(
-            'mail' => $_SESSION['user']
+            'mail' => $_SESSION['user'],
+            'pois' => $pois
         ));
     }
 
     public function registerAction()
     {
         $form = new RegisterForm();
-        $form->get('submit')->setValue('Register');
+        $form->get('submit')->setValue('Registar');
         
         $request = $this->getRequest();
         if ($request->isPost()) {

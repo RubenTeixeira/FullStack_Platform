@@ -16,14 +16,7 @@
         <!-- Le styles -->
         <?php
         
-        echo $this->headLink(array(
-            'rel' => 'shortcut icon',
-            'type' => 'image/vnd.microsoft.icon',
-            'href' => $this->basePath() . '/img/favicon.ico'
-        ))
-            ->prependStylesheet($this->basePath('css/style.css'))
-            ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
-            ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+        echo $this->headLink()
             ->prependStylesheet($this->basePath('css/jquery.tag-editor.css'))?>
 
         <!-- Scripts -->
@@ -31,15 +24,7 @@
         
         echo $this->headScript()
             ->prependFile($this->basePath('js/jquery.tag-editor.min.js'))
-            ->prependFile($this->basePath('js/jquery.caret.min.js'))
-            ->prependFile($this->basePath('js/bootstrap.min.js'))
-            ->prependFile($this->basePath('js/jquery.min.js'))
-            ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array(
-            'conditional' => 'lt IE 9'
-        ))
-            ->prependFile($this->basePath('js/html5shiv.js'), 'text/javascript', array(
-            'conditional' => 'lt IE 9'
-        ));
+            ->prependFile($this->basePath('js/jquery.caret.min.js'));
         ?>
 
 	<script type="text/javascript">
@@ -104,15 +89,15 @@
 		<th>Nome</th>
 		<th>Descricao</th>
 		<th>Horario</th>
+		<th>Duracao (min)</th>
 		<th>Coordenadas</th>
 		<th>Altitude (m)</th>
-		<th>Hashtags</th>
 		<th>&nbsp;</th>
 	</tr>
 	<?php foreach ($pois as $poi) : ?>
 	<tr>
  		<td><?php echo $this->escapeHtml($poi->Name);?></td>
- 		<td><?php echo $this->escapeHtml($poi->Description);?></td>
+ 		<td style="width: 30%;"><?php echo $this->escapeHtml($poi->Description);?></td>
  		<?php
  		     $openDate = date_parse($poi->OpenHour);
  		     $opens = $openDate['hour'].":".$openDate['minute'];
@@ -121,22 +106,45 @@
  		     $schedule = date('H:i',strtotime($opens))." - ".date ('H:i',strtotime($closes));
  		?>
  		<td><?php echo $this->escapeHtml($schedule);?></td>
+ 		<td><?php echo $this->escapeHtml($poi->VisitDuration);?></td>
  		<td><?php echo $this->escapeHtml($poi->GPS_Lat.",".$poi->GPS_Long);?></td>
  		<td><?php echo $this->escapeHtml($poi->Altitude);?></td>
- 		<td>
+ 	</tr>
+
+ 	
  		
- 		<?php
+ 			<?php
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
-            if (isset($_SESSION['user'])) {
-         ?>
- 			<textarea id="hashtags_<?php echo $poi->ID?>" rows="4" cols="50"></textarea>
- 			<?php
- 			$tags = array_column($poi->Hashtags, 'Text');
- 			$htags = json_encode($tags, JSON_HEX_TAG);
- 			$poiJson = json_encode($poi);
- 			$this->inlineScript()->captureStart();
+            if (!isset($_SESSION['user']) && empty($poi->Hashtags)) {
+                ?>
+                <tr>
+					<td colspan="6" style="border:none;">&nbsp;</td>
+					<td colspan="6" style="border:none;">&nbsp;</td>
+                <?php 
+                
+            } else {
+                ?>
+                <tr>
+                <td colspan="1" style="border:none;text-align:right;">
+                <div class="tagsDiv" style="padding:5px 0;">
+                <label for="hashtags_<?php echo $poi->ID?>">
+                <font color="lightgrey" style="font:menu;">Hashtags</font>
+                </label>
+                </div>
+                </td>
+                <td colspan="5" style="border:none;padding:15px 0 35px 0;">
+                
+            	<?php 
+                if (isset($_SESSION['user'])) {
+                ?>
+            		<input type="text" name="tags_<?php echo $poi->ID?>" id="hashtags_<?php echo $poi->ID?>">
+     				<?php
+     			    $tags = array_column($poi->Hashtags, 'Text');
+     			    $htags = json_encode($tags, JSON_HEX_TAG);
+     			    $poiJson = json_encode($poi);
+     			    $this->inlineScript()->captureStart();
  			
  			echo <<<JS
     $('#hashtags_$poi->ID').tagEditor({
@@ -150,16 +158,19 @@
                 });
 JS;
             $this->inlineScript()->captureEnd();
-     		?>
 
- 			<?php
-            } else {
- 			    foreach ($poi->Hashtags as $tag) {
- 			        echo $this->escapeHtml("#".$tag->Text." ");
- 			      }
+                } else {
+                    foreach ($poi->Hashtags as $tag) : ?>
+        	            <span class="hashtag">
+        	            <?php echo $this->escapeHtml($tag->Text);?>
+                	    </span>
+                    <?php endforeach;
+                }
+                
             }
- 			?>
+ 		?>
  		</td>
 	</tr>
+	
 <?php endforeach; ?>
 </table>

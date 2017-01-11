@@ -40,11 +40,53 @@ class User
             
             $email = new Input('email');
             $email->getValidatorChain()->attach(new Validator\EmailAddress());
+            $inputFilter->add($email);
             
-            $password = new Input('password');
-            $password->getValidatorChain()->attach(new Validator\StringLength(5));
+            $inputFilter->add(array(
+                'name' => 'password',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim')
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 3,
+                            'max' => 32
+                        )
+                    )
+                )
+            ));
             
-            $inputFilter->add($email)->add($password);
+            $inputFilter->add(array(
+                'name' => 'passwordConfirm',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim')
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 3,
+                            'max' => 32
+                        ),
+                    ),
+                    array(
+                        'name' => 'Identical',
+                        'options' => array(
+                            'token' => 'password'
+                        )
+                    )
+                )
+            ));
+            
+            
             $this->inputFilter = $inputFilter;
         }
         return $this->inputFilter;
