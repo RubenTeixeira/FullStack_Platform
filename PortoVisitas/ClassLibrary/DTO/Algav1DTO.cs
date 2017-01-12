@@ -13,7 +13,7 @@ namespace ClassLibrary.DTO
         public List<int> poiList { get; set; }
         [DisplayFormat(DataFormatString = "{0:HH:mm}")]
         [DataType(DataType.Time)]
-        public DateTime startingMinute { get; set; }
+        public DateTime horaInicialVisita { get; set; }
         public int inclinacaoMax { get; set; }
         public string tipoVeiculo { get; set; }
         public int kilometrosMax { get; set; }
