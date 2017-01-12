@@ -10,6 +10,7 @@ namespace BackOffice.Controllers
 {
     public class LanguageController : Controller
     {
+
         public ActionResult Change(string lang,string url)
         {
             if (lang != null)

@@ -44,7 +44,7 @@ namespace ALGAVAPI.Controllers
                 str = str.Remove(str.Length - 1);
 
 
-                string horaInicio = Convert.ToString(request.startingMinute.Hour * 60 + request.startingMinute.Minute);
+                string horaInicio = Convert.ToString(request.horaInicialVisita.Hour * 60 + request.horaInicialVisita.Minute);
 
                 File.AppendAllText(@parameters1, "[" + str + "]." + Environment.NewLine);
                 File.AppendAllText(@parameters1, request.inclinacaoMax + "." + Environment.NewLine);
@@ -70,7 +70,14 @@ namespace ALGAVAPI.Controllers
                     poisCaminho = processResultString(line, poisCaminho);
                 }
 
-                return Ok(poisCaminho);
+                var response = new
+                {
+                    percurso = poisCaminho,
+                    duracao = lines[3],
+                    kilometros = lines[2]
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -122,7 +129,14 @@ namespace ALGAVAPI.Controllers
                 poisCaminho = processResultString(line1, poisCaminho);
 
 
-                return Ok(poisCaminho);
+                var response = new
+                {
+                    percurso = poisCaminho,
+                    duracao = lines[3],
+                    kilometros = lines[2]
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

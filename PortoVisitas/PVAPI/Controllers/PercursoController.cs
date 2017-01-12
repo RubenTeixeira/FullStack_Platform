@@ -105,7 +105,6 @@ namespace PVAPI.Controllers
             return BadRequest();
         }
 
-        [ResponseType(typeof(List<string>))]
         [HttpPost]
         [Route("api/Algav1")]
         public async Task<IHttpActionResult> Algav1(Algav1DTO request)
@@ -116,14 +115,13 @@ namespace PVAPI.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var objResponse1 = JsonConvert.DeserializeObject<List<string>>(result);
+                var objResponse1 = JsonConvert.DeserializeObject(result);
                 return Ok(objResponse1);
             }
 
             return BadRequest();
         }
 
-        [ResponseType(typeof(List<string>))]
         [HttpPost]
         [Route("api/Algav2")]
         public async Task<IHttpActionResult> Algav2(Algav2DTO request)
@@ -134,7 +132,7 @@ namespace PVAPI.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var objResponse1 = JsonConvert.DeserializeObject<List<string>>(result);
+                var objResponse1 = JsonConvert.DeserializeObject(result);
                 return Ok(objResponse1);
             }
 

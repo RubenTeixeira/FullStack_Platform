@@ -7,36 +7,175 @@
 <h2>@ClassLibrary.Resources.Global.Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>@ClassLibrary.Resources.Global.Percurso</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        <div class="content" style="position:relative;">
+            <div>
+                <div class="form-group" style="margin-right: -65px;">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-right: -65px;">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-right: -65px;">
+                    @Html.LabelFor(model => model.StartHour, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.StartHour, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StartHour, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-right: -65px;">
+                    <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.RouteOption</label>
+                    <div class="col-md-10" style="padding-top: 7px">
+                        <input type="radio" id="algav1" name="radio" value="algav1" /> Algav1 <br>
+                        <input type="radio" id="algav2" name="radio" value="algav2" /> Algav2 <br>
+                    </div>
+                </div>
             </div>
+
+            <div style="position: absolute;top:0;left:650px">
+                <label>@ClassLibrary.Resources.Percurso.RouteResult</label>
+                @Html.TextArea("PercursoResult", @ClassLibrary.Resources.Percurso.RouteMsg, new { @class = "form-control", @style= "max-height:200px;min-height:200px;min-width:350px;resize:none", @readonly = "readonly" })
+            </div>
+            <br style="clear:both;" />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            <div class="container">
+                <div class="algav1_box">
+                    <div class="bottom" style="display:none;">
+
+                        <hr />
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.StartPOI</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("StartPOI_1", new SelectList(ViewBag.PoiList, "POIID", "Name"), htmlAttributes: new { @class = "form-control text-box single-line" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Transport</label>
+                            <div class="col-md-10">
+                                <select id="transport_list_1" class="form-control text-box single-line">
+                                    <option value="pe">@ClassLibrary.Resources.Percurso.OnFoot</option>
+                                    <option value="carro">@ClassLibrary.Resources.Percurso.Car</option>
+                                    <option value="autocarro">@ClassLibrary.Resources.Percurso.Bus</option>
+                                    <option value="tuk">@ClassLibrary.Resources.Percurso.Tuk</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Kilometers</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Kilometers must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Kilometers must be atleast 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Kilometers field is required." id="kilometers_1" name="kilometers_1" type="number">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="kilometers_1" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Inclination</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Inclination must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Inclination must be atleast 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Inclination field is required." id="inclination_1" name="inclination_1" type="number">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="inclination_1" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.POIToVisit</label>
+                            <div class="col-md-10">
+                                @Html.ListBox("PercursoPOIs", new MultiSelectList(ViewBag.PoiList, "POIID", "Name"), htmlAttributes: new { @style = "min-width:280px;max-width:420px" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="algav1Request()" class="btn btn-default" />
+                            </div>
+                        </div>
+                        <hr />
+
+                    </div>
+                </div>
+                <div class="algav2_box">
+                    <div class="bottom" style="display:none;">
+
+                        <hr />
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.StartPOI</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("StartPOI_2", new SelectList(ViewBag.PoiList, "POIID", "Name"), htmlAttributes: new { @class = "form-control text-box single-line" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Transport</label>
+                            <div class="col-md-10">
+                                <select id="transport_list_2" class="form-control text-box single-line">
+                                    <option value="pe">@ClassLibrary.Resources.Percurso.OnFoot</option>
+                                    <option value="carro">@ClassLibrary.Resources.Percurso.Car</option>
+                                    <option value="autocarro">@ClassLibrary.Resources.Percurso.Bus</option>
+                                    <option value="tuk">@ClassLibrary.Resources.Percurso.Tuk</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.VisitLength</label>
+                            <div class="col-md-10">
+                                <select id="duration" class="form-control text-box single-line">
+                                    <option value="4">4 @ClassLibrary.Resources.Percurso.Hour</option>
+                                    <option value="8">8 @ClassLibrary.Resources.Percurso.Hour</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Kilometers</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Kilometers must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Kilometers must be atleast 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Kilometers field is required." id="kilometers_2" name="kilometers_2" type="number">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="kilometers_2" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Inclination</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Inclination must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Inclination must be atleast 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Inclination field is required." id="inclination_2" name="inclination_2" type="number">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="inclination_2" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="algav2Request()" class="btn btn-default" />
+                            </div>
+                        </div>
+                        <hr />
+
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PercursoPOIs, htmlAttributes:  new { @class = "control-label col-md-2" })
-            <div class="col-md-10" >
-                @Html.ListBox("PercursoPOIs", new MultiSelectList(ViewBag.PoiList,"POIID","Name"), htmlAttributes: new { @style = "min-width:280px;max-width:420px"} )
-            </div>
-        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value=@ClassLibrary.Resources.Global.Create class="btn btn-default" />
@@ -51,4 +190,111 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $('input:radio[name="radio"]').change(
+            function () {
+                if ($(this).is(':checked') && $(this).val() == "algav1") {
+                    $parent_box = $('div.algav1_box');
+                    $parent_box.siblings().find('.bottom').slideUp(0, 'swing');
+                    $parent_box.find('.bottom').slideToggle(200, 'swing');
+                }
+
+                if ($(this).is(':checked') && $(this).val() == "algav2") {
+                    $parent_box = $('div.algav2_box');
+                    $parent_box.siblings().find('.bottom').slideUp(0, 'swing');
+                    $parent_box.find('.bottom').slideToggle(200, 'swing');
+                }
+            });
+    </script>
+    <script>
+        function HttpRequest(url, request) {
+
+            var http = new XMLHttpRequest();
+            http.open("POST", url, true);
+
+            http.setRequestHeader("Content-type", "application/json");
+
+            var area = document.getElementById("PercursoResult");
+
+            //http.onreadystatechange = function () {
+            //    if (http.readyState == 4 && http.status == 200) {
+            //        var json = JSON.parse(http.responseText);
+            //    }
+            //    if (http.readyState == 4 && http.status == 400) {
+            //        area.value = "@ClassLibrary.Resources.Percurso.InvalidResult";
+            //    }
+            //}
+            var data = JSON.stringify(request);
+            //http.send(data);
+
+            area.value = "@ClassLibrary.Resources.Percurso.InvalidResult";
+
+            alert(url + " " + data);
+        }
+    </script>
+    <script>
+        function algav1Request() {
+
+            var selectPOI = document.getElementById("StartPOI_1");
+            var selectTransport = document.getElementById("transport_list_1");
+
+            var poiOrigin = selectPOI.options[selectPOI.selectedIndex].value;
+            var transport = selectTransport.options[selectTransport.selectedIndex].value;
+
+            var poiList = [];
+            var selectPOIList = document.getElementById("PercursoPOIs");
+            var options = selectPOIList && selectPOIList.options;
+            var opt;
+
+            for (var i = 0, iLen = options.length; i < iLen; i++) {
+                opt = options[i];
+
+                if (opt.selected) {
+                    poiList.push(opt.value);
+                }
+            }
+
+            var startHour = document.getElementById("StartHour").value;
+            var kilometers = document.getElementById("kilometers_1").value;
+            var inclination = document.getElementById("inclination_1").value;
+
+            var request = {
+                poiOrigem: poiOrigin,
+                poiList: poiList,
+                horaInicialVisita: startHour,
+                inclinacaoMax: inclination,
+                tipoVeiculo: transport,
+                kilometrosMax: kilometers
+            }
+
+            HttpRequest("http://10.8.11.86/PVAPI/api/Algav1", request);
+        }
+    </script>
+    <script>
+        function algav2Request() {
+
+            var selectPOI = document.getElementById("StartPOI_2");
+            var selectTransport = document.getElementById("transport_list_2");
+            var selectDuration = document.getElementById("duration");
+
+            var poiOrigin = selectPOI.options[selectPOI.selectedIndex].value;
+            var transport = selectTransport.options[selectTransport.selectedIndex].value;
+            var duration = selectDuration.options[selectTransport.selectedIndex].value;
+
+            var startHour = document.getElementById("StartHour").value;
+            var kilometers = document.getElementById("kilometers_2").value;
+            var inclination = document.getElementById("inclination_2").value;
+
+            var request = {
+                poiOrigem: poiOrigin,
+                maxHorasVisita: duration,
+                horaInicialVisita: startHour,
+                inclinacaoMax: inclination,
+                tipoVeiculo: transport,
+                kilometrosMax: kilometers
+            }
+
+            HttpRequest("http://10.8.11.86/PVAPI/api/Algav2", request);
+        }
+    </script>
 }

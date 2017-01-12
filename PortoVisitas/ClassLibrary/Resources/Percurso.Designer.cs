@@ -61,6 +61,24 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bus.
+        /// </summary>
+        public static string Bus {
+            get {
+                return ResourceManager.GetString("Bus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Car.
+        /// </summary>
+        public static string Car {
+            get {
+                return ResourceManager.GetString("Car", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created By.
         /// </summary>
         public static string Creator {
@@ -79,11 +97,65 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generate Route.
+        /// </summary>
+        public static string GenerateRoute {
+            get {
+                return ResourceManager.GetString("GenerateRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hours.
+        /// </summary>
+        public static string Hour {
+            get {
+                return ResourceManager.GetString("Hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max. Inclination (%).
+        /// </summary>
+        public static string Inclination {
+            get {
+                return ResourceManager.GetString("Inclination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not generate a valid route with the given data, please try again..
+        /// </summary>
+        public static string InvalidResult {
+            get {
+                return ResourceManager.GetString("InvalidResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max. Kilometers.
+        /// </summary>
+        public static string Kilometers {
+            get {
+                return ResourceManager.GetString("Kilometers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On foot.
+        /// </summary>
+        public static string OnFoot {
+            get {
+                return ResourceManager.GetString("OnFoot", resourceCulture);
             }
         }
         
@@ -115,11 +187,83 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to POI to Visit.
+        /// </summary>
+        public static string POIToVisit {
+            get {
+                return ResourceManager.GetString("POIToVisit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select and option to generate a valid route..
+        /// </summary>
+        public static string RouteMsg {
+            get {
+                return ResourceManager.GetString("RouteMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick an option to generate a Route.
+        /// </summary>
+        public static string RouteOption {
+            get {
+                return ResourceManager.GetString("RouteOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generated Route.
+        /// </summary>
+        public static string RouteResult {
+            get {
+                return ResourceManager.GetString("RouteResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting Hour.
         /// </summary>
         public static string StartHour {
             get {
                 return ResourceManager.GetString("StartHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start POI.
+        /// </summary>
+        public static string StartPOI {
+            get {
+                return ResourceManager.GetString("StartPOI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transport.
+        /// </summary>
+        public static string Transport {
+            get {
+                return ResourceManager.GetString("Transport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tuk.
+        /// </summary>
+        public static string Tuk {
+            get {
+                return ResourceManager.GetString("Tuk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Route Duration.
+        /// </summary>
+        public static string VisitLength {
+            get {
+                return ResourceManager.GetString("VisitLength", resourceCulture);
             }
         }
     }
