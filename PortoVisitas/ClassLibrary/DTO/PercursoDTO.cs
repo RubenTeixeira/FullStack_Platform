@@ -10,6 +10,7 @@ namespace ClassLibrary.DTO
         public string Description { get; set; }
         public string Creator { get; set; }
         public DateTime StartHour { get; set; }
+        public DateTime FinishHour { get; set; }
         public string PercursoPOIsOrder { get; set; }
         public List<POIDTO> PercursoPOIs { get; set; }
 

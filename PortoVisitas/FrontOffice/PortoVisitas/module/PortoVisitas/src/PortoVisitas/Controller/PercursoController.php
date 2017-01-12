@@ -31,15 +31,31 @@ class PercursoController extends AbstractActionController
 
         if ($request->isPost()) {
             echo "IT WOOOOOOORKS...!!!!";
-            return $this->redirect()->toRoute('percurso');
+            //return $this->redirect()->toRoute('percurso');
         }
 //             $pois = WebApiService::getPois();
 //             $options = $this->getPoiOptions($pois);
 //             $poiCheckBox = $form->get('connectedPois');
 //             $poiCheckBox->setValueOptions($options);
 
+        $pois = WebApiService::getPois();
+        $options = $this->getPoiOptions($pois);
+        $poiCheckBox = $form->get('poisMultiCheck');
+        $poiCheckBox->setValueOptions($options);
+        
         return array(
-            'form' => $form
+            'form' => $form,
+            'pois' => $pois,
         );
+    }
+    
+    
+    private function getPoiOptions($pois)
+    {
+        $options = array();
+        foreach ($pois as $poi) {
+            $options[$poi['ID']] = $poi['Name'];
+        }
+        return $options;
     }
 }

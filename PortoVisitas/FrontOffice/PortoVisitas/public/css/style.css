@@ -49,6 +49,10 @@ div.container a.brand {
 	
 } */
 
+#poisCheckBox {
+	display: none;
+}
+
 span.hashtag {
 	padding-left: 5px; color: #46799b; background: #e0eaf1; white-space: nowrap;
     overflow: hidden; cursor: pointer; border-radius: 2px 0 0 2px;

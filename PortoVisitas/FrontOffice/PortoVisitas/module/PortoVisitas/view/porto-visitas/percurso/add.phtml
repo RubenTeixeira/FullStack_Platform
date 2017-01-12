@@ -3,27 +3,95 @@
 // wait for the DOM to be loaded
 $(document).ready(function() {
     // bind 'myForm' and provide a simple callback function
-    $('#myForm').ajaxForm(function() {
-        //alert("Thank you for your comment!");
+    $('#percursoForm').ajaxForm(function() {
+        alert("Thank you for your comment!");
     });
+
+    $("input[name=typeOfSuggestion]:radio").change(function () {
+    		multicheck = $("#poisCheckBox")[0];
+    		console.log("Radio button state changed!!!!");
+    		console.log("choosePois: "+document.getElementById("choosePois").checked);
+    		console.log("chooseDuration: "+document.getElementById("chooseDuration").checked);
+    		//$("#"+multicheck.id).show(500);
+        if (document.getElementById("choosePois").checked) {
+        	$("#"+multicheck.id).show(500);
+        	showDiv(multicheck);
+        }
+        else {
+            hideDiv(multicheck);
+        }
+    });
+    
 });
+
 </script>
 
 <?php
-$title = 'Criação de Percurso';
+$title = 'Criacao de Percurso';
 $this->headTitle($title);
 
 echo $this->headScript()
 ->prependFile($this->basePath('js/jquery.form.js'));
+echo $this->headScript()
+->prependFile($this->basePath('js/util.js'));
 $form->setAttribute('action', $this->url('percurso', array(
     'action' => 'add'
 )));
 ?>
 
-<h4>Criação de percurso</h4>
+<h4>Criacao de percurso</h4>
+<p>
 
-<form id="myForm" name="percurso" id="percurso" action="&#x2F;PortoVisitas&#x2F;percurso&#x2F;add" method="post"> 
-    Name: <input type="text" name="name" /> 
-    Comment: <textarea name="comment"></textarea> 
-    <input type="submit" value="Submit Comment" /> 
-</form>
+<?php 
+$form->prepare();
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+echo $this->formHidden($form->get('creator'));
+echo $this->formHidden($form->get('finishHour'));
+echo $this->formHidden($form->get('percursoPoisOrder'));
+echo $this->formHidden($form->get('percursoPOIs'));
+?>
+
+<div class="form-group">
+	<label for="name" class="control-label col-xs-2">Nome</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('name'));?>
+	</div>
+</div>
+
+
+<div class="form-group">
+	<label for="description" class="control-label col-xs-2">Descricao</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('description'));?>
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="startHour" class="control-label col-xs-2">Hora de inicio</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('startHour'));?>
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="typeOfSuggestion" class="control-label col-xs-2">Como pretende definir o percurso?</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('typeOfSuggestion'));?>
+	</div>
+</div>
+
+<div id="poisCheckBox" class="form-group">
+	<label for="poisMultiCheck" class="control-label col-xs-2">Seleccione os Pontos de Interesse a percorrer</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('poisMultiCheck'));?>
+	</div>
+</div>
+
+<div class="form-group">
+	<div class="col-xs-offset-2 col-xs-10">
+		<?php echo $this->formSubmit($form->get('submit'));?>
+	</div>
+</div>
+
+<?php echo $this->form()->closeTag();?>

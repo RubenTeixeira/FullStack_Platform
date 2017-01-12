@@ -95,9 +95,6 @@ class PoiForm extends Form
         
         $multiCheck = new MultiCheckbox('connectedPois');
         $multiCheck->setDisableInArrayValidator(true);
-//         $multiCheck->setAttributes(array(
-//             //'class' => 'checkbox'
-//         ));
         $multiCheck->setLabelAttributes(array(
             'class' => 'checkbox',
         ));
