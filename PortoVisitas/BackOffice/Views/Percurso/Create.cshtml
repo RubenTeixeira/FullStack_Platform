@@ -207,6 +207,16 @@
             });
     </script>
     <script>
+
+        function GenerateRouteString(json) {
+
+            var area = document.getElementById("PercursoResult");
+
+            var hora = Math.floor(json.duracao / 60)+":"+ Math.floor(json.duracao % 60);
+
+            area.value = json.percurso + " Horas: " + hora + "m " + Number(Math.round(json.kilometros + 'e3') + 'e-3');
+        }
+
         function HttpRequest(url, request) {
 
             var http = new XMLHttpRequest();
@@ -219,7 +229,8 @@
             http.onreadystatechange = function () {
                 if (http.readyState == 4 && http.status == 200) {
                     var json = JSON.parse(http.responseText);
-                    area.value = json.percurso + " " + json.duracao + " " + json.kilometros;
+
+                    GenerateRouteString(json);
 
                 }
                 if (http.readyState == 4 && http.status == 400) {
@@ -275,7 +286,7 @@
 
             var poiOrigin = selectPOI.options[selectPOI.selectedIndex].value;
             var transport = selectTransport.options[selectTransport.selectedIndex].value;
-            var duration = selectDuration.options[selectTransport.selectedIndex].value;
+            var duration = selectDuration.options[selectDuration.selectedIndex].value;
 
             var startHour = document.getElementById("StartHour").value;
             var kilometers = document.getElementById("kilometers_2").value;

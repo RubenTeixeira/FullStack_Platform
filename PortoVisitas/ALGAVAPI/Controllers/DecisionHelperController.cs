@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -73,7 +74,7 @@ namespace ALGAVAPI.Controllers
                 var response = new
                 {
                     percurso = poisCaminho,
-                    duracao = lines[3],
+                    duracao = double.Parse(lines[3], CultureInfo.InvariantCulture),
                     kilometros = lines[2]
                 };
 
@@ -132,7 +133,7 @@ namespace ALGAVAPI.Controllers
                 var response = new
                 {
                     percurso = poisCaminho,
-                    duracao = lines[3],
+                    duracao = double.Parse(lines[3], CultureInfo.InvariantCulture),
                     kilometros = lines[2]
                 };
 

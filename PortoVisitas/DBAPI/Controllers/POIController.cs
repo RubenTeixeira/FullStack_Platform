@@ -121,7 +121,7 @@ namespace DBAPI.Controllers
                 {
                     problems += " _____ " + error;
                 }
-                return BadRequest("Invalid model object: " + problems);
+                return BadRequest(ModelState);
             }
 
             try

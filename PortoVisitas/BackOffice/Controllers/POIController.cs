@@ -270,8 +270,8 @@ namespace BackOffice.Controllers
                         POI connected = new POI();
                         connected.POIID = Int32.Parse(id);
                         connected.Name = "Dummy";
-                        connected.GPS_Lat = 1.0M;
-                        connected.GPS_Long = 1.0M;
+                        connected.GPS_Lat = 41.15M;
+                        connected.GPS_Long = -8.65M;
                         connected.Altitude = 15;
                         connected.VisitDuration = 60;
 
