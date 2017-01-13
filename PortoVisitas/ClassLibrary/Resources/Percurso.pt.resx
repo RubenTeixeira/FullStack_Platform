@@ -186,4 +186,10 @@
   <data name="VisitLength" xml:space="preserve">
     <value>Duração do Percurso</value>
   </data>
+  <data name="RouteOption1" xml:space="preserve">
+    <value>Com base numa lista de POI a visitar</value>
+  </data>
+  <data name="RouteOption2" xml:space="preserve">
+    <value>Com base na duração do percurso</value>
+  </data>
 </root>

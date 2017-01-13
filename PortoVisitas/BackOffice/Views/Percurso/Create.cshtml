@@ -44,15 +44,15 @@
                 <div class="form-group" style="margin-right: -65px;">
                     <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.RouteOption</label>
                     <div class="col-md-10" style="padding-top: 7px">
-                        <input type="radio" id="algav1" name="radio" value="algav1" /> Algav1 <br>
-                        <input type="radio" id="algav2" name="radio" value="algav2" /> Algav2 <br>
+                        <input type="radio" id="algav1" name="radio" value="algav1" /> @ClassLibrary.Resources.Percurso.RouteOption1 <br>
+                        <input type="radio" id="algav2" name="radio" value="algav2" /> @ClassLibrary.Resources.Percurso.RouteOption2 <br>
                     </div>
                 </div>
             </div>
 
             <div style="position: absolute;top:0;left:650px">
                 <label>@ClassLibrary.Resources.Percurso.RouteResult</label>
-                @Html.TextArea("PercursoResult", @ClassLibrary.Resources.Percurso.RouteMsg, new { @class = "form-control", @style= "max-height:200px;min-height:200px;min-width:350px;resize:none", @readonly = "readonly" })
+                @Html.TextArea("PercursoResult", @ClassLibrary.Resources.Percurso.RouteMsg, new { @class = "form-control", @style = "max-height:200px;min-height:200px;min-width:350px;resize:none", @readonly = "readonly" })
             </div>
             <br style="clear:both;" />
         </div>
@@ -216,23 +216,20 @@
 
             var area = document.getElementById("PercursoResult");
 
-            //http.onreadystatechange = function () {
-            //    if (http.readyState == 4 && http.status == 200) {
-            //        var json = JSON.parse(http.responseText);
-            //    }
-            //    if (http.readyState == 4 && http.status == 400) {
-            //        area.value = "@ClassLibrary.Resources.Percurso.InvalidResult";
-            //    }
-            //}
+            http.onreadystatechange = function () {
+                if (http.readyState == 4 && http.status == 200) {
+                    var json = JSON.parse(http.responseText);
+                    area.value = json.percurso + " " + json.duracao + " " + json.kilometros;
+
+                }
+                if (http.readyState == 4 && http.status == 400) {
+                    area.value = "@ClassLibrary.Resources.Percurso.InvalidResult";
+                }
+            }
             var data = JSON.stringify(request);
-            //http.send(data);
-
-            area.value = "@ClassLibrary.Resources.Percurso.InvalidResult";
-
-            alert(url + " " + data);
+            http.send(data);
         }
-    </script>
-    <script>
+
         function algav1Request() {
 
             var selectPOI = document.getElementById("StartPOI_1");
@@ -267,10 +264,9 @@
                 kilometrosMax: kilometers
             }
 
-            HttpRequest("http://10.8.11.86/PVAPI/api/Algav1", request);
+            HttpRequest("https://10.8.11.86/PVAPI/api/Algav1", request);
         }
-    </script>
-    <script>
+
         function algav2Request() {
 
             var selectPOI = document.getElementById("StartPOI_2");
@@ -294,7 +290,7 @@
                 kilometrosMax: kilometers
             }
 
-            HttpRequest("http://10.8.11.86/PVAPI/api/Algav2", request);
+            HttpRequest("https://10.8.11.86/PVAPI/api/Algav2", request);
         }
     </script>
 }

@@ -115,7 +115,7 @@ namespace PVAPI.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var objResponse1 = JsonConvert.DeserializeObject(result);
+                var objResponse1 = JsonConvert.DeserializeObject<object>(result);
                 return Ok(objResponse1);
             }
 
@@ -132,7 +132,7 @@ namespace PVAPI.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var objResponse1 = JsonConvert.DeserializeObject(result);
+                var objResponse1 = JsonConvert.DeserializeObject<object>(result);
                 return Ok(objResponse1);
             }
 

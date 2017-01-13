@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Altitude" xml:space="preserve">
-    <value>Altitude</value>
+    <value>Altitude (m)</value>
   </data>
   <data name="Approved" xml:space="preserve">
     <value>Approved By</value>
@@ -144,11 +144,17 @@
   <data name="Hashtags" xml:space="preserve">
     <value>Hashtags</value>
   </data>
+  <data name="LocationData" xml:space="preserve">
+    <value>Location</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="OpenHour" xml:space="preserve">
     <value>Openning Hour</value>
+  </data>
+  <data name="OperationHour" xml:space="preserve">
+    <value>Schedule</value>
   </data>
   <data name="POI_Altitude_Error" xml:space="preserve">
     <value>Invalid Altitude</value>
@@ -166,6 +172,6 @@
     <value>Name can not be more than 50 characters</value>
   </data>
   <data name="VisitDuration" xml:space="preserve">
-    <value>Duration of Visit</value>
+    <value>Duration of Visit (min)</value>
   </data>
 </root>

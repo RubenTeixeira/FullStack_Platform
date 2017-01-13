@@ -105,7 +105,7 @@ namespace ALGAVAPI.Controllers
                 File.WriteAllText(@parameters2, String.Empty);
                 File.AppendAllText(@parameters2, request.poiOrigem + "." + Environment.NewLine);
                 File.AppendAllText(@parameters2, request.maxHorasVisita + "." + Environment.NewLine);
-                File.AppendAllText(@parameters2, "time(" + request.horaInicialVisita.Hour.ToString() + "," + request.horaInicialVisita.Minute.ToString() + "," + request.horaInicialVisita.Second.ToString() + ").");
+                File.AppendAllText(@parameters2, "time(" + request.horaInicialVisita.Hour.ToString() + "," + request.horaInicialVisita.Minute.ToString() + "," + request.horaInicialVisita.Second.ToString() + ")." + Environment.NewLine);
                 File.AppendAllText(@parameters2, request.inclinacaoMax + "." + Environment.NewLine);
                 File.AppendAllText(@parameters2, request.tipoVeiculo + "." + Environment.NewLine);
                 File.AppendAllText(@parameters2, request.kilometrosMax + "." + Environment.NewLine);
@@ -209,10 +209,10 @@ namespace ALGAVAPI.Controllers
                     idCaminho++;
                 }
 
-            File.AppendAllText(@knowledge, "transporte(pe, 50)." + Environment.NewLine);
-            File.AppendAllText(@knowledge, "transporte(carro, 300)." + Environment.NewLine);
-            File.AppendAllText(@knowledge, "transporte(autocarro, 200)." + Environment.NewLine);
-            File.AppendAllText(@knowledge, "transporte(tuk, 100).");
+            File.AppendAllText(@knowledge, "transporte(pe, 0.05)." + Environment.NewLine);
+            File.AppendAllText(@knowledge, "transporte(carro, 0.3)." + Environment.NewLine);
+            File.AppendAllText(@knowledge, "transporte(autocarro, 0.2)." + Environment.NewLine);
+            File.AppendAllText(@knowledge, "transporte(tuk, 0.1).");
 
             return true;
         }

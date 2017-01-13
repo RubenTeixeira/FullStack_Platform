@@ -214,6 +214,24 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Based on a POI List to visit.
+        /// </summary>
+        public static string RouteOption1 {
+            get {
+                return ResourceManager.GetString("RouteOption1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Based on the route duration.
+        /// </summary>
+        public static string RouteOption2 {
+            get {
+                return ResourceManager.GetString("RouteOption2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generated Route.
         /// </summary>
         public static string RouteResult {

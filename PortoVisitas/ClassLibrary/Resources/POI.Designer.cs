@@ -61,7 +61,7 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Altitude.
+        ///   Looks up a localized string similar to Altitude (m).
         /// </summary>
         public static string Altitude {
             get {
@@ -142,6 +142,15 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string LocationData {
+            get {
+                return ResourceManager.GetString("LocationData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -156,6 +165,15 @@ namespace ClassLibrary.Resources {
         public static string OpenHour {
             get {
                 return ResourceManager.GetString("OpenHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule.
+        /// </summary>
+        public static string OperationHour {
+            get {
+                return ResourceManager.GetString("OperationHour", resourceCulture);
             }
         }
         
@@ -205,7 +223,7 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duration of Visit.
+        ///   Looks up a localized string similar to Duration of Visit (min).
         /// </summary>
         public static string VisitDuration {
             get {

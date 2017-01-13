@@ -38,12 +38,14 @@ namespace ClassLibrary.Models
         public int VisitDuration { get; set; }
 
         [Required]
+        [Range(41.141571, 41.174946)]
         [RegularExpression(@"[-]?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Lat_Error")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         [Display(Name = "GPS_Lat", ResourceType = typeof(Resources.POI))]
         public decimal GPS_Lat { get; set; }
 
         [Required]
+        [Range(-8.670679, -8.588446)]
         [RegularExpression(@"[-]?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Long_Error")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         [Display(Name = "GPS_Long", ResourceType = typeof(Resources.POI))]
