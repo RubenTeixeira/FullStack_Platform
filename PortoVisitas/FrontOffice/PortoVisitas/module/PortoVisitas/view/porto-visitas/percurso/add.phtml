@@ -1,28 +1,167 @@
 
 <script>
-// wait for the DOM to be loaded
-$(document).ready(function() {
-    // bind 'myForm' and provide a simple callback function
-    $('#percursoForm').ajaxForm(function() {
-        alert("Thank you for your comment!");
-    });
 
+$body = $("body");
+
+$(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+     ajaxStop: function() { $body.removeClass("loading"); }    
+});
+
+//pre-submit callback 
+function showRequest(formData, jqForm, options) { 
+    // formData is an array; here we use $.param to convert it to a string to display it 
+    // but the form plugin does this for you automatically when it submits the data 
+    var queryString = $.param(formData); 
+ 	console.log(queryString);
+    // jqForm is a jQuery object encapsulating the form element.  To access the 
+    // DOM element for the form do this: 
+    // var formElement = jqForm[0]; 
+    //alert('About to submit: \n\n' + queryString); 
+ 
+    // here we could return false to prevent the form from being submitted; 
+    // returning anything other than false will allow the form submit to continue 
+    return true; 
+} 
+ 
+// post-submit callback 
+function showResponse(responseText, statusText, xhr, $form)  { 
+    // for normal html responses, the first argument to the success callback 
+    // is the XMLHttpRequest object's responseText property 
+ 
+    // if the ajaxForm method was passed an Options Object with the dataType 
+    // property set to 'xml' then the first argument to the success callback 
+    // is the XMLHttpRequest object's responseXML property 
+ 
+    // if the ajaxForm method was passed an Options Object with the dataType 
+    // property set to 'json' then the first argument to the success callback 
+    // is the json data object returned by the server 
+ 
+    //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
+        //'\n\nThe output div should have already been updated with the responseText.'); 
+    console.log(responseText);
+    showResult(responseText);
+} 
+
+function getUri() {
+	var option = $('input[name=typeOfSuggestion]:radio').fieldValue(); 
+	if (option == 0)
+		return 'generatePois';
+	else if (option == 1)
+		return 'generateTime';
+}
+
+
+function showResult(response) {
+	if (response.hasOwnProperty('httpStatus')) {
+		showNoResults();
+		return;
+	}
+	var formDiv = $("#formDiv")[0];
+	hideDiv(formDiv);
+	var pois = [];
+	$("#gerado").empty();
+	$("#gerado").append("<ul>");
+	for (var i = 0; i < response.percurso.length; i++) {
+		var poi = new Object();
+		poi.id = response.percurso[i];
+		poi.name = $('input[name="poiList[]"][value='+poi.id+']').parent().text();
+		pois.push(poi);
+		$("#gerado").append('<li>'+poi.name+'</li>');
+	}
+	var duracao = Math.floor(response.duracao / 60).toString() + "h"+ (response.duracao % 60).toString()+"m";
+	$("#gerado").append('<p><p> Duração: '+duracao+'</p>');
+
+	if (response.kilometros < 1)
+		$("#gerado").append('<p><p> Distancia: '+ (response.kilometros*1000).toFixed(0) +' metros</p>');
+	else
+		$("#gerado").append('<p> Distancia: '+ response.kilometros +' Kilometros</p>');
+
+	$("#gerado").append("<p><a id='guardarPercurso' class='btn btn-secondary' href='#' role='button'>Cancelar</a>");
+	$("#gerado").append("<p><a id='guardarPercurso' class='btn btn-primary' href='#' role='button'>Guardar</a>");
+	var resultsDiv = $("#gerado")[0];
+	showDiv(resultsDiv);
+		
+}
+
+function showNoResults() {
+	$("#gerado").empty();
+	$("#gerado").append( "<p>Sem caminhos possíveis. Por favor, altere os critérios de pesquisa.</p>" );
+	var resultsDiv = $("#gerado")[0];
+	showDiv(resultsDiv);
+}
+
+// function postForm() {
+// 	console.log($('#percursoForm').formSerialize());
+// 	$('#percursoForm').submit(function() { 
+// 		uri = getUri();
+// 		//alert(uri);
+// 	    // submit the form 
+// 	    $(this).ajaxSubmit({
+// 	    	url: "/PortoVisitas/percurso/"+uri,
+// 	    	success: function(json) {
+// 	             console.log(json);
+// 	             alert(json.message);
+// 	         },
+// 	 		error: function (error) {
+// 	 			if (error.status == 401) {
+// 	 				alert('Unauthorized');
+// 	 			} else {
+// 	 				alert('Error contacting server');
+// 	 			}
+// 	 		}
+// 		    }); 
+// 	    // return false to prevent normal browser submit and page navigation 
+// 	    return false; 
+// 	});
+// }
+
+$(document).ready(function() { 
+	 
+	    // bind form using 'ajaxForm' 
+	$('#percursoForm').submit(function() { 
+		uri = getUri();
+		var options = { 
+		        //target:        '#output',   // target element(s) to be updated with server response 
+		        beforeSubmit:  showRequest,  // pre-submit callback 
+		        success:       showResponse,  // post-submit callback 
+		 
+		        // other available options: 
+		        url:		'/PortoVisitas/percurso/'+uri,         // override for form's 'action' attribute 
+		        //type:      type        // 'get' or 'post', override for form's 'method' attribute 
+		        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
+		        //clearForm: true        // clear all form fields after successful submit 
+		        //resetForm: true        // reset the form after successful submit 
+		 
+		        // $.ajax options can be used here too, for example: 
+		        //timeout:   3000 
+		    };
+        $(this).ajaxSubmit(options); 
+ 
+        // !!! Important !!! 
+        // always return false to prevent standard browser submit and page navigation 
+        return false; 
+    });
+	
+
+	//$('#gerarPercurso').gerarPercurso();
+	
     $("input[name=typeOfSuggestion]:radio").change(function () {
-    		multicheck = $("#poisCheckBox")[0];
-    		console.log("Radio button state changed!!!!");
-    		console.log("choosePois: "+document.getElementById("choosePois").checked);
-    		console.log("chooseDuration: "+document.getElementById("chooseDuration").checked);
-    		//$("#"+multicheck.id).show(500);
+    	multicheck = $("#poisCheckBox")[0];
+    	radios = $("#durationRadioButtons")[0];
         if (document.getElementById("choosePois").checked) {
-        	$("#"+multicheck.id).show(500);
+        	hideDiv(radios);
         	showDiv(multicheck);
         }
         else {
             hideDiv(multicheck);
+            showDiv(radios);
         }
     });
     
 });
+
+	
 
 </script>
 
@@ -31,19 +170,22 @@ $title = 'Criacao de Percurso';
 $this->headTitle($title);
 
 echo $this->headScript()
-->prependFile($this->basePath('js/jquery.form.js'));
-echo $this->headScript()
-->prependFile($this->basePath('js/util.js'));
-$form->setAttribute('action', $this->url('percurso', array(
-    'action' => 'add'
-)));
+    ->prependFile($this->basePath('js/jquery.form.js'))
+    ->prependFile($this->basePath('js/util.js'));
+
+// $form->setAttribute('action', $this->url('percurso', array(
+// 'action' => 'add'
+// )));
 ?>
 
 <h4>Criacao de percurso</h4>
 <p>
 
-<?php 
+<?php
 $form->prepare();
+?>
+
+<?php 
 echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
 echo $this->formHidden($form->get('creator'));
@@ -52,6 +194,7 @@ echo $this->formHidden($form->get('percursoPoisOrder'));
 echo $this->formHidden($form->get('percursoPOIs'));
 ?>
 
+<div id="formDiv">
 <div class="form-group">
 	<label for="name" class="control-label col-xs-2">Nome</label>
 	<div class="col-xs-5 col-sm-6 col-lg-4">
@@ -61,37 +204,93 @@ echo $this->formHidden($form->get('percursoPOIs'));
 
 
 <div class="form-group">
-	<label for="description" class="control-label col-xs-2">Descricao</label>
+	<label for="description" class="control-label col-xs-2">Descrição</label>
 	<div class="col-xs-5 col-sm-6 col-lg-4">
 		<?php echo $this->formRow($form->get('description'));?>
 	</div>
 </div>
 
 <div class="form-group">
-	<label for="startHour" class="control-label col-xs-2">Hora de inicio</label>
+	<label for="horaInicialVisita" class="control-label col-xs-2">Hora de
+		início</label>
 	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('startHour'));?>
+		<?php echo $this->formRow($form->get('horaInicialVisita'));?>
 	</div>
 </div>
 
 <div class="form-group">
-	<label for="typeOfSuggestion" class="control-label col-xs-2">Como pretende definir o percurso?</label>
+	<label for="tipoVeiculo" class="control-label col-xs-2">Tipo de veículo</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('tipoVeiculo'));?>
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="inclinacaoMax" class="control-label col-xs-2">Inclinação
+		máxima (%)</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('inclinacaoMax'));?>
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="kilometrosMax" class="control-label col-xs-2">Distância
+		máxima (km)</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('kilometrosMax'));?>
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="poiOrigem" class="control-label col-xs-2">Escolha o ponto de origem</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('poiOrigem'));?>
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="typeOfSuggestion" class="control-label col-xs-2">Como
+		pretende definir o percurso?</label>
 	<div class="col-xs-5 col-sm-6 col-lg-4">
 		<?php echo $this->formRow($form->get('typeOfSuggestion'));?>
 	</div>
 </div>
 
 <div id="poisCheckBox" class="form-group">
-	<label for="poisMultiCheck" class="control-label col-xs-2">Seleccione os Pontos de Interesse a percorrer</label>
+	<label for="poiList" class="control-label col-xs-2">Seleccione os
+		Pontos de Interesse a percorrer</label>
 	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('poisMultiCheck'));?>
+		<?php echo $this->formRow($form->get('poiList'));?>
 	</div>
 </div>
+
+<div id="durationRadioButtons" class="form-group">
+	<label for="maxHorasVisita" class="control-label col-xs-2">Seleccione a
+		duração máxima (horas)</label>
+	<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('maxHorasVisita'));?>
+	</div>
+</div>
+
+<!-- <div class="form-group"> -->
+<!-- 	<div class="col-xs-offset-2 col-xs-10"> -->
+<!-- 		<a id="gerarPercurso" class='btn btn-primary' href='#'>Gerar Percurso</a> -->
+<!-- 	</div> -->
+<!-- </div> -->
 
 <div class="form-group">
 	<div class="col-xs-offset-2 col-xs-10">
 		<?php echo $this->formSubmit($form->get('submit'));?>
 	</div>
 </div>
+</div><!-- End of form div -->
+
+<div id="gerado"></div>
 
 <?php echo $this->form()->closeTag();?>
+
+<div class="modal"></div>
+
+
+
+

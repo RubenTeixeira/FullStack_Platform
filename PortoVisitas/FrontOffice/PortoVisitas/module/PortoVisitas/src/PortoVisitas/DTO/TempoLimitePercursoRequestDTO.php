@@ -9,16 +9,13 @@ class TempoLimitePercursoRequestDTO extends PercursoRequestDTO
      */
     public $maxHorasVisita;
     
-    /*
-     * Time string (HH:mm)
-     */
-    public $horaInicialVisita;
     
     public function exchangeArray($data)
     {
         parent::exchangeArray($data);
-        $this->maxHorasVisita = (! empty($data['maxHorasVisita'])) ? $data['maxHorasVisita'] : null;
-        $this->horaInicialVisita = (! empty($data['horaInicialVisita'])) ? $data['horaInicialVisita'] : null;
+        
+        $this->maxHorasVisita = ($data['maxHorasVisita'] == "1") ? 8 : 4;
+        
     }
 
     public function getArrayCopy()
@@ -33,11 +30,6 @@ class TempoLimitePercursoRequestDTO extends PercursoRequestDTO
             
             $inputFilter->add(array(
                 'name' => 'maxHorasVisita',
-                'required' => true
-            ));
-            
-            $inputFilter->add(array(
-                'name' => 'horaInicialVisita',
                 'required' => true
             ));
             

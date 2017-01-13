@@ -8,21 +8,20 @@ class PassaPorPoisPercursoRequestDTO extends PercursoRequestDTO
      * List of int (id)
      */
     public $poiList;
-
-    /*
-     * Time string (HH:mm)
-     */
-    public $startingMinute;
-    
-    
-    
     
 
     public function exchangeArray($data)
     {
         parent::exchangeArray($data);
-        $this->poiList = (! empty($data['poiList'])) ? $data['poiList'] : null;
-        $this->startingMinute = (! empty($data['startingMinute'])) ? $data['startingMinute'] : null;
+        if (! empty($data['poiList'])) {
+            $pois = array();
+            foreach ($data['poiList'] as $poi)
+                $pois[] = intval($poi);
+            $this->poiList = $pois;
+        } else {
+            $this->poiList = null;
+        }
+        
     }
 
     public function getArrayCopy()
@@ -40,10 +39,6 @@ class PassaPorPoisPercursoRequestDTO extends PercursoRequestDTO
                 'required' => true
             ));
             
-            $inputFilter->add(array(
-                'name' => 'startingMinute',
-                'required' => true
-            ));
             
             $this->inputFilter = $inputFilter;
         }

@@ -18,7 +18,7 @@ abstract class PercursoRequestDTO
     public $inclinacaoMax;
 
     /*
-     * String
+     * String (pe/carro/autocarro/tuk)
      */
     public $tipoVeiculo;
 
@@ -27,14 +27,20 @@ abstract class PercursoRequestDTO
      */
     public $kilometrosMax;
 
+    /*
+     * Time string (HH:mm)
+     */
+    public $horaInicialVisita;
+
     protected $inputFilter;
 
     public function exchangeArray($data)
     {
-        $this->poiOrigem = (! empty($data['poiOrigem'])) ? $data['poiOrigem'] : null;
-        $this->inclinacaoMax = (! empty($data['inclinacaoMax'])) ? $data['inclinacaoMax'] : null;
+        $this->poiOrigem = (! empty($data['poiOrigem'])) ? intval($data['poiOrigem']) : null;
+        $this->inclinacaoMax = (! empty($data['inclinacaoMax'])) ? intval($data['inclinacaoMax']) : null;
         $this->tipoVeiculo = (! empty($data['tipoVeiculo'])) ? $data['tipoVeiculo'] : null;
-        $this->kilometrosMax = (! empty($data['kilometrosMax'])) ? $data['kilometrosMax'] : null;
+        $this->kilometrosMax = (! empty($data['kilometrosMax'])) ? intval($data['kilometrosMax']) : null;
+        $this->horaInicialVisita = (! empty($data['horaInicialVisita'])) ? $data['horaInicialVisita'] : null;
     }
 
     public abstract function getArrayCopy();
@@ -59,7 +65,17 @@ abstract class PercursoRequestDTO
         ));
         
         $inputFilter->add(array(
-            'name' => 'inclinacaoMax',
+            'name' => 'tipoVeiculo',
+            'required' => true
+        ));
+        
+        $inputFilter->add(array(
+            'name' => 'kilometrosMax',
+            'required' => true
+        ));
+        
+        $inputFilter->add(array(
+            'name' => 'horaInicialVisita',
             'required' => true
         ));
         

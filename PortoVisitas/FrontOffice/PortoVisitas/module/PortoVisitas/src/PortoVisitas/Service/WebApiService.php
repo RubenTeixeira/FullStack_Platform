@@ -4,6 +4,7 @@ namespace PortoVisitas\Service;
 use Zend\Http\Client;
 use Zend\Http\Request;
 use Zend\Json\Json;
+use Zend\Json\Server\Error;
 
 class WebApiService
 {
@@ -107,8 +108,26 @@ class WebApiService
         return $percursos;
     }
 
-    public static function getPercurso($id)
-    {}
+    public static function getPercurso($data)
+    {
+        $client = new Client(WebApiService::$enderecoBase . '/api/Algav1');
+        $client->setMethod(Request::METHOD_POST);
+        $data = json_encode($data);
+        $len = strlen($data);
+        $client->setHeaders(array(
+            'Content-Type' => 'application/json',
+            'Content-Length' => $len
+        ));
+        $client->setRawBody($data);
+        $response = $client->send();
+        
+        if (!$response->isSuccess())
+            return null;
+        
+        $body = $response->getBody();
+        $percurso = Json::decode($response->getBody(), true);
+        return $percurso;
+    }
 
     public static function savePercurso($percurso)
     {
@@ -118,6 +137,13 @@ class WebApiService
     public static function deletePercurso($id)
     {
         return false;
+    }
+    
+    public static function get404()
+    {
+        $error = new Error();
+        $error->setCode(404);
+        $error->setMessage('No results');
     }
     
     // public static function getPoi($id){

@@ -1,4 +1,4 @@
-var TOGGLE_VISIB_ANIM_DURATION = 500;
+var TOGGLE_VISIB_ANIM_DURATION = 300;
 
 /*******************************************************************************
  * AJAX
@@ -91,14 +91,11 @@ function toggleVisibility(div) {
 }
 
 function showDiv(div) {
-	console.log("Showing div");
-	if (div.style.display === "none")
-		$("#" + div.id).show(TOGGLE_VISIB_ANIM_DURATION);
+	$("#" + div.id).show(TOGGLE_VISIB_ANIM_DURATION);
 }
 
 function hideDiv(div) {
-	if (div.style.display !== "none")
-		$("#" + div.id).hide(TOGGLE_VISIB_ANIM_DURATION);
+	$("#" + div.id).hide(TOGGLE_VISIB_ANIM_DURATION);
 }
 
 /*******************************************************************************
