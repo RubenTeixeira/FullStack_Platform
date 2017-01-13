@@ -126,8 +126,8 @@ namespace DBAPI.Controllers
 
             try
             {
-                await unitOfWork.POIRepository.CreatePOI(pOI);
-                var dto = unitOfWork.POIRepository.ConvertModelToDTO(pOI);
+                POI saved = await unitOfWork.POIRepository.CreatePOI(pOI);
+                var dto = unitOfWork.POIRepository.ConvertModelToDTO(saved);
                 return CreatedAtRoute("PostPOI", new { id = pOI.POIID }, dto);
             }
             catch (Exception ex)

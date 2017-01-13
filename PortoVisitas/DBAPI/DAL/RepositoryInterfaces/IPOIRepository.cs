@@ -15,7 +15,7 @@ namespace DBAPI.DAL.RepositoryInterfaces
         Task<List<POI>> FindPOIsToApprove();
         Task<List<POI>> FindUserPOIs(string email);
         Task<POI> FindPOIByIDAsync(int? poiID);
-        Task<int> CreatePOI(POI poi);
+        Task<POI> CreatePOI(POI poi);
         Task<bool> DeletePOI(int poiID);
         Task<bool> UpdatePOI(POI poi);
         bool POIExists(int id);

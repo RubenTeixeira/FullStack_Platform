@@ -28,7 +28,6 @@ namespace ClassLibrary.Helpers
             if (session["token"] != null)
             {
                 TokenResponse tokenResponse = getToken();
-                Debug.Write("TESTE " + tokenResponse.AccessToken);
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("bearer", tokenResponse.AccessToken);
             }

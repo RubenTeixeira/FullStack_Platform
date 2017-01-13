@@ -14,7 +14,7 @@ namespace DBAPI.DAL.RepositoryInterfaces
         Task<List<Percurso>> FindPercursos();
         Task<List<Percurso>> FindPercursosByUser(string user);
         Task<Percurso> FindPercursoByIDAsync(int? percursoID);
-        Task<int> CreatePercurso(Percurso percurso);
+        Task<Percurso> CreatePercurso(Percurso percurso);
         Task<bool> DeletePercurso(int percursoID);
         Task<bool> UpdatePercurso(Percurso percurso);
         bool PercursoExists(int id);

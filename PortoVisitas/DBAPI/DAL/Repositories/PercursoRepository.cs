@@ -40,7 +40,6 @@ namespace DBAPI.DAL.Repositories
                     StartHour = percurso.StartHour,
                     FinishHour = percurso.FinishHour,
                     PercursoPOIsOrder = percurso.PercursoPOIsOrder
-                    
                 };
 
 
@@ -87,7 +86,7 @@ namespace DBAPI.DAL.Repositories
             return dto;
         }
 
-        public async Task<int> CreatePercurso(Percurso percurso)
+        public async Task<Percurso> CreatePercurso(Percurso percurso)
         {
             foreach (POI connected in percurso.PercursoPOIs) { context.Entry(connected).State = EntityState.Unchanged; }
 
@@ -95,7 +94,7 @@ namespace DBAPI.DAL.Repositories
             await context.SaveChangesAsync();
             context.Entry(percurso).Collection(x => x.PercursoPOIs).Load();
 
-            return 1;
+            return percurso;
         }
 
         public async Task<bool> DeletePercurso(int percursoID)

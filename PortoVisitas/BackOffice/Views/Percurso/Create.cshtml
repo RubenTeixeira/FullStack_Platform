@@ -15,6 +15,8 @@
         <h4>@ClassLibrary.Resources.Global.Percurso</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.FinishHour)
+        @Html.HiddenFor(model => model.PercursoPOIsOrder)
         <div class="content" style="position:relative;">
             <div>
                 <div class="form-group" style="margin-right: -65px;">
@@ -108,7 +110,7 @@
 
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
-                                <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="algav1Request()" class="btn btn-default" />
+                                <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="RequestAlgav1()" class="btn btn-default" />
                             </div>
                         </div>
                         <hr />
@@ -166,7 +168,7 @@
 
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
-                                <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="algav2Request()" class="btn btn-default" />
+                                <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="RequestAlgav2()" class="btn btn-default" />
                             </div>
                         </div>
                         <hr />
@@ -208,13 +210,113 @@
     </script>
     <script>
 
+        function validateRequest1(request) {
+            var bool = true;
+            var text = "@Html.Raw(ClassLibrary.Resources.Percurso.MissingData):\n\n";
+
+            if (request.poiList.length == 0) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.POIList_Error) \n";
+                bool = false;
+            }
+
+            if (!request.horaInicialVisita) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.StartHour_Error) \n";
+                bool = false;
+            }
+
+            if (!request.inclinacaoMax) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.MaxInclination_Error) \n";
+                bool = false;
+            }
+
+            if (!request.kilometrosMax) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.MaxKilometers_Error) \n";
+                bool = false;
+            }
+
+            if (!bool) {
+                alert(text);
+            }
+            return bool;
+        }
+
+        function validateRequest2(request) {
+            var bool = true;
+            var text = "@Html.Raw(ClassLibrary.Resources.Percurso.MissingData):\n\n";
+
+            if (!request.horaInicialVisita) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.StartHour_Error) \n";
+                bool = false;
+            }
+
+            if (!request.inclinacaoMax) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.MaxInclination_Error) \n";
+                bool = false;
+            }
+
+            if (!request.kilometrosMax) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.MaxKilometers_Error) \n";
+                bool = false;
+            }
+
+            if(!bool){
+                alert(text);
+            }
+            return bool;
+        }
+
         function GenerateRouteString(json) {
 
             var area = document.getElementById("PercursoResult");
 
-            var hora = Math.floor(json.duracao / 60)+":"+ Math.floor(json.duracao % 60);
+            //CONSTRUIR HORA
+            var min = Math.floor(json.duracao % 60);
+            if (min < 10) {
+                min = "0" + min;
+            }
+            var hora = Math.floor(json.duracao / 60) + ":" + min;
 
-            area.value = json.percurso + " Horas: " + hora + "m " + Number(Math.round(json.kilometros + 'e3') + 'e-3');
+            //CONSTRUIR ROTA
+            var text = "";
+            var visited = [];
+
+            var selectPOIList = document.getElementById("PercursoPOIs");
+            var options = selectPOIList && selectPOIList.options;
+            var opt;
+            var count = 1;
+            for (var j = 0, jLen = json.percurso.length; j < jLen; j++) {
+                poi = json.percurso[j];
+                for (var i = 0, iLen = options.length; i < iLen; i++) {
+                    opt = options[i];
+                    if (opt.value == poi) {
+                        if (j == 0) {
+                            text += "@Html.Raw(ClassLibrary.Resources.Percurso.Begin): " + opt.text + "\n";
+                        }
+                        else if (j == json.percurso.length - 1) {
+                            text += "@Html.Raw(ClassLibrary.Resources.Percurso.End): " + opt.text + "\n\n";
+                        } else {
+                            if(visited.includes(poi)){
+                                text += "@Html.Raw(ClassLibrary.Resources.Percurso.Passing): " + opt.text + "\n";
+                            } else {
+                                text += "@Html.Raw(ClassLibrary.Resources.Percurso.Stop) " + count + ": " + opt.text + "\n";
+                                count++;
+                            }
+                        }
+                        visited.push(poi);
+                    }
+                }
+            }
+
+            text += "@Html.Raw(ClassLibrary.Resources.Percurso.Duration): " + hora + " min \n";
+            text += "@Html.Raw(ClassLibrary.Resources.Percurso.Distance): " + Number(Math.round(json.kilometros + 'e3') + 'e-3') + " Km";
+
+            area.value = text;
+
+            var percursoOrderItem = document.getElementById("PercursoPOIsOrder");
+            percursoOrderItem.value = json.percurso;
+
+            var finishHourItem = document.getElementById("FinishHour");
+            finishHourItem.value = json.duracao;
         }
 
         function HttpRequest(url, request) {
@@ -234,14 +336,14 @@
 
                 }
                 if (http.readyState == 4 && http.status == 400) {
-                    area.value = "@ClassLibrary.Resources.Percurso.InvalidResult";
+                    area.value = "@Html.Raw(ClassLibrary.Resources.Percurso.InvalidResult)";
                 }
             }
             var data = JSON.stringify(request);
             http.send(data);
         }
 
-        function algav1Request() {
+        function RequestAlgav1() {
 
             var selectPOI = document.getElementById("StartPOI_1");
             var selectTransport = document.getElementById("transport_list_1");
@@ -275,10 +377,12 @@
                 kilometrosMax: kilometers
             }
 
-            HttpRequest("https://10.8.11.86/PVAPI/api/Algav1", request);
+            if(validateRequest1(request)){
+                HttpRequest("https://10.8.11.86/PVAPI/api/Algav1", request);
+            }
         }
 
-        function algav2Request() {
+        function RequestAlgav2() {
 
             var selectPOI = document.getElementById("StartPOI_2");
             var selectTransport = document.getElementById("transport_list_2");
@@ -301,7 +405,9 @@
                 kilometrosMax: kilometers
             }
 
-            HttpRequest("https://10.8.11.86/PVAPI/api/Algav2", request);
+            if (validateRequest2(request)) {
+                HttpRequest("https://10.8.11.86/PVAPI/api/Algav2", request);
+            }
         }
     </script>
 }

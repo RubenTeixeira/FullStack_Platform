@@ -192,4 +192,40 @@
   <data name="RouteOption2" xml:space="preserve">
     <value>Based on the route duration</value>
   </data>
+  <data name="Begin" xml:space="preserve">
+    <value>Being</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="FinishHour" xml:space="preserve">
+    <value>Finish Hour</value>
+  </data>
+  <data name="MaxInclination_Error" xml:space="preserve">
+    <value>Must type the Max. Inclination</value>
+  </data>
+  <data name="MaxKilometers_Error" xml:space="preserve">
+    <value>Must type the Max. Kilometers</value>
+  </data>
+  <data name="MissingData" xml:space="preserve">
+    <value>Missing data for route generation</value>
+  </data>
+  <data name="Passing" xml:space="preserve">
+    <value>Passing through</value>
+  </data>
+  <data name="POIList_Error" xml:space="preserve">
+    <value>Must select POI to Visit</value>
+  </data>
+  <data name="StartHour_Error" xml:space="preserve">
+    <value>Must choose a Starting Hour</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
 </root>

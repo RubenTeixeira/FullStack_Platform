@@ -5,6 +5,8 @@ using ClassLibrary.Models;
 using ClassLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -72,13 +74,17 @@ namespace BackOffice.Controllers
 
         // POST: Percurso/Create
         [HttpPost]
-        public async Task<ActionResult> Create([Bind(Include = "PercursoID,Name,Description,PercursoPOIs")] Percurso percurso)
+        public async Task<ActionResult> Create([Bind(Include = "PercursoID,Name,Description,StartHour,FinishHour,PercursoPOIsOrder,PercursoPOIs")] Percurso percurso)
         {
 
-            ViewBag.PoiList = await getPOIList(null);
+            List<POI> list = await getPOIList(null);
+            ViewBag.PoiList = list;
 
-            var connectedForm = Request.Form["PercursoPOIs"];
-            parsePercursoPOIs(percurso, connectedForm);
+            parsePercursoPOIs(percurso, list);
+
+            var finishHour = Request.Form["FinishHour"];
+
+            percurso.FinishHour = percurso.StartHour.AddMinutes(double.Parse(finishHour, CultureInfo.InvariantCulture));
 
             percurso.Creator = PVWebApiHttpClient.getUsername();
 
@@ -125,7 +131,7 @@ namespace BackOffice.Controllers
             List<POI> poiList = await getPOIList(null);
 
             var connectedForm = Request.Form["percursoPoi.SelectedItemIds"];
-            parsePercursoPOIs(percurso, connectedForm);
+            parsePercursoPOIs(percurso, poiList);
 
             buildPercursoViewModel(percursoModel, percurso, poiList);
 
@@ -229,25 +235,33 @@ namespace BackOffice.Controllers
             return percurso;
         }
 
-        public void parsePercursoPOIs(Percurso percurso, Object connectedForm)
+        public void parsePercursoPOIs(Percurso percurso, List<POI> listPOI)
         {
-            if (connectedForm != null)
+            List<int> visited = new List<int>();
+
+            if (listPOI != null)
             {
-                string[] percursoPOIs = connectedForm.ToString().Split(',');
+                string[] percursoPOIs = percurso.PercursoPOIsOrder.Split(',');
 
                 if (percursoPOIs.Count() != 0)
                 {
                     foreach (string id in percursoPOIs)
                     {
-                        POI connected = new POI();
-                        connected.POIID = Int32.Parse(id);
-                        connected.Name = "Dummy";
-                        connected.GPS_Lat = 1.0M;
-                        connected.GPS_Long = 1.0M;
-                        connected.Altitude = 15;
-                        connected.VisitDuration = 60;
+                        foreach(POI p in listPOI)
+                        {
+                            if(Int32.Parse(id) == p.POIID && !visited.Contains(p.POIID)) {
+                                POI connected = new POI();
+                                connected.POIID = Int32.Parse(id);
+                                connected.Name = "Dummy";
+                                connected.GPS_Lat = 41.15M;
+                                connected.GPS_Long = -8.65M;
+                                connected.Altitude = 15;
+                                connected.VisitDuration = 60;
 
-                        percurso.PercursoPOIs.Add(connected);
+                                percurso.PercursoPOIs.Add(connected);
+                                visited.Add(p.POIID);
+                            }
+                        }
                     }
                 }
             }

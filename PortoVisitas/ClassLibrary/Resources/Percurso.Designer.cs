@@ -61,6 +61,15 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Being.
+        /// </summary>
+        public static string Begin {
+            get {
+                return ResourceManager.GetString("Begin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bus.
         /// </summary>
         public static string Bus {
@@ -93,6 +102,42 @@ namespace ClassLibrary.Resources {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance.
+        /// </summary>
+        public static string Distance {
+            get {
+                return ResourceManager.GetString("Distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        public static string Duration {
+            get {
+                return ResourceManager.GetString("Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End.
+        /// </summary>
+        public static string End {
+            get {
+                return ResourceManager.GetString("End", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finish Hour.
+        /// </summary>
+        public static string FinishHour {
+            get {
+                return ResourceManager.GetString("FinishHour", resourceCulture);
             }
         }
         
@@ -142,6 +187,33 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must type the Max. Inclination.
+        /// </summary>
+        public static string MaxInclination_Error {
+            get {
+                return ResourceManager.GetString("MaxInclination_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must type the Max. Kilometers.
+        /// </summary>
+        public static string MaxKilometers_Error {
+            get {
+                return ResourceManager.GetString("MaxKilometers_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing data for route generation.
+        /// </summary>
+        public static string MissingData {
+            get {
+                return ResourceManager.GetString("MissingData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -156,6 +228,15 @@ namespace ClassLibrary.Resources {
         public static string OnFoot {
             get {
                 return ResourceManager.GetString("OnFoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passing through.
+        /// </summary>
+        public static string Passing {
+            get {
+                return ResourceManager.GetString("Passing", resourceCulture);
             }
         }
         
@@ -183,6 +264,15 @@ namespace ClassLibrary.Resources {
         public static string PercursoPOIs {
             get {
                 return ResourceManager.GetString("PercursoPOIs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must select POI to Visit.
+        /// </summary>
+        public static string POIList_Error {
+            get {
+                return ResourceManager.GetString("POIList_Error", resourceCulture);
             }
         }
         
@@ -250,11 +340,29 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must choose a Starting Hour.
+        /// </summary>
+        public static string StartHour_Error {
+            get {
+                return ResourceManager.GetString("StartHour_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start POI.
         /// </summary>
         public static string StartPOI {
             get {
                 return ResourceManager.GetString("StartPOI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
             }
         }
         

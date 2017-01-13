@@ -100,11 +100,18 @@ namespace DBAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            await unitOfWork.PercursoRepository.CreatePercurso(percurso);
+            try
+            {
+                Percurso saved = await unitOfWork.PercursoRepository.CreatePercurso(percurso);
 
-            var dto = unitOfWork.PercursoRepository.ConvertModelToDTO(percurso);
+                var dto = unitOfWork.PercursoRepository.ConvertModelToDTO(saved);
 
-            return CreatedAtRoute("DefaultApi", new { id = percurso.PercursoID }, dto);
+                return CreatedAtRoute("DefaultApi", new { id = percurso.PercursoID }, dto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: api/Percurso/5

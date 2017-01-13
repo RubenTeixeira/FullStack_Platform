@@ -41,7 +41,7 @@ namespace DBAPI.DAL.Repositories
             return context.POIs.FindAsync(poiID);
         }
 
-        public async Task<int> CreatePOI(POI poi)
+        public async Task<POI> CreatePOI(POI poi)
         {
             //ApplicationUser user = context.Users.Find(userID);
             //poi.Creator= user;
@@ -62,7 +62,7 @@ namespace DBAPI.DAL.Repositories
             context.Entry(poi).Collection(x => x.ConnectedPOIs).Load();
             context.Entry(poi).Collection(x => x.Hashtags).Load();
 
-            return 1;
+            return poi;
         }
 
         public async Task<bool> DeletePOI(int poiID)
