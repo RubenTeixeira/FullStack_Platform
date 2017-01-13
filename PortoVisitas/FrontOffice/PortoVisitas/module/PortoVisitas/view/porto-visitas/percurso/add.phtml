@@ -1,6 +1,9 @@
 
 <script>
 
+var PERCURSO;
+var FORM;
+
 $body = $("body");
 
 $(document).on({
@@ -40,7 +43,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
     //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
         //'\n\nThe output div should have already been updated with the responseText.'); 
     console.log(responseText);
-    showResult(responseText);
+    showResult(responseText, statusText, xhr, $form);
 } 
 
 function getUri() {
@@ -52,30 +55,34 @@ function getUri() {
 }
 
 
-function showResult(response) {
+function showResult(response, statusText, xhr, $form) {
 	if (response.hasOwnProperty('httpStatus')) {
 		showNoResults();
 		return;
 	}
+	PERCURSO = response;
+	FORM = $form;
+	console.log("FORM:");
+	console.log(FORM);
 	var formDiv = $("#formDiv")[0];
 	hideDiv(formDiv);
 	var pois = [];
 	$("#gerado").empty();
-	$("#gerado").append("<ul>");
+	$("#gerado").append("<ul class='list-group'>");
 	for (var i = 0; i < response.percurso.length; i++) {
 		var poi = new Object();
 		poi.id = response.percurso[i];
 		poi.name = $('input[name="poiList[]"][value='+poi.id+']').parent().text();
 		pois.push(poi);
-		$("#gerado").append('<li>'+poi.name+'</li>');
+		$("#gerado").append('<li class=\'list-group-item\'>'+poi.name+'<span class=\'badge\'>'+(i+1)+'</span></li></li>');
 	}
-	var duracao = Math.floor(response.duracao / 60).toString() + "h"+ (response.duracao % 60).toString()+"m";
-	$("#gerado").append('<p><p> Duração: '+duracao+'</p>');
+	var dur = convertMinsToHrsMins(response.duracao);
+	$("#gerado").append('<p><p> Duração: '+dur+'</p>');
 
 	if (response.kilometros < 1)
 		$("#gerado").append('<p><p> Distancia: '+ (response.kilometros*1000).toFixed(0) +' metros</p>');
 	else
-		$("#gerado").append('<p> Distancia: '+ response.kilometros +' Kilometros</p>');
+		$("#gerado").append('<p> Distancia: '+ parseFloat(response.kilometros).toFixed(2) +' Kilometros</p>');
 
 	$("#gerado").append("<p><a id='guardarPercurso' class='btn btn-secondary' href='#' role='button'>Cancelar</a>");
 	$("#gerado").append("<p><a id='guardarPercurso' class='btn btn-primary' href='#' role='button'>Guardar</a>");
@@ -84,37 +91,16 @@ function showResult(response) {
 		
 }
 
+function savePercurso() {
+	var name = FORM
+}
+
 function showNoResults() {
 	$("#gerado").empty();
 	$("#gerado").append( "<p>Sem caminhos possíveis. Por favor, altere os critérios de pesquisa.</p>" );
 	var resultsDiv = $("#gerado")[0];
 	showDiv(resultsDiv);
 }
-
-// function postForm() {
-// 	console.log($('#percursoForm').formSerialize());
-// 	$('#percursoForm').submit(function() { 
-// 		uri = getUri();
-// 		//alert(uri);
-// 	    // submit the form 
-// 	    $(this).ajaxSubmit({
-// 	    	url: "/PortoVisitas/percurso/"+uri,
-// 	    	success: function(json) {
-// 	             console.log(json);
-// 	             alert(json.message);
-// 	         },
-// 	 		error: function (error) {
-// 	 			if (error.status == 401) {
-// 	 				alert('Unauthorized');
-// 	 			} else {
-// 	 				alert('Error contacting server');
-// 	 			}
-// 	 		}
-// 		    }); 
-// 	    // return false to prevent normal browser submit and page navigation 
-// 	    return false; 
-// 	});
-// }
 
 $(document).ready(function() { 
 	 
@@ -134,7 +120,7 @@ $(document).ready(function() {
 		        //resetForm: true        // reset the form after successful submit 
 		 
 		        // $.ajax options can be used here too, for example: 
-		        //timeout:   3000 
+		        timeout:   10000 
 		    };
         $(this).ajaxSubmit(options); 
  

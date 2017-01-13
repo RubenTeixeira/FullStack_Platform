@@ -14,6 +14,7 @@ use PortoVisitas\Form\PercursoForm;
 use Zend\View\Model\JsonModel;
 use PortoVisitas\DTO\PassaPorPoisPercursoRequestDTO;
 use PortoVisitas\DTO\TempoLimitePercursoRequestDTO;
+use Zend\Http\Request;
 
 class PercursoController extends AbstractActionController
 {
@@ -32,7 +33,7 @@ class PercursoController extends AbstractActionController
         $request = $this->getRequest();
         
         if ($request->isPost()) {
-            
+            //TODO: SAVE NEW PERCURSO
             // return $this->redirect()->toRoute('percurso');
         }
         // $pois = WebApiService::getPois();
@@ -51,6 +52,18 @@ class PercursoController extends AbstractActionController
         return array(
             'form' => $form,
             'pois' => $pois
+        );
+    }
+    
+    public function detailsAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('percurso');
+        }
+        $percurso = WebApiService::getPercursoById($id);
+        return array(
+            'percurso' => $percurso
         );
     }
 

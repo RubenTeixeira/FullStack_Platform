@@ -19,14 +19,14 @@ class Percurso
     
     public function exchangeArray($data)
     {
-        $this->id = (! empty($data['ID'])) ? $data['ID'] : null;
-        $this->name = (! empty($data['Name'])) ? $data['Name'] : null;
-        $this->description = (! empty($data['Description'])) ? $data['Description'] : null;
-        $this->creator = (! empty($data['Creator'])) ? $data['Creator'] : null;
-        $this->startHour = (! empty($data['StartHour'])) ? $data['StartHour'] : null;
-        $this->finishHour = (! empty($data['FinishHour'])) ? $data['FinishHour'] : null;
-        $this->percursoPoisOrder = (! empty($data['PercursoPoisOrder'])) ? $data['PercursoPoisOrder'] : null;
-        $this->percursoPOIs = (! empty($data['PercursoPOIs'])) ? $data['PercursoPOIs'] : null;
+        $this->id = (! empty($data['id'])) ? $data['id'] : null;
+        $this->name = (! empty($data['name'])) ? $data['name'] : null;
+        $this->description = (! empty($data['description'])) ? $data['description'] : null;
+        $this->creator = (! empty($data['creator'])) ? $data['creator'] : null;
+        $this->startHour = (! empty($data['startHour'])) ? $data['startHour'] : null;
+        $this->finishHour = (! empty($data['finishHour'])) ? $data['finishHour'] : null;
+        $this->percursoPoisOrder = (! empty($data['percursoPoisOrder'])) ? $this->stringify($data['percursoPoisOrder']) : null;
+        $this->percursoPOIs = (! empty($data['percursoPOIs'])) ? $data['percursoPOIs'] : null;
     }
     
     public function getArrayCopy()
@@ -37,6 +37,11 @@ class Percurso
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
+    }
+    
+    private function stringify($poiOrder)
+    {
+        
     }
     
     public function getInputFilter()
@@ -56,6 +61,11 @@ class Percurso
             
             $inputFilter->add(array(
                 'name' => 'startHour',
+                'required' => true,
+            ));
+            
+            $inputFilter->add(array(
+                'name' => 'finishHour',
                 'required' => true,
             ));
     

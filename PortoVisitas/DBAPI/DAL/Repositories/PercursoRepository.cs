@@ -38,6 +38,7 @@ namespace DBAPI.DAL.Repositories
                     Description = percurso.Description,
                     Creator = percurso.Creator,
                     StartHour = percurso.StartHour,
+                    FinishHour = percurso.FinishHour,
                     PercursoPOIsOrder = percurso.PercursoPOIsOrder
                     
                 };
@@ -67,6 +68,7 @@ namespace DBAPI.DAL.Repositories
                 Description = percurso.Description,
                 Creator = percurso.Creator,
                 StartHour = percurso.StartHour,
+                FinishHour = percurso.FinishHour,
                 PercursoPOIsOrder = percurso.PercursoPOIsOrder
                 
             };

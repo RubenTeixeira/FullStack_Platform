@@ -22,6 +22,12 @@ namespace ClassLibrary.Models
         [Display(Name = "StartHour", ResourceType = typeof(Resources.Percurso))]
         public DateTime StartHour { get; set; }
 
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Time)]
+        [Display(Name = "FinishHour", ResourceType = typeof(Resources.Percurso))]
+        public DateTime FinishHour { get; set; }
+
         [StringLength(250, ErrorMessageResourceType = typeof(Resources.Percurso), ErrorMessageResourceName = "Percurso_Description_Error")]
         [Display(Name = "Description", ResourceType = typeof(Resources.Percurso))]
         public string Description { get; set; }

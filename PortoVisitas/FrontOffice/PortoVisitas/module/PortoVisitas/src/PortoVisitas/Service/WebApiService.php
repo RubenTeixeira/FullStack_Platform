@@ -129,6 +129,16 @@ class WebApiService
         return $percurso;
     }
 
+    public static function getPercursoById($id)
+    {
+        $client = new Client(WebApiService::$enderecoBase . '/api/Percurso/'.$id);
+        $client->setMethod(Request::METHOD_GET);
+        $response = $client->send();
+        $body = $response->getBody();
+        $percurso = Json::decode($response->getBody(), true);
+        return $percurso;
+    }
+    
     public static function savePercurso($percurso)
     {
         return false;

@@ -3,15 +3,27 @@ $title = 'Percursos';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<p>
- <a href="<?php echo $this->url('percurso', array('action'=>'add'));?>">Adicionar novo percurso</a>
-</p>
+
+
+<?php
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            if (isset($_SESSION['user'])) :?>
+ <p>
+ <br/>
+ <a href="<?php echo $this->url('percurso', array('action'=>'add'));?>">Criar novo percurso</a>
+ <p>
+ <br/>
+ 
+ <?php endif;?>
+
 
 <table class="table">
 	<tr>
 		<th>Nome</th>
 		<th>Descrição</th>
-		<th>Data</th>
+		<th>Hora de Início</th>
 		<th>Criador</th>
 		<th>&nbsp;</th>
 	</tr>
@@ -20,8 +32,10 @@ $this->headTitle($title);
 		<td><?php echo $this->escapeHtml($percurso['Name']);?></td>
  		<td><?php echo $this->escapeHtml($percurso['Description']);?></td>
  		<?php 
- 		$date = date_parse($percurso['StartHour']);
- 		$datastr = $date['year']."-".$date['month']."-".$date['day']." ".$date['hour'].":".$date['minute'];
+//  		$date = date_parse($percurso['StartHour']);
+//  		$datastr = $date['year']."-".$date['month']."-".$date['day']." ".$date['hour'].":".$date['minute'];
+        $date = new DateTime($percurso['StartHour']);
+        $datastr = $date->format('H:i');
  		?>
  		<td><?php echo $this->escapeHtml($datastr);?></td>
  		<td><?php echo $this->escapeHtml($percurso['Creator']);?></td>

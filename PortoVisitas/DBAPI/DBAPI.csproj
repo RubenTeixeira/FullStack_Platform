@@ -306,6 +306,10 @@
     <Compile Include="Migrations\201701101650271_Added_Percurso_HourAndOrder.Designer.cs">
       <DependentUpon>201701101650271_Added_Percurso_HourAndOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701131507070_Added_Percurso_FinishHour.cs" />
+    <Compile Include="Migrations\201701131507070_Added_Percurso_FinishHour.Designer.cs">
+      <DependentUpon>201701131507070_Added_Percurso_FinishHour.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -417,6 +421,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701101650271_Added_Percurso_HourAndOrder.resx">
       <DependentUpon>201701101650271_Added_Percurso_HourAndOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701131507070_Added_Percurso_FinishHour.resx">
+      <DependentUpon>201701131507070_Added_Percurso_FinishHour.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

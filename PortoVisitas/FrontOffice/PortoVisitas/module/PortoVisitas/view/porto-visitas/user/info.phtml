@@ -22,7 +22,7 @@
         
         echo $this->headScript()
             ->prependFile($this->basePath('js/jquery.tag-editor.min.js'))
-            ->prependFile($this->basePath('js/jquery.caret.min.js'));
+            ->prependFile($this->basePath('js/jquery.caret.min.js'));        
         ?>
 
 	<script type="text/javascript">
@@ -77,9 +77,9 @@
 	<tr>
 		<th>Estado</th>
 		<th>Nome</th>
-		<th>Descricao</th>
-		<th>Horario</th>
-		<th>Duracao (min)</th>
+		<th>Descrição</th>
+		<th>Horário</th>
+		<th>Duração (min)</th>
 		<th>Coordenadas</th>
 		<th>Altitude (m)</th>
 
@@ -87,11 +87,13 @@
 	<?php foreach ($pois as $poi) : ?>
 	<tr>
 		<?php
+		  $rejected = false;
           if ($poi->approved == null) {
          ?>
           <td><b><font color="blue">Submetido</font></b></td>
          <?php
           } else if ($poi->approved == "no") {
+              $rejected = true;
           ?>
           <td><b><font color="red">Rejeitado</font></b></td>
           <?php
@@ -116,7 +118,8 @@
  		<td><?php echo $this->escapeHtml($poi->altitude);?></td>
  		</tr>
  		
- 			<tr>
+ 		<tr>
+ 		<?php if (!$rejected) :?>
  		<td colspan="2" style="border:none;text-align:right;">
  			<div class="tagsDiv" style="padding-bottom:30px;">
  				<label for="hashtags_<?php echo $poi->poiid?>">
@@ -124,6 +127,7 @@
  				</label>
  			</div>
  		</td>
+ 		
  		<td colspan="5" style="border:none;">
         <input type="text" name="tags_<?php echo $poi->poiid?>" id="hashtags_<?php echo $poi->poiid?>">
  			<?php
@@ -146,6 +150,10 @@ JS;
             $this->inlineScript()->captureEnd();
      		?>
  		</td>
+ 		<?php else :?>
+ 			<td colspan="6" style="border:none;">&nbsp;</td>
+			<td colspan="6" style="border:none;">&nbsp;</td>
+		<?php endif; ?>
 	</tr>
  		
 	

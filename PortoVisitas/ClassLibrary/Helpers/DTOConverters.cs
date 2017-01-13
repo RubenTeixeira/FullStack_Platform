@@ -71,6 +71,7 @@ namespace ClassLibrary.Helpers
             p.Name = dto.Name;
             p.Description = dto.Description;
             p.StartHour = dto.StartHour;
+            p.FinishHour = dto.FinishHour;
             p.PercursoPOIsOrder = dto.PercursoPOIsOrder;
 
             if (dto.PercursoPOIs != null)
