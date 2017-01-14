@@ -15,10 +15,7 @@ return array(
     
     'navigation' => array(
         'default' => array(
-            array(
-                'label' => 'Percursos',
-                'route' => 'percurso'
-            ),
+            
             // 'pages' => array(
             // array(
             // 'label' => 'Child #1',
@@ -28,6 +25,16 @@ return array(
             array(
                 'label' => 'Pontos de Interesse',
                 'route' => 'poi'
+            ),
+        ),
+        'authenticated' => array(
+            array(
+                'label' => 'Percursos',
+                'route' => 'percurso'
+            ),
+            array(
+                'label' => 'Transferências',
+                'route' => 'download'
             )
         ),
         'session' => array(

@@ -24,12 +24,14 @@ class PercursoForm extends Form
         
         $this->add(array(
             'name' => 'creator',
+            'id' => 'formCreator',
             'type' => 'Hidden'
         ));
         
         $this->add(array(
             'name' => 'name',
             'type' => 'Text',
+            'id' => 'formName',
             'attributes' => array(
                 'class' => 'form-control'
             )
@@ -38,6 +40,7 @@ class PercursoForm extends Form
         $this->add(array(
             'name' => 'description',
             'type' => 'Textarea',
+            'id' => 'formDescription',
             'attributes' => array(
                 'class' => 'form-control'
             )
@@ -46,7 +49,8 @@ class PercursoForm extends Form
         $time = new Time('horaInicialVisita');
         $time->setAttributes(array(
             'step' => '60',
-            'class' => 'form-control'
+            'class' => 'form-control',
+            'id' => 'formStartHour',
         ))->setOptions(array(
             'format' => 'H:i'
         ));
@@ -153,9 +157,9 @@ class PercursoForm extends Form
         $selectPoiOrig->setDisableInArrayValidator(true);
         $this->add($selectPoiOrig);
         
-        $multiCheck = new MultiCheckbox('poiList');
+        $multiCheck = new MultiCheckbox('percursoPOIs');
         $multiCheck->setDisableInArrayValidator(true);
-        $multiCheck->setOption('style', 'display: none');
+        $multiCheck->setAttributes(array('id' => 'percursoPOIs'));
         $multiCheck->setLabelAttributes(array(
             'class' => 'checkbox'
         ));
@@ -163,17 +167,18 @@ class PercursoForm extends Form
         
         $this->add(array(
             'name' => 'finishHour',
-            'type' => 'Hidden'
+            'type' => 'Hidden',
+            'attributes' => array(
+                'id' => 'formFinishHour',
+            ),
         ));
         
         $this->add(array(
             'name' => 'percursoPoisOrder',
-            'type' => 'Hidden'
-        ));
-        
-        $this->add(array(
-            'name' => 'percursoPOIs',
-            'type' => 'Hidden'
+            'type' => 'Hidden',
+            'attributes' => array(
+                'id' => 'formPercursoPoisOrder',
+            ),
         ));
         
         $this->add(array(
@@ -185,6 +190,16 @@ class PercursoForm extends Form
                 'class' => 'btn btn-primary'
             )
         ));
+        
+//         $this->add(array(
+//             'name' => 'submitPercurso',
+//             'type' => 'Submit',
+//             'attributes' => array(
+//                 'value' => 'Guardar',
+//                 'id' => 'savePercurso',
+//                 'class' => 'btn btn-primary'
+//             )
+//         ));
     }
 }
 

@@ -92,6 +92,7 @@ namespace DBAPI.DAL.Repositories
             context.Database.ExecuteSqlCommand("delete from Caminho where POIID = {0}", poi.POIID);
             context.Database.ExecuteSqlCommand("delete from POIHashtag where POI_POIID = {0}", poi.POIID);
             await context.SaveChangesAsync();
+            
 
             foreach (Hashtag tag in poi.Hashtags)
             {
@@ -118,6 +119,36 @@ namespace DBAPI.DAL.Repositories
             {
                 context.Database.ExecuteSqlCommand("Insert Into Caminho (POIID,ConnectedPOIID)" +
                     "Values('" + poi.POIID + "','" + connected.POIID + "')");
+            }
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> UpdateHashtags(POI poi)
+        {
+
+            context.Database.ExecuteSqlCommand("delete from POIHashtag where POI_POIID = {0}", poi.POIID);
+            await context.SaveChangesAsync();
+
+            foreach (Hashtag tag in poi.Hashtags)
+            {
+                Hashtag existingTag = null;
+                existingTag = await getHashtagRepository().FindHashtagAsync(tag.Text);
+                if (existingTag == null)
+                {
+                    context.Hashtags.Add(tag);
+                }
+                else
+                {
+                    tag.HashtagID = existingTag.HashtagID;
+                    context.Entry(tag).State = EntityState.Unchanged;
+                }
+                await context.SaveChangesAsync();
+
+                context.Database.ExecuteSqlCommand("Insert Into POIHashtag (POI_POIID,Hashtag_HashtagID)" +
+                    "Values('" + poi.POIID + "','" + tag.HashtagID + "')");
             }
 
             await context.SaveChangesAsync();
@@ -211,6 +242,6 @@ namespace DBAPI.DAL.Repositories
             GC.SuppressFinalize(this);
         }
 
-
+        
     }
 }

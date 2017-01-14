@@ -1,94 +1,61 @@
 <?php
-$title = 'Detalhes de' . $percurso['Name'];
-$this->headTitle($title);
-echo $this->escapeHtml($title);
+$title = $percurso['Name'];
+$this->headTitle('Detalhes - '.$title);
 ?>
+
+<h4><?php echo $this->escapehtml($title);?></h4>
+<p>&nbsp;</p>
 
 
 <table class="table">
 	<tr>
-		<th>Nome</th>
 		<th>Descrição</th>
-		<th>Horario</th>
-		<th>Duracao (min)</th>
-		<th>Coordenadas</th>
-		<th>Altitude (m)</th>
+		<th>Início</th>
+		<th>Fim</th>
+		<th>Criador</th>
 
 	</tr>
-<?php foreach ($pois as $poi) : ?>
 	<tr>
-		<?php
-    $rejected = false;
-    if ($poi->approved == null) {
-        ?>
-          <td><b><font color="blue">Submetido</font></b></td>
-         <?php
-    } else 
-        if ($poi->approved == "no") {
-            $rejected = true;
-            ?>
-          <td><b><font color="red">Rejeitado</font></b></td>
-          <?php
-        } else {
-            ?>
-          <td><b><font color="green">Aprovado</font></b></td>
-          <?php
-        }
-    ?>
- 		<td><?php echo $this->escapeHtml($poi->name);?></td>
-		<td style="width: 30%;"><?php echo $this->escapeHtml($poi->description);?></td>
- 		<?php
-    $openDate = date_parse($poi->openHour);
-    $opens = $openDate['hour'] . ":" . $openDate['minute'];
-    $closeDate = date_parse($poi->closeHour);
-    $closes = $closeDate['hour'] . ":" . $closeDate['minute'];
-    $schedule = date('H:i', strtotime($opens)) . " - " . date('H:i', strtotime($closes));
-    ?>
- 		<td><?php echo $this->escapeHtml($schedule);?></td>
-		<td><?php echo $this->escapeHtml($poi->visitDuration);?></td>
-		<td><?php echo $this->escapeHtml($poi->gps_lat.",".$poi->gps_long);?></td>
-		<td><?php echo $this->escapeHtml($poi->altitude);?></td>
+		<td><?php echo $this->escapeHtml($percurso['Description']);?></td>
+		<?php 
+        $dateI = new DateTime($percurso['StartHour']);
+        $dateF = new DateTime($percurso['FinishHour']);
+        $datastrI = $dateI->format('H:i');
+        $datastrF = $dateF->format('H:i');
+ 		?>
+ 		<td><?php echo $this->escapeHtml($datastrI);?></td>
+ 		<td><?php echo $this->escapeHtml($datastrF);?></td>
+ 		<td><?php echo $this->escapeHtml($percurso['Creator']);?></td>
 	</tr>
-
-	<tr>
- 		<?php if (!$rejected) :?>
- 		<td colspan="2" style="border: none; text-align: right;">
-			<div class="tagsDiv" style="padding-bottom: 30px;">
-				<label for="hashtags_<?php echo $poi->poiid?>"> <font
-					color="lightgrey" style="font: menu;">Hashtags</font>
-				</label>
-			</div>
-		</td>
-
-		<td colspan="5" style="border: none;"><input type="text"
-			name="tags_<?php echo $poi->poiid?>"
-			id="hashtags_<?php echo $poi->poiid?>">
- 			<?php
-        $tags = (null != $poi->hashtags) ? array_column($poi->hashtags, 'Text') : [];
-        $htags = json_encode($tags, JSON_HEX_TAG);
-        $poiJson = json_encode($poi);
-        $this->inlineScript()->captureStart();
-        
-        echo <<<JS
-    $('#hashtags_$poi->poiid').tagEditor({
-                 			    initialTags: $htags,
-                 			    placeholder: 'Enter tags ...',
-                                onChange: function(field, editor, tags) {
-                                    //logTag(field, editor, tags, $poiJson);
-                                    savePOI($poiJson, tags);    
-                                }
-
-                });
-JS;
-        $this->inlineScript()->captureEnd();
-        ?>
- 		</td>
- 		<?php else :?>
- 			<td colspan="6" style="border: none;">&nbsp;</td>
-		<td colspan="6" style="border: none;">&nbsp;</td>
-		<?php endif; ?>
-	</tr>
- 		
-	
-<?php endforeach; ?>
 </table>
+<p>
+
+<?php $poisOrder = explode(',', $percurso['PercursoPOIsOrder']) ; //  Stored as string as of this moment
+ 	  $poiCounter = 0;
+?>
+
+<h4>Trajecto</h4>
+<p>
+<ul class="list-group">
+    <?php foreach ($poisOrder as $poiIDstr) : ?>
+    	<?php
+        	$poiID = intval($poiIDstr);
+        	$key = array_search($poiID, array_column($percurso['PercursoPOIs'], 'ID'));
+        	if ($key === FALSE)
+        	    continue;
+        	$poiName = $percurso['PercursoPOIs'][$key]['Name'];
+    	?>
+        <li class="list-group-item"><?php echo $poiName ;?><span class="badge"><?php echo ++$poiCounter ;?></span></li>
+    <?php endforeach;?>
+</ul>
+<p>&nbsp;</p>
+<div class="form-group">
+	<div class="col-xs-2">
+		<button onclick="window.location.href='<?php echo $this->url('percurso');?>'" class="btn btn-default"><span>Voltar</span></button>
+	</div>
+</div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+

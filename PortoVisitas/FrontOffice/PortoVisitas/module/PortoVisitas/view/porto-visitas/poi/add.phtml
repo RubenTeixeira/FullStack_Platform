@@ -10,8 +10,8 @@
             ->prependFile($this->basePath('js/jquery.caret.min.js'));
         ?>
 
-<h3><?php echo $this->escapeHtml($title); ?></h3>
-
+<h4><?php echo $this->escapeHtml($title); ?></h4>
+<p>
 
 <?php
 $form->setAttribute('action', $this->url('poi', array(
@@ -100,8 +100,12 @@ $this->inlineScript()->captureEnd();
 ?>
 	</div>
 </div>
+
+<p>&nbsp;</p>
+
 <div class="form-group">
 	<div class="col-xs-offset-2 col-xs-10">
+		<a href='<?php echo $this->url('percurso');?>' id="cancel" class="btn btn-default">Cancelar</a>
 		<?php echo $this->formSubmit($form->get('submit'));?>
 	</div>
 </div>

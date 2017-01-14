@@ -1,38 +1,4 @@
-<script type="text/javascript">
 
-	function logTag(field, editor, tags, poiJson) {
-		console.log("Will update "+poiJson['name']+" with the tags:");
-        for (var i = 0; i < tags.length; i++)
-            console.log(tags[i]);
-	}
-	
-	function savePOI(poiJson, tags) {
-		var hashTags = new Array();
-		for (var i = 0; i < tags.length; i++) {
-			var tag = new Object();
-			tag.Text = tags[i];
-			hashTags[i] = tag;
-		}
-		poiJson['hashtags'] = hashTags;
-		$.ajax({
-			type: 'PUT',
-			cache: false,
-			url: "http://10.8.11.86/PVAPI/api/POI/"+poiJson['poiid'],
-			data: poiJson,
-			async: true,
-			crossDomain: true,
-			error: function (error) {
-				if (error.status == 401) {
-					alert('Unauthorized');
-				} else {
-					alert('Error Updating POI: ' + error.responseText);
-				}
-			}
-		});
-
-	}
-	
-</script>
 
 <?php
     
@@ -46,21 +12,18 @@ $title = 'Pontos de Interesse';
 $this->headTitle($title);
 ?>
 
-<h3><?php echo $this->escapeHtml($title); ?></h3>
+<h4><?php echo $this->escapeHtml($title); ?></h4>
 <p>
 <?php
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
-            if (isset($_SESSION['user'])) {
-         ?>
- <p>
- <br/>
- <a href="<?php echo $this->url('poi', array('action'=>'add'));?>">Sugerir um Ponto de interesse</a>
- <p>
- <br/>
+            if (isset($_SESSION['user'])) : ?>
+				<p>&nbsp;</p>
+                 <a href="<?php echo $this->url('poi', array('action'=>'add'));?>">Sugerir um Ponto de interesse</a>
+                 <p>&nbsp;</p>
  
- <?php }?>
+ <?php endif;?>
 
 <p>
 
@@ -154,3 +117,43 @@ JS;
 	
 <?php endforeach; ?>
 </table>
+
+
+<script type="text/javascript">
+
+	function logTag(field, editor, tags, poiJson) {
+		console.log("Will update "+poiJson['name']+" with the tags:");
+        for (var i = 0; i < tags.length; i++)
+            console.log(tags[i]);
+	}
+	
+	function savePOI(poiJson, tags) {
+		var hashTags = new Array();
+		for (var i = 0; i < tags.length; i++) {
+			var tag = new Object();
+			tag.Text = tags[i];
+			hashTags[i] = tag;
+		}
+		poiJson['hashtags'] = hashTags;
+		console.log(poiJson);
+		console.log(JSON.stringify(poiJson));
+		$.ajax({
+			type: 'PUT',
+			cache: false,
+			url: "http://10.8.11.86/PVAPI/api/Hashtags/"+poiJson['poiid'],
+			data: poiJson,
+			async: true,
+			crossDomain: true,
+			timeout: 10000,
+			error: function (error) {
+				if (error.status == 401) {
+					alert('Unauthorized');
+				} else {
+					alert('Error Updating POI: ' + error.responseText);
+				}
+			}
+		});
+
+	}
+	
+</script>

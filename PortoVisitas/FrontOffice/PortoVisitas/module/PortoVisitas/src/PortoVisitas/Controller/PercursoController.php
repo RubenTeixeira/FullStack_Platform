@@ -15,12 +15,19 @@ use Zend\View\Model\JsonModel;
 use PortoVisitas\DTO\PassaPorPoisPercursoRequestDTO;
 use PortoVisitas\DTO\TempoLimitePercursoRequestDTO;
 use Zend\Http\Request;
+use PortoVisitas\Model\Percurso;
 
 class PercursoController extends AbstractActionController
 {
 
     public function indexAction()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user'])) {
+            return $this->redirect()->toRoute('user', array('action'=>'login'));
+        }
         $percursos = WebApiService::getPercursos();
         return array(
             'percursos' => $percursos
@@ -29,21 +36,39 @@ class PercursoController extends AbstractActionController
 
     public function addAction()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user'])) {
+            return $this->redirect()->toRoute('user', array('action'=>'login'));
+        }
         $form = new PercursoForm();
         $request = $this->getRequest();
         
         if ($request->isPost()) {
-            //TODO: SAVE NEW PERCURSO
-            // return $this->redirect()->toRoute('percurso');
+            $percurso = new Percurso();
+            $form->setInputFilter($percurso->getInputFilter());
+            $form->setData($request->getPost());
+            
+            if ($form->isValid()) {
+                $percurso->exchangeArray($form->getData());
+                $percurso->creator = $_SESSION['user'];
+                $error = WebApiService::savePercurso($percurso);
+                return new JsonModel((array) $error);
+//                 if ($error != null) {
+//                    return new JsonModel((array) $error);
+//                 } else {
+//                     return $this->redirect()->toRoute('percurso');
+//                 }
+            } else {
+                return new JsonModel(array('message' => 'Form is invalid', 'errors' => $form->getMessages(), 'data' => $form->getData()));
+            }
+            
         }
-        // $pois = WebApiService::getPois();
-        // $options = $this->getPoiOptions($pois);
-        // $poiCheckBox = $form->get('connectedPois');
-        // $poiCheckBox->setValueOptions($options);
         
         $pois = WebApiService::getPois();
         $options = $this->getPoiOptions($pois);
-        $poiCheckBox = $form->get('poiList');
+        $poiCheckBox = $form->get('percursoPOIs');
         $poiCheckBox->setValueOptions($options);
         $selectPoiOrig = $form->get('poiOrigem');
         $selectPoiOrig->setValueOptions($options);
@@ -57,6 +82,12 @@ class PercursoController extends AbstractActionController
     
     public function detailsAction()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user'])) {
+            return $this->redirect()->toRoute('user', array('action'=>'login'));
+        }
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('percurso');
@@ -106,6 +137,7 @@ class PercursoController extends AbstractActionController
         $form->setData($request->getPost());
         if ($form->isValid()) {
             $dto->exchangeArray($form->getData());
+//             return $dto;
             $percursoGerado = WebApiService::getPercurso($dto);
             return $percursoGerado;
             // return array(

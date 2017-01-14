@@ -66,7 +66,15 @@
                 }
                 if (isset($_SESSION['user'])) {
                     
-                    $page = $this->navigation('Zend\Navigation\Session')->getContainer()->findOneByAction('info');
+                    echo $this->navigation('Zend\Navigation\Authenticated')
+                        ->menu()
+                        ->setMinDepth(0)
+                        ->setMaxDepth(0)
+                        ->setUlClass('nav navbar-nav');
+                    
+                    $page = $this->navigation('Zend\Navigation\Session')
+                        ->getContainer()
+                        ->findOneByAction('info');
                     $page->__set('label', $_SESSION['user']);
                     echo $this->navigation('Zend\Navigation\Session')
                         ->menu()
@@ -90,7 +98,7 @@
 	<div class="container">
             <?php echo $this->content; ?>
             <hr>
-		<footer>
+		<footer class="navbar-fixed-bottom">
 			<p>2017 PortoVisitas. <?php echo $this->translate('All rights reserved.') ?></p>
 		</footer>
 	</div>

@@ -141,7 +141,26 @@ class WebApiService
     
     public static function savePercurso($percurso)
     {
-        return false;
+        $enderecoBase = WebApiService::$enderecoBase;
+        $client = new Client($enderecoBase . '/api/Percurso');
+        $client->setMethod(Request::METHOD_POST);
+        $data = json_encode($percurso);
+        $len = strlen($data);
+        $client->setHeaders(array(
+            'Content-Type' => 'application/json',
+            'Content-Length' => $len
+        ));
+        $client->setRawBody($data);
+        //var_dump($data);
+        $response = $client->send();
+        return $response->getBody();
+        if (! empty($response->getBody())) {
+            $body = Json::decode($response->getBody(), false);
+            if (! empty($body->ID)) // success
+                return null;
+            else
+                return $body;
+        }
     }
 
     public static function deletePercurso($id)

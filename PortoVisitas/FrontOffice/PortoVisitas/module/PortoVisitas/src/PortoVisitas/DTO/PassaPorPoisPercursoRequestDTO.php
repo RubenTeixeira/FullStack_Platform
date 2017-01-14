@@ -8,14 +8,13 @@ class PassaPorPoisPercursoRequestDTO extends PercursoRequestDTO
      * List of int (id)
      */
     public $poiList;
-    
 
     public function exchangeArray($data)
     {
         parent::exchangeArray($data);
-        if (! empty($data['poiList'])) {
+        if (! empty($data['percursoPOIs'])) {
             $pois = array();
-            foreach ($data['poiList'] as $poi)
+            foreach ($data['percursoPOIs'] as $poi)
                 $pois[] = intval($poi);
             $this->poiList = $pois;
         } else {
@@ -35,7 +34,7 @@ class PassaPorPoisPercursoRequestDTO extends PercursoRequestDTO
             $inputFilter = parent::getInputFilter();
             
             $inputFilter->add(array(
-                'name' => 'poiList',
+                'name' => 'percursoPOIs',
                 'required' => true
             ));
             

@@ -38,6 +38,12 @@ class PoiController extends AbstractActionController
 
     public function addAction()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user'])) {
+            return $this->redirect()->toRoute('user', array('action'=>'login'));
+        }
         $form = new PoiForm();
         $request = $this->getRequest();
         
@@ -96,8 +102,8 @@ class PoiController extends AbstractActionController
             $poiObj->name = "Dummy";
             $poiObj->openHour = "2017-01-11T08:00:00";
             $poiObj->closeHour = "2017-01-11T18:00:00";
-            $poiObj->gps_lat = 40.1;
-            $poiObj->gps_long = - 8.1;
+            $poiObj->gps_lat = 41.14015;
+            $poiObj->gps_long = - 8.6;
             $poiObj->altitude = 15;
             $poiObj->visitDuration = 60;
             $poiObj->connectedPois = [];

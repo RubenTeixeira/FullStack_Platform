@@ -84,16 +84,17 @@ class Poi
 
     private function exchangeConnectedDTO()
     {
+
         $connectedPois = array();
         if (null != $this->connectedPois) {
             foreach ($this->connectedPois as $connected) {
                 $poiObj = new Poi();
-                $poiObj->poiid = $connected['ID'];
+                $poiObj->poiid = (! empty($connected['poiid'])) ? $connected['poiid'] : (! empty($connected['id'])) ? $connected['id'] : (! empty($connected['ID'])) ? $connected['ID'] : null;
                 $poiObj->name = "Dummy";
                 $poiObj->openHour = "2017-01-11T08:00:00";
                 $poiObj->closeHour = "2017-01-11T18:00:00";
-                $poiObj->gps_lat = 40.1;
-                $poiObj->gps_long = -8.1;
+                $poiObj->gps_lat = 41.14015;
+                $poiObj->gps_long = - 8.6;
                 $poiObj->altitude = 15;
                 $poiObj->visitDuration = 60;
                 $poiObj->connectedPois = [];

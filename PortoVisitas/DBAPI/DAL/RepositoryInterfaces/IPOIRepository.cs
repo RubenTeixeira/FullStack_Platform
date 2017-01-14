@@ -23,6 +23,7 @@ namespace DBAPI.DAL.RepositoryInterfaces
         POI ConvertDTOToModel(POIDTO dto);
         POIDTO ConvertModelToDTO(POI poi);
         List<POIDTO> ConvertModelListToDTO(ICollection<POI> modelList);
+        Task<bool> UpdateHashtags(POI pOI);
     }
 
 }

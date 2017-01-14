@@ -1,8 +1,164 @@
 
-<script>
+
+
+<?php
+$title = 'Criação de Percurso';
+$this->headTitle($title);
+
+echo $this->headScript()
+    ->prependFile($this->basePath('js/jquery.form.js'))
+    ->prependFile($this->basePath('js/util.js'));
+
+// $form->setAttribute('action', $this->url('percurso', array(
+// 'action' => 'add'
+// )));
+?>
+
+<h4><?php echo $this->escapehtml($title)?></h4>
+<p>&nbsp;</p>
+
+<?php
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+<div id="formDiv" class="container col-sm-8">
+<?php
+
+echo $this->formHidden($form->get('id'));
+echo $this->formHidden($form->get('creator'));
+echo $this->formHidden($form->get('finishHour'));
+echo $this->formHidden($form->get('percursoPoisOrder'));
+echo $this->formHidden($form->get('percursoPOIs'));
+?>
+
+	<div id="errorDiv" style="display: none;">
+		<label class="control-label col-xs-4">Não foi possível gerar um
+			percurso.</label>
+	</div>
+
+	<div class="form-group">
+		<label for="name" class="control-label col-xs-4">Nome</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('name'));?>
+	</div>
+	</div>
+
+
+	<div class="form-group">
+		<label for="description" class="control-label col-xs-4">Descrição</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('description'));?>
+	</div>
+	</div>
+
+	<div class="form-group">
+		<label for="horaInicialVisita" class="control-label col-xs-4">Hora de
+			início</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('horaInicialVisita'));?>
+	</div>
+	</div>
+
+	<div class="form-group">
+		<label for="tipoVeiculo" class="control-label col-xs-4">Tipo de
+			veículo</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('tipoVeiculo'));?>
+	</div>
+	</div>
+
+	<div class="form-group">
+		<label for="inclinacaoMax" class="control-label col-xs-4">Inclinação
+			máxima (%)</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('inclinacaoMax'));?>
+	</div>
+	</div>
+
+	<div class="form-group">
+		<label for="kilometrosMax" class="control-label col-xs-4">Distância
+			máxima (km)</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('kilometrosMax'));?>
+	</div>
+	</div>
+
+	<div class="form-group">
+		<label for="poiOrigem" class="control-label col-xs-4">Escolha o ponto
+			de origem</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('poiOrigem'));?>
+	</div>
+	</div>
+
+	<div class="form-group">
+		<label for="typeOfSuggestion" class="control-label col-xs-4">Como
+			pretende definir o percurso?</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('typeOfSuggestion'));?>
+	</div>
+	</div>
+
+	<div id="poisCheckBox" class="form-group">
+		<label for="percursoPOIs" class="control-label col-xs-4">Seleccione os
+			Pontos de Interesse a percorrer</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('percursoPOIs'));?>
+	</div>
+	</div>
+
+	<div id="durationRadioButtons" class="form-group">
+		<label for="maxHorasVisita" class="control-label col-xs-4">Seleccione
+			a duração máxima (horas)</label>
+		<div class="col-xs-5 col-sm-6 col-lg-4">
+		<?php echo $this->formRow($form->get('maxHorasVisita'));?>
+	</div>
+	</div>
+
+	<p>&nbsp;</p>
+
+	<div class="form-group">
+		<div class="col-xs-10" style="margin-left: 21%">
+			<a href='<?php echo $this->url('percurso');?>' id="cancel"
+				class="btn btn-default">Cancelar</a>
+		<?php echo $this->formSubmit($form->get('submit'));?>
+	</div>
+	</div>
+
+</div>
+<!-- End of form div -->
+
+
+<div id="gerado" class="col-sm-4" style="display: none;">
+
+	<div id="resultsList"></div>
+	<div id="dataDiv"></div>
+<!-- 	<div id="buttonsDiv" class="form-group"> 
+		<div align="center"> 
+			<a id="backB" style="margin-left: -3px;" class="btn btn-default"
+ 				href="#" role="button">Cancelar</a> 
+				<?php //echo $this->formSubmit($form->get('submitPercurso'));?>
+				<!-- <a id="savePercurso" style="margin-left: 4px;" class="btn btn-primary" href="#" role="button">Guardar</a> 
+ 		</div> 
+ 	</div> -->
+
+</div>
+
+<?php echo $this->form()->closeTag();?>
+
+<div class="modal"></div>
+
+<!-- $this->inlineScript()->captureStart(); -->
+
+<!-- echo <<<JS -->
+
+<script type="text/javascript">
+
+
 
 var PERCURSO;
 var FORM;
+var FINALPOST = false;
 
 $body = $("body");
 
@@ -11,126 +167,123 @@ $(document).on({
      ajaxStop: function() { $body.removeClass("loading"); }    
 });
 
-//pre-submit callback 
+
 function showRequest(formData, jqForm, options) { 
-    // formData is an array; here we use $.param to convert it to a string to display it 
-    // but the form plugin does this for you automatically when it submits the data 
     var queryString = $.param(formData); 
  	console.log(queryString);
-    // jqForm is a jQuery object encapsulating the form element.  To access the 
-    // DOM element for the form do this: 
-    // var formElement = jqForm[0]; 
-    //alert('About to submit: \n\n' + queryString); 
- 
-    // here we could return false to prevent the form from being submitted; 
-    // returning anything other than false will allow the form submit to continue 
     return true; 
 } 
  
-// post-submit callback 
 function showResponse(responseText, statusText, xhr, $form)  { 
-    // for normal html responses, the first argument to the success callback 
-    // is the XMLHttpRequest object's responseText property 
- 
-    // if the ajaxForm method was passed an Options Object with the dataType 
-    // property set to 'xml' then the first argument to the success callback 
-    // is the XMLHttpRequest object's responseXML property 
- 
-    // if the ajaxForm method was passed an Options Object with the dataType 
-    // property set to 'json' then the first argument to the success callback 
-    // is the json data object returned by the server 
- 
-    //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
-        //'\n\nThe output div should have already been updated with the responseText.'); 
-    console.log(responseText);
+    console.log(JSON.stringify(responseText));
     showResult(responseText, statusText, xhr, $form);
 } 
 
-function getUri() {
-	var option = $('input[name=typeOfSuggestion]:radio').fieldValue(); 
-	if (option == 0)
-		return 'generatePois';
-	else if (option == 1)
-		return 'generateTime';
+function getOptions() {
+	var uri, callBackBefore = showRequest, callBackAfter = showResponse;
+	if (FINALPOST) {
+		uri = 'add';
+		callBackBefore = savePercurso;
+		callBackAfter = function(responseText, statusText, xhr, $form){console.log(JSON.stringify(responseText));return true;}
+	} else {
+		var option = $('input[name=typeOfSuggestion]:radio').fieldValue(); 
+		if (option == 0)
+			uri = 'generatePois';
+		else if (option == 1)
+			uri = 'generateTime';
+	}
+	var options = {
+			beforeSerialize: callBackBefore,
+			beforeSubmit:	showRequest,
+	        success:       callBackAfter,
+	        url:		'/PortoVisitas/percurso/'+uri,
+	        timeout:   10000 
+	    };
+    return options;
 }
 
 
 function showResult(response, statusText, xhr, $form) {
+	var errorDiv = $("#errorDiv")[0];
 	if (response.hasOwnProperty('httpStatus')) {
-		showNoResults();
+		showDiv(errorDiv);
 		return;
+	} else {
+		hideDiv(errorDiv);
 	}
 	PERCURSO = response;
 	FORM = $form;
 	console.log("FORM:");
 	console.log(FORM);
-	var formDiv = $("#formDiv")[0];
-	hideDiv(formDiv);
 	var pois = [];
-	$("#gerado").empty();
-	$("#gerado").append("<ul class='list-group'>");
+	var list = "<ul class='list-group'>";
 	for (var i = 0; i < response.percurso.length; i++) {
 		var poi = new Object();
 		poi.id = response.percurso[i];
-		poi.name = $('input[name="poiList[]"][value='+poi.id+']').parent().text();
+		poi.name = $('input[name="percursoPOIs[]"][value='+poi.id+']').parent().text();
 		pois.push(poi);
-		$("#gerado").append('<li class=\'list-group-item\'>'+poi.name+'<span class=\'badge\'>'+(i+1)+'</span></li></li>');
+		list += '<li class="list-group-item">'+poi.name+'<span class="badge">'+(i+1)+'</span></li>';
 	}
+	list += "</ul>";
+	$("#resultsList").empty();
+	$("#resultsList").append(list);
+
+	var courseData = '<div class="form-group col-sm-6"><div align="center">';
+	
+	courseData += '<label class="col-sm-10">Duração Total</label>';
 	var dur = convertMinsToHrsMins(response.duracao);
-	$("#gerado").append('<p><p> Duração: '+dur+'</p>');
+	courseData += '<span class="col-sm-10 form-control">'+dur+'</span></div></div>';
 
-	if (response.kilometros < 1)
-		$("#gerado").append('<p><p> Distancia: '+ (response.kilometros*1000).toFixed(0) +' metros</p>');
+	courseData += '<div class="form-group col-sm-6"><div align="center">';
+	courseData += '<label class="col-sm-10">Distância Percorrida</label>';
+	if (response.kilometros < 1.0)
+		courseData += '<span class="col-sm-10 form-control">'+ (response.kilometros*1000).toFixed(0) +' metros</span>';
 	else
-		$("#gerado").append('<p> Distancia: '+ parseFloat(response.kilometros).toFixed(2) +' Kilometros</p>');
+		courseData += '<span class="col-sm-10  form-control">'+ parseFloat(response.kilometros).toFixed(2) +' Kilometros</span>';
+	courseData += '</div></div>';
+	$("#dataDiv").empty();
+	$("#dataDiv").append(courseData);
 
-	$("#gerado").append("<p><a id='guardarPercurso' class='btn btn-secondary' href='#' role='button'>Cancelar</a>");
-	$("#gerado").append("<p><a id='guardarPercurso' class='btn btn-primary' href='#' role='button'>Guardar</a>");
+	$('#backB').click( function(e) {
+		e.preventDefault();
+		var thisDiv = $("#gerado")[0];
+		hideDiv(thisDiv);
+		return false;
+		} );
+
+	//$('#savePercurso').click(function(e){ e.preventDefault(); savePercurso(); return false; });
+	
 	var resultsDiv = $("#gerado")[0];
 	showDiv(resultsDiv);
-		
+	FINALPOST = true;
 }
 
 function savePercurso() {
-	var name = FORM
-}
-
-function showNoResults() {
-	$("#gerado").empty();
-	$("#gerado").append( "<p>Sem caminhos possíveis. Por favor, altere os critérios de pesquisa.</p>" );
-	var resultsDiv = $("#gerado")[0];
-	showDiv(resultsDiv);
+	console.log("SAVEPERCURSO!!!!!");
+	var startHour = $('#formStartHour').val();
+	console.log("STart HOUR-> "+startHour);
+	var time = startHour.split(":");
+	var startHourObj = new Date();
+	startHourObj.setHours(time[0], time[1], 0, 0);
+	var duration = Math.floor(PERCURSO.duracao);
+	var finishHour = new Date(startHourObj.getTime() + duration*60000);
+	var finishTime = finishHour.getHours()+":"+finishHour.getMinutes();
+	console.log("FINISH HOUR-> "+finishTime);
+	document.getElementById("formFinishHour").value = finishTime;
+	document.getElementById("formPercursoPoisOrder").value = PERCURSO.percurso.join();
+	return true;
 }
 
 $(document).ready(function() { 
-	 
-	    // bind form using 'ajaxForm' 
+
 	$('#percursoForm').submit(function() { 
-		uri = getUri();
-		var options = { 
-		        //target:        '#output',   // target element(s) to be updated with server response 
-		        beforeSubmit:  showRequest,  // pre-submit callback 
-		        success:       showResponse,  // post-submit callback 
-		 
-		        // other available options: 
-		        url:		'/PortoVisitas/percurso/'+uri,         // override for form's 'action' attribute 
-		        //type:      type        // 'get' or 'post', override for form's 'method' attribute 
-		        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
-		        //clearForm: true        // clear all form fields after successful submit 
-		        //resetForm: true        // reset the form after successful submit 
-		 
-		        // $.ajax options can be used here too, for example: 
-		        timeout:   10000 
-		    };
+		options = getOptions();
+		
+	    console.log("POST URI: "+options);
         $(this).ajaxSubmit(options); 
- 
-        // !!! Important !!! 
-        // always return false to prevent standard browser submit and page navigation 
         return false; 
     });
 	
-
-	//$('#gerarPercurso').gerarPercurso();
 	
     $("input[name=typeOfSuggestion]:radio").change(function () {
     	multicheck = $("#poisCheckBox")[0];
@@ -146,136 +299,12 @@ $(document).ready(function() {
     });
     
 });
-
-	
-
 </script>
+<!-- JS; -->
 
-<?php
-$title = 'Criacao de Percurso';
-$this->headTitle($title);
-
-echo $this->headScript()
-    ->prependFile($this->basePath('js/jquery.form.js'))
-    ->prependFile($this->basePath('js/util.js'));
-
-// $form->setAttribute('action', $this->url('percurso', array(
-// 'action' => 'add'
-// )));
-?>
-
-<h4>Criacao de percurso</h4>
-<p>
-
-<?php
-$form->prepare();
-?>
-
-<?php 
-echo $this->form()->openTag($form);
-echo $this->formHidden($form->get('id'));
-echo $this->formHidden($form->get('creator'));
-echo $this->formHidden($form->get('finishHour'));
-echo $this->formHidden($form->get('percursoPoisOrder'));
-echo $this->formHidden($form->get('percursoPOIs'));
-?>
-
-<div id="formDiv">
-<div class="form-group">
-	<label for="name" class="control-label col-xs-2">Nome</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('name'));?>
-	</div>
-</div>
+<!-- $this->inlineScript()->captureEnd(); -->
 
 
-<div class="form-group">
-	<label for="description" class="control-label col-xs-2">Descrição</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('description'));?>
-	</div>
-</div>
-
-<div class="form-group">
-	<label for="horaInicialVisita" class="control-label col-xs-2">Hora de
-		início</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('horaInicialVisita'));?>
-	</div>
-</div>
-
-<div class="form-group">
-	<label for="tipoVeiculo" class="control-label col-xs-2">Tipo de veículo</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('tipoVeiculo'));?>
-	</div>
-</div>
-
-<div class="form-group">
-	<label for="inclinacaoMax" class="control-label col-xs-2">Inclinação
-		máxima (%)</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('inclinacaoMax'));?>
-	</div>
-</div>
-
-<div class="form-group">
-	<label for="kilometrosMax" class="control-label col-xs-2">Distância
-		máxima (km)</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('kilometrosMax'));?>
-	</div>
-</div>
-
-<div class="form-group">
-	<label for="poiOrigem" class="control-label col-xs-2">Escolha o ponto de origem</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('poiOrigem'));?>
-	</div>
-</div>
-
-<div class="form-group">
-	<label for="typeOfSuggestion" class="control-label col-xs-2">Como
-		pretende definir o percurso?</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('typeOfSuggestion'));?>
-	</div>
-</div>
-
-<div id="poisCheckBox" class="form-group">
-	<label for="poiList" class="control-label col-xs-2">Seleccione os
-		Pontos de Interesse a percorrer</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('poiList'));?>
-	</div>
-</div>
-
-<div id="durationRadioButtons" class="form-group">
-	<label for="maxHorasVisita" class="control-label col-xs-2">Seleccione a
-		duração máxima (horas)</label>
-	<div class="col-xs-5 col-sm-6 col-lg-4">
-		<?php echo $this->formRow($form->get('maxHorasVisita'));?>
-	</div>
-</div>
-
-<!-- <div class="form-group"> -->
-<!-- 	<div class="col-xs-offset-2 col-xs-10"> -->
-<!-- 		<a id="gerarPercurso" class='btn btn-primary' href='#'>Gerar Percurso</a> -->
-<!-- 	</div> -->
-<!-- </div> -->
-
-<div class="form-group">
-	<div class="col-xs-offset-2 col-xs-10">
-		<?php echo $this->formSubmit($form->get('submit'));?>
-	</div>
-</div>
-</div><!-- End of form div -->
-
-<div id="gerado"></div>
-
-<?php echo $this->form()->closeTag();?>
-
-<div class="modal"></div>
 
 
 

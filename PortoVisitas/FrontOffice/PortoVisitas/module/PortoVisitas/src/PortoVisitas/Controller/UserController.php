@@ -54,8 +54,11 @@ class UserController extends AbstractActionController
 
     public function infoAction()
     {
-        if (session_status() == PHP_SESSION_NONE) {
+    if (session_status() == PHP_SESSION_NONE) {
             session_start();
+        }
+        if (!isset($_SESSION['user'])) {
+            return $this->redirect()->toRoute('user', array('action'=>'login'));
         }
 
         $poiDTOs = WebApiService::getUserPois($_SESSION['user']);

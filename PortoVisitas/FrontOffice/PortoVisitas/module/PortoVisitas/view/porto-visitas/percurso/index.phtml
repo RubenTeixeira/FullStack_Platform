@@ -2,19 +2,17 @@
 $title = 'Percursos';
 $this->headTitle($title);
 ?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
-
+<h4><?php echo $this->escapeHtml($title); ?></h4>
+<p>&nbsp;</p>
 
 <?php
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
-            if (isset($_SESSION['user'])) :?>
- <p>
- <br/>
- <a href="<?php echo $this->url('percurso', array('action'=>'add'));?>">Criar novo percurso</a>
- <p>
- <br/>
+    if (session_status() == PHP_SESSION_NONE) {
+          session_start();
+     }
+     if (isset($_SESSION['user'])) :?>
+
+         <a href="<?php echo $this->url('percurso', array('action'=>'add'));?>">Criar novo percurso</a>
+		<p>&nbsp;</p>
  
  <?php endif;?>
 
@@ -23,7 +21,8 @@ $this->headTitle($title);
 	<tr>
 		<th>Nome</th>
 		<th>Descrição</th>
-		<th>Hora de Início</th>
+		<th>Início</th>
+		<th>Fim</th>
 		<th>Criador</th>
 		<th>&nbsp;</th>
 	</tr>
@@ -32,16 +31,17 @@ $this->headTitle($title);
 		<td><?php echo $this->escapeHtml($percurso['Name']);?></td>
  		<td><?php echo $this->escapeHtml($percurso['Description']);?></td>
  		<?php 
-//  		$date = date_parse($percurso['StartHour']);
-//  		$datastr = $date['year']."-".$date['month']."-".$date['day']." ".$date['hour'].":".$date['minute'];
-        $date = new DateTime($percurso['StartHour']);
-        $datastr = $date->format('H:i');
+        $dateI = new DateTime($percurso['StartHour']);
+        $dateF = new DateTime($percurso['FinishHour']);
+        $datastrI = $dateI->format('H:i');
+        $datastrF = $dateF->format('H:i');
  		?>
- 		<td><?php echo $this->escapeHtml($datastr);?></td>
+ 		<td><?php echo $this->escapeHtml($datastrI);?></td>
+ 		<td><?php echo $this->escapeHtml($datastrF);?></td>
  		<td><?php echo $this->escapeHtml($percurso['Creator']);?></td>
 	 	<td>
 	 		<a href="<?php echo $this->url('percurso',
-                array('action'=>'index', 'id' => $percurso['id']));?>">Detalhes</a>
+                array('action'=>'details', 'id' => $percurso['ID']));?>">Detalhes</a>
 		</td>
 	</tr>
 <?php endforeach; ?>
