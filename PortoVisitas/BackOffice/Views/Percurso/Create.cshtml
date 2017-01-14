@@ -108,9 +108,10 @@
                         </div>
 
 
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
+                        <div class="form-group" >
+                            <div class="col-md-offset-2 col-md-10" style="display:inline-flex;">
                                 <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="RequestAlgav1()" class="btn btn-default" />
+                                <div id="loader1" class="loader"></div>
                             </div>
                         </div>
                         <hr />
@@ -167,8 +168,9 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
+                            <div class="col-md-offset-2 col-md-10" style="display:inline-flex;">
                                 <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="RequestAlgav2()" class="btn btn-default" />
+                                <div id="loader2" class="loader"></div>
                             </div>
                         </div>
                         <hr />
@@ -189,6 +191,10 @@
 <div>
     @Html.ActionLink(ClassLibrary.Resources.Global.ReturnToList, "Index")
 </div>
+
+@section Styles {
+    <link rel="Stylesheet" href="@Href("~/Content/mystyle.css")" />
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -317,6 +323,12 @@
 
             var finishHourItem = document.getElementById("FinishHour");
             finishHourItem.value = json.duracao;
+
+            if(document.getElementById("loader1").style.display == "block")
+                document.getElementById("loader1").style.display = "none";
+            
+            if (document.getElementById("loader2").style.display == "block")
+                document.getElementById("loader2").style.display = "none";
         }
 
         function HttpRequest(url, request) {
@@ -337,6 +349,11 @@
                 }
                 if (http.readyState == 4 && http.status == 400) {
                     area.value = "@Html.Raw(ClassLibrary.Resources.Percurso.InvalidResult)";
+                    if (document.getElementById("loader1").style.display == "block")
+                        document.getElementById("loader1").style.display = "none";
+
+                    if (document.getElementById("loader2").style.display == "block")
+                        document.getElementById("loader2").style.display = "none";
                 }
             }
             var data = JSON.stringify(request);
@@ -377,7 +394,8 @@
                 kilometrosMax: kilometers
             }
 
-            if(validateRequest1(request)){
+            if (validateRequest1(request)) {
+                document.getElementById("loader1").style.display = "block";
                 HttpRequest("https://10.8.11.86/PVAPI/api/Algav1", request);
             }
         }
@@ -406,6 +424,7 @@
             }
 
             if (validateRequest2(request)) {
+                document.getElementById("loader2").style.display = "block";
                 HttpRequest("https://10.8.11.86/PVAPI/api/Algav2", request);
             }
         }

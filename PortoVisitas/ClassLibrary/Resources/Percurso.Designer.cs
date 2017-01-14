@@ -61,7 +61,7 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Being.
+        ///   Looks up a localized string similar to Begin.
         /// </summary>
         public static string Begin {
             get {

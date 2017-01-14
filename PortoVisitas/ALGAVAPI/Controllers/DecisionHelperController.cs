@@ -1,4 +1,5 @@
-﻿using ClassLibrary.DTO;
+﻿using ALGAVAPI.Helper;
+using ClassLibrary.DTO;
 using ClassLibrary.Helpers;
 using System;
 using System.Collections.Generic;
@@ -183,6 +184,9 @@ namespace ALGAVAPI.Controllers
                 }
 
             int idCaminho = 0;
+
+            List<CaminhoHelper> visited = new List<CaminhoHelper>();
+
             using (StreamWriter file =
             new StreamWriter(@knowledge, true))
                 foreach (CaminhoDTO caminhoDto in caminhos)
@@ -192,22 +196,40 @@ namespace ALGAVAPI.Controllers
                     int poiInicialID = caminhoDto.POIID;
                     int poiFinalID = caminhoDto.ConnectedPOIID;
 
-                    POIDTO poiInicial = null;
-                    POIDTO poiFinal = null;
-                    foreach (POIDTO poi in pois)
+                    CaminhoHelper c1 = new CaminhoHelper()
                     {
-                        if (poi.ID == poiInicialID) { poiInicial = poi; }
-                        if (poi.ID == poiFinalID) { poiFinal = poi; }
+                        POI1 = poiInicialID,
+                        POI2 = poiFinalID
+                    };
+
+                    CaminhoHelper c2 = new CaminhoHelper()
+                    {
+                        POI1 = poiFinalID,
+                        POI2 = poiInicialID
+                    };
+
+                    if (!(visited.Contains(c1) && visited.Contains(c2)))
+                    {
+                        POIDTO poiInicial = null;
+                        POIDTO poiFinal = null;
+                        foreach (POIDTO poi in pois)
+                        {
+                            if (poi.ID == poiInicialID) { poiInicial = poi; }
+                            if (poi.ID == poiFinalID) { poiFinal = poi; }
+                        }
+
+                        double distancia = 1000 * getDistanceFromLatLonInKm(poiInicial.GPS_Lat, poiInicial.GPS_Long, poiFinal.GPS_Lat, poiFinal.GPS_Long);
+                        // Sin (x) = Opposite / Hypotenuse
+                        int inclinacao = Convert.ToInt32(((poiFinal.Altitude - poiInicial.Altitude) / distancia) * 100);
+
+                        file.WriteLine("caminho(" + idCaminho + "," + idPoiInicio + "," + idPoiFinal + "," + inclinacao + ").");
+                        idCaminho++;
+                        file.WriteLine("caminho(" + idCaminho + "," + idPoiFinal + "," + idPoiInicio + "," + (-1) * inclinacao + ").");
+                        idCaminho++;
+
+                        visited.Add(c1);
+                        visited.Add(c2);
                     }
-
-                    double distancia = 1000 * getDistanceFromLatLonInKm(poiInicial.GPS_Lat, poiInicial.GPS_Long, poiFinal.GPS_Lat, poiFinal.GPS_Long);
-                    // Sin (x) = Opposite / Hypotenuse
-                    int inclinacao = Convert.ToInt32(((poiFinal.Altitude - poiInicial.Altitude) / distancia)*100);
-
-                    file.WriteLine("caminho(" + idCaminho + "," + idPoiInicio + "," + idPoiFinal + "," + inclinacao + ").");
-                    idCaminho++;
-                    file.WriteLine("caminho(" + idCaminho + "," + idPoiFinal + "," + idPoiInicio + "," + (-1) * inclinacao + ").");
-                    idCaminho++;
                 }
 
             File.AppendAllText(@knowledge, "transporte(pe, 0.05)." + Environment.NewLine);
