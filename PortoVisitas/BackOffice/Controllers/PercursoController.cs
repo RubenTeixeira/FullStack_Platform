@@ -339,8 +339,13 @@ namespace BackOffice.Controllers
                 }
                 count++;
             }
-
-            route += ClassLibrary.Resources.Percurso.Duration + ": " + percurso.FinishHour.Subtract(percurso.StartHour).Duration();
+            string hour = (percurso.FinishHour.Hour - percurso.StartHour.Hour).ToString();
+            string minutos = (percurso.FinishHour.Minute -percurso.StartHour.Minute).ToString();
+            if(Int32.Parse(minutos) < 10)
+            {
+                minutos = "0" + minutos;
+            }
+            route += ClassLibrary.Resources.Percurso.Duration + ": " +  hour+":"+minutos;
 
             return route;
         }
