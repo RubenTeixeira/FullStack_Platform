@@ -33,10 +33,15 @@ $this->headTitle($title);
         $datastr = $date->format('Y-m-d');
  		?>
  		<td><?php echo $this->escapeHtml($datastr);?></td>
- 		<td>
-	 		<a href="<?php echo $this->url('visita',
-                array('action'=>'edit', 'id' => $visita->visitaID));?>">Editar</a>
-        </td>
+ 		<?php if (isset($_SESSION['user'])) :?>
+            	<?php if ($_SESSION['user'] == $visita->creator) :?>
+            	<td>
+            		<a href="<?php echo $this->url('percurso',array('action'=>'edit', 'id' => $visita->visitaID));?>">Editar</a>
+ 					&nbsp;|&nbsp;
+	 				<a href="<?php echo $this->url('visita', array('action'=>'delete', 'id' => $visita->visitaID));?>">Eliminar</a>
+        		</td>
+        		<?php endif;?>
+        <?php endif;?>
 	</tr>
 	<?php endforeach; ?>
 </table>

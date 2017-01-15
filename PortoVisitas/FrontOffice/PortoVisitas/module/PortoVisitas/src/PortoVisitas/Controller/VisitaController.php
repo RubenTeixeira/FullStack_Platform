@@ -144,4 +144,28 @@ class VisitaController extends AbstractActionController
             'form' => $form
         );
     }
+    
+    public function deleteAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('visita');
+        }
+    
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'Nao');
+    
+            if ($del == 'Sim') {
+                $id = (int) $request->getPost('id');
+                WebApiService::deleteVisita($id);
+            }
+            return $this->redirect()->toRoute('visita');
+        }
+        $visita = WebApiService::getVisitaById($id);
+        return array(
+            'id'    => $id,
+            'visita' => $visita,
+        );
+    }
 }
