@@ -42,6 +42,8 @@ $this->headTitle($title);
 	 	<td>
 	 		<a href="<?php echo $this->url('percurso',
                 array('action'=>'details', 'id' => $percurso['ID']));?>">Detalhes</a>
+            &nbsp;|&nbsp;
+            <a href="<?php echo $this->url('visita',array('action'=>'add', 'id' => $percurso['ID']));?>">Agendar</a>
             <?php if (isset($_SESSION['user'])) :?>
             	<?php if ($_SESSION['user'] == $percurso['Creator']) :?>
             		&nbsp;|&nbsp;

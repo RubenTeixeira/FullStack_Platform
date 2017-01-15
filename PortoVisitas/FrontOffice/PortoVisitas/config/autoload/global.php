@@ -29,6 +29,10 @@ return array(
         ),
         'authenticated' => array(
             array(
+                'label' => 'Visitas',
+                'route' => 'visita'
+            ),
+            array(
                 'label' => 'Percursos',
                 'route' => 'percurso'
             ),

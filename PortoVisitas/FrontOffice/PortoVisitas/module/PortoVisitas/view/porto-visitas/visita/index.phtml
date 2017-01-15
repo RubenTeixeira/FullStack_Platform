@@ -1,0 +1,42 @@
+<?php
+$title = 'Visitas Agendadas';
+$this->headTitle($title);
+?>
+<h4><?php echo $this->escapeHtml($title); ?></h4>
+<p>&nbsp;</p>
+
+<?php
+    if (session_status() == PHP_SESSION_NONE) {
+          session_start();
+     }
+     if (isset($_SESSION['user'])) :?>
+
+         <a href="<?php echo $this->url('visita', array('action'=>'add'));?>">Agendar visita</a>
+		<p>&nbsp;</p>
+ 
+ <?php endif;?>
+
+
+<table class="table">
+	<tr>
+		<th>Percurso</th>
+		<th>Criador</th>
+		<th>Data</th>
+		<th>&nbsp;</th>
+	</tr>
+	<?php foreach ($visitas as $visita) : ?>
+	<tr>
+		<td><a href="<?php echo $this->url('percurso',array('action'=>'details', 'id' => $visita->percurso['ID']));?>"><?php echo $this->escapeHtml($visita->percurso['Name'])?></a></td>
+ 		<td><?php echo $this->escapeHtml($visita->creator);?></td>
+ 		<?php 
+        $date = new DateTime($visita->date);
+        $datastr = $date->format('Y-m-d');
+ 		?>
+ 		<td><?php echo $this->escapeHtml($datastr);?></td>
+ 		<td>
+	 		<a href="<?php echo $this->url('visita',
+                array('action'=>'edit', 'id' => $visita->visitaID));?>">Editar</a>
+        </td>
+	</tr>
+	<?php endforeach; ?>
+</table>

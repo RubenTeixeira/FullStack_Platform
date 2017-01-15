@@ -51,7 +51,8 @@ $this->headTitle('Detalhes - '.$title);
 <p>&nbsp;</p>
 <div class="form-group">
 	<div class="col-xs-2">
-		<button onclick="window.location.href='<?php echo $this->url('percurso');?>'" class="btn btn-default"><span>Voltar</span></button>
+		<button onclick="window.history.back()" class="btn btn-default"><span>Voltar</span></button>
+		<a href="<?php echo $this->url('visita',array('action'=>'add', 'id' => $percurso['ID']));?>" class="btn btn-primary" role="button">Agendar</a>
 	</div>
 </div>
 <p>&nbsp;</p>
