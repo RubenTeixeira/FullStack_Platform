@@ -2,8 +2,8 @@
 
 <?php
     
-echo $this->headLink()->prependStylesheet($this->basePath('css/jquery.tag-editor.css'));
-echo $this->headScript()
+$this->headLink()->prependStylesheet($this->basePath('css/jquery.tag-editor.css'));
+$this->headScript()
             ->prependFile($this->basePath('js/jquery.tag-editor.min.js'))
             ->prependFile($this->basePath('js/jquery.caret.min.js'));
 
@@ -94,7 +94,7 @@ $this->headTitle($title);
                  			    initialTags: $htags,
                  			    placeholder: 'Enter tags ...',
                                 onChange: function(field, editor, tags) {
-                                    logTag(field, editor, tags, $poiJson);
+                                    //logTag(field, editor, tags, $poiJson);
                                     savePOI($poiJson, tags);    
                                 }
 
@@ -135,8 +135,8 @@ JS;
 			hashTags[i] = tag;
 		}
 		poiJson['hashtags'] = hashTags;
-		console.log(poiJson);
-		console.log(JSON.stringify(poiJson));
+// 		console.log(poiJson);
+// 		console.log(JSON.stringify(poiJson));
 		$.ajax({
 			type: 'PUT',
 			cache: false,

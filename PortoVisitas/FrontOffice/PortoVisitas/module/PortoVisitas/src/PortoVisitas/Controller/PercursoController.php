@@ -54,14 +54,17 @@ class PercursoController extends AbstractActionController
                 $percurso->exchangeArray($form->getData());
                 $percurso->creator = $_SESSION['user'];
                 $error = WebApiService::savePercurso($percurso);
-                return new JsonModel((array) $error);
-//                 if ($error != null) {
-//                    return new JsonModel((array) $error);
-//                 } else {
-//                     return $this->redirect()->toRoute('percurso');
-//                 }
+                
+                if ($error != null) {
+                   echo "Por favor tente novamente.";
+                   echo '<script type="application/javascript">alert("Erro no envio: ' . $error->Message . '");</script>';
+                   return;
+                } else {
+                    return $this->redirect()->toRoute('percurso');
+                }
             } else {
-                return new JsonModel(array('message' => 'Form is invalid', 'errors' => $form->getMessages(), 'data' => $form->getData()));
+                echo "Dados inválidos.";
+                return;
             }
             
         }
@@ -77,6 +80,60 @@ class PercursoController extends AbstractActionController
         return array(
             'form' => $form,
             'pois' => $pois
+        );
+    }
+    
+    public function editAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (! $id) {
+            return $this->redirect()->toRoute('percurso', array(
+                'action' => 'index'
+            ));
+        }
+        
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user'])) {
+            return $this->redirect()->toRoute('user', array('action'=>'login'));
+        }
+        $percurso = new Percurso();
+        $dto = WebApiService::getPercursoById($id);
+        $percurso->exchangeDTO($dto);
+        
+        if ($_SESSION['user'] != $percurso->creator) {
+            return $this->redirect()->toRoute('user');
+        }
+    
+        $form = new PercursoForm();
+        $form->bind($percurso);
+        $form->get('id')->setValue($percurso->percursoid);
+        $form->get('horaInicialVisita')->setValue($percurso->startHour);
+        $form->get('poiList')->setValue(implode(',',array_column($percurso->percursoPOIs, 'ID')));
+        $form->get('percursoPoisOrder')->setValue($percurso->percursoPoisOrder);
+        $form->get('finishHour')->setValue($percurso->finishHour);
+        $pois = WebApiService::getPois();
+        $options = $this->getPoiOptions($pois);
+        $form->get('poiOrigem')->setValueOptions($options);
+        $form->get('percursoPOIs')->setValueOptions($options);
+        $form->get('submitPercurso')->setAttribute('value', 'Guardar');
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($percurso->getInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                //$edited = $percurso->exchangeArray($form->getData());
+                //var_dump($edited);
+                WebApiService::savePercurso($percurso);
+                //return $this->redirect()->toRoute('percurso');
+            } else {
+                return new JsonModel((array) $form->getMessages());
+            }
+        }
+        return array(
+            'id' => $id,
+            'form' => $form
         );
     }
     
@@ -97,6 +154,30 @@ class PercursoController extends AbstractActionController
             'percurso' => $percurso
         );
     }
+    
+    public function deleteAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('percurso');
+        }
+    
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'Nao');
+    
+            if ($del == 'Sim') {
+                $id = (int) $request->getPost('id');
+                WebApiService::deletePercurso($id);
+            }
+            return $this->redirect()->toRoute('percurso');
+        }
+    
+        return array(
+            'id'    => $id,
+            'percurso' => WebApiService::getPercursoById($id),
+        );
+    }
 
     public function generatePoisAction()
     {
@@ -104,7 +185,7 @@ class PercursoController extends AbstractActionController
         
         if ($request->isPost()) {
             $dto = new PassaPorPoisPercursoRequestDTO();
-            $result = $this->generate($request, $dto);
+            $result = $this->generate($request, $dto, 'Algav1');
             if (null == $result)
                 return new JsonModel(array(
                     "httpStatus" => '404',
@@ -120,7 +201,7 @@ class PercursoController extends AbstractActionController
         
         if ($request->isPost()) {
             $dto = new TempoLimitePercursoRequestDTO();
-            $result = $this->generate($request, $dto);
+            $result = $this->generate($request, $dto, 'Algav2');
             if (null == $result)
                 return new JsonModel(array(
                     "httpStatus" => '404',
@@ -130,28 +211,17 @@ class PercursoController extends AbstractActionController
         }
     }
 
-    private function generate($request, $dto)
+    private function generate($request, $dto, $uri)
     {
         $form = new PercursoForm();
         $form->setInputFilter($dto->getInputFilter());
         $form->setData($request->getPost());
         if ($form->isValid()) {
             $dto->exchangeArray($form->getData());
-//             return $dto;
-            $percursoGerado = WebApiService::getPercurso($dto);
+            $percursoGerado = WebApiService::getPercurso($dto,$uri);
             return $percursoGerado;
-            // return array(
-            // "percurso" => [
-            // 2,
-            // 10,
-            // 2,
-            // 47,
-            // 9
-            // ],
-            // "duracao" => "350",
-            // "kilometros" => "0.12302205728278467"
-            // );
         }
+        return array('ERROR' => 'INVALID', 'Messages' => $form->getMessages(), 'dto' => $dto);
     }
 
     private function getPoiOptions($pois)

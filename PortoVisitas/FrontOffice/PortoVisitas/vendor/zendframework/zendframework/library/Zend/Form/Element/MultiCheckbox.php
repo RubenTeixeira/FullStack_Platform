@@ -202,4 +202,12 @@ class MultiCheckbox extends Checkbox
         $this->value = $value;
         return $this;
     }
+    
+    public function getInputSpecification()
+    {
+        $spec = parent::getInputSpecification();
+        $spec['required'] = false;
+    
+        return $spec;
+    }
 }

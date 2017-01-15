@@ -45,9 +45,9 @@ class PoiForm extends Form
             'name' => 'gps_lat',
             'type' => 'Number',
             'attributes' => array(
-                'min' => '41.14015',
-                'max' => '41.210131',
-                'step' => '0.0000001',
+                'min' => '41.1401500',
+                'max' => '41.2101310',
+                'step' => 'any',
                 'class' => 'form-control'
             )
         ));
@@ -56,9 +56,9 @@ class PoiForm extends Form
             'name' => 'gps_long',
             'type' => 'Number',
             'attributes' => array(
-                'min' => '-8.726065',
-                'max' => '-8.560989',
-                'step' => '0.0000001',
+                'min' => '-8.7260650',
+                'max' => '-8.5609890',
+                'step' => 'any',
                 'class' => 'form-control'
             )
         ));

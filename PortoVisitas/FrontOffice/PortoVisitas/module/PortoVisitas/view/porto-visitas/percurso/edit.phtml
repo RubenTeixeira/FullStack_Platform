@@ -154,7 +154,7 @@ echo $this->formHidden($form->get('poiList'));
 
 var PERCURSO;
 var FORM;
-var FINALPOST = false;
+var FINALPOST = true;
 
 $body = $("body");
 
@@ -178,7 +178,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 function getOptions() {
 	var uri, callBackBefore = showRequest, callBackAfter = showResponse;
 	if (FINALPOST) {
-		uri = 'add';
+		uri = 'edit/'+$('input[name=id]').val();
 		callBackBefore = savePercurso;
 		callBackAfter = function(){window.location.href='/PortoVisitas/percurso';return true;}
 	} else {
@@ -276,27 +276,33 @@ function generate() {
 }
 
 function savePercurso() {
-	console.log("SAVEPERCURSO!!!!!");
-	var startHour = $('#formStartHour').val();
-	console.log("STart HOUR-> "+startHour);
-	var time = startHour.split(":");
-	var startHourObj = new Date();
-	startHourObj.setHours(time[0], time[1], 0, 0);
-	var duration = Math.floor(PERCURSO.duracao);
-	var finishHour = new Date(startHourObj.getTime() + duration*60000);
-	var finishTime = finishHour.getHours()+":"+finishHour.getMinutes();
-	console.log("FINISH HOUR-> "+finishTime);
-	document.getElementById("formFinishHour").value = finishTime;
-	document.getElementById("formPercursoPoisOrder").value = PERCURSO.percurso.join();
+	if (typeof PERCURSO != 'undefined') {
+    	var startHour = $('#formStartHour').val();
+    	console.log("STart HOUR-> "+startHour);
+    	var time = startHour.split(":");
+    	var startHourObj = new Date();
+    	startHourObj.setHours(time[0], time[1], 0, 0);
+    	var duration = Math.floor(PERCURSO.duracao);
+    	var finishHour = new Date(startHourObj.getTime() + duration*60000);
+    	var finishTime = finishHour.getHours()+":"+finishHour.getMinutes();
+    	console.log("FINISH HOUR-> "+finishTime);
+    	document.getElementById("formFinishHour").value = finishTime;
+    	document.getElementById("formPercursoPoisOrder").value = PERCURSO.percurso.join();
+	} else {
+		$('input[name=inclinacaoMax]').val('50');
+		$('input[name=kilometrosMax]').val('500');
+	}
 	return true;
 }
 
 $(document).ready(function() { 
+
+	$('#savePercurso').prop('disabled', false);
 	
 	$('#percursoForm').submit(function() { 
 		options = getOptions();
 		
-	    console.log("POST URI: "+options);
+	    console.log("POST URI: "+options.url);
         $(this).ajaxSubmit(options); 
         return false; 
     });

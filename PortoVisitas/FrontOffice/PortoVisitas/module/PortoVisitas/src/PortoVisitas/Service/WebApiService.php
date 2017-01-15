@@ -108,9 +108,25 @@ class WebApiService
         return $percursos;
     }
 
-    public static function getPercurso($data)
+    public static function getPercursoPois($data)
     {
-        $client = new Client(WebApiService::$enderecoBase . '/api/Algav1');
+        $uri = 'Algav1';
+        return $this::getPercurso($data,$uri);
+    }
+    
+    public static function getPercursoTempo($data)
+    {
+        $uri = 'Algav2';
+        return $this::getPercurso($data,$uri);
+    }
+    
+    public static function getPercurso($data,$uri)
+    {
+        $client = new Client(WebApiService::$enderecoBase . '/api/'.$uri);
+        $client->setOptions(array(
+            'maxredirects' => 0,
+            'timeout'      => 30
+        ));
         $client->setMethod(Request::METHOD_POST);
         $data = json_encode($data);
         $len = strlen($data);
@@ -121,13 +137,15 @@ class WebApiService
         $client->setRawBody($data);
         $response = $client->send();
         
-        if (!$response->isSuccess())
-            return null;
+//         if (!$response->isSuccess())
+//             return null;
         
         $body = $response->getBody();
         $percurso = Json::decode($response->getBody(), true);
         return $percurso;
     }
+    
+    
 
     public static function getPercursoById($id)
     {
@@ -142,8 +160,13 @@ class WebApiService
     public static function savePercurso($percurso)
     {
         $enderecoBase = WebApiService::$enderecoBase;
-        $client = new Client($enderecoBase . '/api/Percurso');
-        $client->setMethod(Request::METHOD_POST);
+        if (null == $percurso->percursoid) {
+            $client = new Client($enderecoBase . '/api/Percurso');
+            $client->setMethod(Request::METHOD_POST);
+        } else {
+            $client = new Client($enderecoBase . '/api/Percurso/'.$percurso->percursoid);
+            $client->setMethod(Request::METHOD_PUT);
+        }
         $data = json_encode($percurso);
         $len = strlen($data);
         $client->setHeaders(array(
@@ -151,9 +174,7 @@ class WebApiService
             'Content-Length' => $len
         ));
         $client->setRawBody($data);
-        //var_dump($data);
         $response = $client->send();
-        return $response->getBody();
         if (! empty($response->getBody())) {
             $body = Json::decode($response->getBody(), false);
             if (! empty($body->ID)) // success
@@ -165,7 +186,11 @@ class WebApiService
 
     public static function deletePercurso($id)
     {
-        return false;
+        $enderecoBase = WebApiService::$enderecoBase;
+        $client = new Client($enderecoBase . '/api/Percurso/'.$id);
+        $client->setMethod(Request::METHOD_DELETE);
+        $response = $client->send();
+        $body = $response->getBody();
     }
     
     public static function get404()

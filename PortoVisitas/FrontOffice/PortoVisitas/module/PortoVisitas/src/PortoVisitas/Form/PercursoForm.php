@@ -29,6 +29,14 @@ class PercursoForm extends Form
         ));
         
         $this->add(array(
+            'name' => 'poiList',
+            'attributes' => array(
+                'id' => 'poiList',
+            ),
+            'type' => 'Hidden'
+        ));
+        
+        $this->add(array(
             'name' => 'name',
             'type' => 'Text',
             'id' => 'formName',
@@ -159,10 +167,14 @@ class PercursoForm extends Form
         
         $multiCheck = new MultiCheckbox('percursoPOIs');
         $multiCheck->setDisableInArrayValidator(true);
+        $multiCheck->setOption('required', 'false');
         $multiCheck->setAttributes(array('id' => 'percursoPOIs'));
         $multiCheck->setLabelAttributes(array(
             'class' => 'checkbox'
         ));
+        
+//         $select = new Select('percursoPOIs');
+//         $select->setAttributes(array('id' => 'percursoPOIs', 'multiple' => 'multiple', 'class' => 'selectpicker'));
         $this->add($multiCheck);
         
         $this->add(array(
@@ -183,23 +195,25 @@ class PercursoForm extends Form
         
         $this->add(array(
             'name' => 'submit',
-            'type' => 'Submit',
+//             'type' => 'Submit',
             'attributes' => array(
                 'value' => 'Gerar Percurso',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-primary',
+                'onclick' => 'generate',
             )
         ));
         
-//         $this->add(array(
-//             'name' => 'submitPercurso',
-//             'type' => 'Submit',
-//             'attributes' => array(
-//                 'value' => 'Guardar',
-//                 'id' => 'savePercurso',
-//                 'class' => 'btn btn-primary'
-//             )
-//         ));
+        $this->add(array(
+            'name' => 'submitPercurso',
+            'type' => 'Submit',
+            'attributes' => array(
+                'value' => 'Guardar',
+                'id' => 'savePercurso',
+                'class' => 'btn btn-primary',
+                'disabled' => 'disabled',
+            )
+        ));
     }
 }
 
