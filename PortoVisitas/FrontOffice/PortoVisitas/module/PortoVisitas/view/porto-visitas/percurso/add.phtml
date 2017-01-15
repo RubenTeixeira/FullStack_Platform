@@ -131,7 +131,7 @@ echo $this->formHidden($form->get('poiList'));
 <div id="gerado" class="col-sm-4" style="display: none;">
 
 	<div id="resultsList"></div>
-	<div id="dataDiv"></div>
+	<div id="dataDiv" class="col-sm-12"></div>
 <!-- 	<div id="buttonsDiv" class="form-group"> 
 		<div align="center"> 
 			<a id="backB" style="margin-left: -3px;" class="btn btn-default"
@@ -235,18 +235,18 @@ function showResult(response, statusText, xhr, $form) {
 	$("#resultsList").empty();
 	$("#resultsList").append(list);
 
-	var courseData = '<div class="form-group col-sm-6"><div align="center">';
+	var courseData = '<div class="form-group"><div align="center">';
 	
-	courseData += '<label class="col-sm-10">Duração Total</label>';
+	courseData += '<label class="col-sm-12">Duração Total</label>';
 	var dur = convertMinsToHrsMins(response.duracao);
-	courseData += '<span class="col-sm-10 form-control">'+dur+'</span></div></div>';
+	courseData += '<span class="col-sm-12 form-control">'+dur+'</span></div></div>';
 
-	courseData += '<div class="form-group col-sm-6"><div align="center">';
-	courseData += '<label class="col-sm-10">Distância Percorrida</label>';
+	courseData += '<div class="form-group"><div align="center">';
+	courseData += '<label class="col-sm-12">Distância Percorrida</label>';
 	if (response.kilometros < 1.0)
-		courseData += '<span class="col-sm-10 form-control">'+ (response.kilometros*1000).toFixed(0) +' metros</span>';
+		courseData += '<span class="col-sm-12 form-control">'+ (response.kilometros*1000).toFixed(0) +' metros</span>';
 	else
-		courseData += '<span class="col-sm-10  form-control">'+ parseFloat(response.kilometros).toFixed(2) +' Kilometros</span>';
+		courseData += '<span class="col-sm-12  form-control">'+ parseFloat(response.kilometros).toFixed(2) +' Kilometros</span>';
 	courseData += '</div></div>';
 	$("#dataDiv").empty();
 	$("#dataDiv").append(courseData);

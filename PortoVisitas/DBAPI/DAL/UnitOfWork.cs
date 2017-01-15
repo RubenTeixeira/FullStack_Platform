@@ -14,6 +14,7 @@ namespace DBAPI.DAL
         private IPercursoRepository percursoRepository;
         private IHashtagRepository tagRepository;
         private ICaminhoRepository caminhoRepository;
+        private IVisitaRepository visitaRepository;
 
         public IPOIRepository POIRepository
         {
@@ -60,6 +61,18 @@ namespace DBAPI.DAL
                     this.caminhoRepository = new CaminhoRepository(context);
                 }
                 return caminhoRepository;
+            }
+        }
+
+        public IVisitaRepository VisitaRepository
+        {
+            get
+            {
+                if (this.visitaRepository == null)
+                {
+                    this.visitaRepository = new VisitaRepository(context);
+                }
+                return visitaRepository;
             }
         }
 

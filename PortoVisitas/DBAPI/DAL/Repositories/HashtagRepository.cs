@@ -82,9 +82,9 @@ namespace DBAPI.DAL.Repositories
             return tag;
         }
 
-        public Task<List<Hashtag>> FindHashtags()
+        public async Task<List<Hashtag>> FindHashtags()
         {
-            return context.Hashtags.ToListAsync();
+            return await context.Hashtags.ToListAsync();
         }
 
         public bool HashtagExists(int id)

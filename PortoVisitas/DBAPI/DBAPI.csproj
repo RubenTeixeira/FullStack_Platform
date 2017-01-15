@@ -259,6 +259,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PercursoController.cs" />
     <Compile Include="Controllers\POIController.cs" />
+    <Compile Include="Controllers\VisitasController.cs" />
     <Compile Include="DAL\MySqlConfiguration.cs" />
     <Compile Include="DAL\MySqlHistoryContext.cs" />
     <Compile Include="DAL\MySqlInitializer.cs" />
@@ -266,10 +267,12 @@
     <Compile Include="DAL\Repositories\HashtagRepository.cs" />
     <Compile Include="DAL\Repositories\PercursoRepository.cs" />
     <Compile Include="DAL\Repositories\POIRepository.cs" />
+    <Compile Include="DAL\Repositories\VisitaRepository.cs" />
     <Compile Include="DAL\RepositoryInterfaces\ICaminhoRepository.cs" />
     <Compile Include="DAL\RepositoryInterfaces\IHashtagRepository.cs" />
     <Compile Include="DAL\RepositoryInterfaces\IPercursoRepository.cs" />
     <Compile Include="DAL\RepositoryInterfaces\IPOIRepository.cs" />
+    <Compile Include="DAL\RepositoryInterfaces\IVisitaRepository.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -310,6 +313,14 @@
     <Compile Include="Migrations\201701131507070_Added_Percurso_FinishHour.cs" />
     <Compile Include="Migrations\201701131507070_Added_Percurso_FinishHour.Designer.cs">
       <DependentUpon>201701131507070_Added_Percurso_FinishHour.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701151408562_Added_Visita.cs" />
+    <Compile Include="Migrations\201701151408562_Added_Visita.Designer.cs">
+      <DependentUpon>201701151408562_Added_Visita.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701151658012_Added_Visita1.cs" />
+    <Compile Include="Migrations\201701151658012_Added_Visita1.Designer.cs">
+      <DependentUpon>201701151658012_Added_Visita1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -425,6 +436,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701131507070_Added_Percurso_FinishHour.resx">
       <DependentUpon>201701131507070_Added_Percurso_FinishHour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701151408562_Added_Visita.resx">
+      <DependentUpon>201701151408562_Added_Visita.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701151658012_Added_Visita1.resx">
+      <DependentUpon>201701151658012_Added_Visita1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

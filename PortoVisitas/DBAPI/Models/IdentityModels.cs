@@ -64,6 +64,7 @@ namespace DBAPI.Models
         public DbSet<POI> POIs { get; set; }
         public DbSet<Percurso> Percursos { get; set; }
         public DbSet<Hashtag> Hashtags { get; set; }
+        public DbSet<Visita> Visitas { get; set; }
 
     }
 }
