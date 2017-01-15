@@ -10,37 +10,176 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>@ClassLibrary.Resources.Global.Percurso</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.percurso.PercursoID)
-        @Html.HiddenFor(model => model.percurso.Creator)
-        <div class="form-group">
-            @Html.LabelFor(model => model.percurso.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.percurso.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.percurso.Name, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Percurso.PercursoID)
+        @Html.HiddenFor(model => model.Percurso.Creator)
+        @Html.HiddenFor(model => model.Percurso.FinishHour)
+        @Html.HiddenFor(model => model.Percurso.PercursoPOIsOrder)
+        <div class="content" style="position:relative;">
+            <div>
+                <div class="form-group" style="margin-right: -65px;">
+                    @Html.LabelFor(model => model.Percurso.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Percurso.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Percurso.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-right: -65px;">
+                    @Html.LabelFor(model => model.Percurso.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Percurso.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Percurso.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-right: -65px;">
+                    @Html.LabelFor(model => model.Percurso.StartHour, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Percurso.StartHour, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Percurso.StartHour, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-right: -65px;">
+                    <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.RouteOption</label>
+                    <div class="col-md-10" style="padding-top: 7px">
+                        <input type="radio" id="algav1" name="radio" value="algav1" /> @ClassLibrary.Resources.Percurso.RouteOption1 <br>
+                        <input type="radio" id="algav2" name="radio" value="algav2" /> @ClassLibrary.Resources.Percurso.RouteOption2 <br>
+                    </div>
+                </div>
             </div>
+
+            <div style="position: absolute;top:0;left:650px">
+                <label class="percurso_label" onclick="ChangeTextAreaRes()"><span id="PercursoOriginalSpan" style="color:#428bca">@ClassLibrary.Resources.Percurso.RouteOriginal</span></label> | <label class="percurso_label" onclick="ChangeTextAreaOrig()"><span id="PercursoResultSpan">@ClassLibrary.Resources.Percurso.RouteResult</span></label>
+                @Html.TextAreaFor(model => model.PercursoOriginal, new { @class = "form-control", @style = "max-height:200px;min-height:200px;min-width:350px;resize:none", @readonly = "readonly" })
+                @Html.TextArea("PercursoResult", @ClassLibrary.Resources.Percurso.RouteMsg, new { @class = "form-control", @style = "max-height:200px;min-height:200px;min-width:350px;resize:none;display:none", @readonly = "readonly" })
+            </div>
+            <br style="clear:both;" />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.percurso.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.percurso.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.percurso.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            <div class="container">
+                <div class="algav1_box">
+                    <div class="bottom" style="display:none;">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.percurso.PercursoPOIs, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.ListBoxFor(x => x.percursoPoi.SelectedItemIds,
-                new SelectList(
-                    Model.percursoPoi.Items,
-                    "POIID",
-                    "Name"), htmlAttributes: new { @style = "min-width:280px;max-width:420px" })
+                        <hr />
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.StartPOI</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("StartPOI_1", new SelectList(Model.PercursoPOIs, "POIID", "Name"), htmlAttributes: new { @class = "form-control text-box single-line" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Transport</label>
+                            <div class="col-md-10">
+                                <select id="transport_list_1" class="form-control text-box single-line">
+                                    <option value="pe">@ClassLibrary.Resources.Percurso.OnFoot</option>
+                                    <option value="carro">@ClassLibrary.Resources.Percurso.Car</option>
+                                    <option value="autocarro">@ClassLibrary.Resources.Percurso.Bus</option>
+                                    <option value="tuk">@ClassLibrary.Resources.Percurso.Tuk</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Kilometers</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Kilometers must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Kilometers must be atleast 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Kilometers field is required." id="kilometers_1" name="kilometers_1" type="number">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="kilometers_1" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Inclination</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Inclination must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Inclination must be atleast 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Inclination field is required." id="inclination_1" name="inclination_1" type="number">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="inclination_1" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.POIToVisit</label>
+                            <div class="col-md-10">
+                                @Html.ListBox("PercursoPOIs", new MultiSelectList(Model.PercursoPOIs, "POIID", "Name"), htmlAttributes: new { @style = "min-width:280px;max-width:420px" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10" style="display:inline-flex;">
+                                <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="RequestAlgav1()" class="btn btn-default" />
+                                <div id="loader1" class="loader"></div>
+                            </div>
+                        </div>
+                        <hr />
+
+                    </div>
+                </div>
+                <div class="algav2_box">
+                    <div class="bottom" style="display:none;">
+
+                        <hr />
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.StartPOI</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("StartPOI_2", new SelectList(Model.PercursoPOIs, "POIID", "Name"), htmlAttributes: new { @class = "form-control text-box single-line" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Transport</label>
+                            <div class="col-md-10">
+                                <select id="transport_list_2" class="form-control text-box single-line">
+                                    <option value="pe">@ClassLibrary.Resources.Percurso.OnFoot</option>
+                                    <option value="carro">@ClassLibrary.Resources.Percurso.Car</option>
+                                    <option value="autocarro">@ClassLibrary.Resources.Percurso.Bus</option>
+                                    <option value="tuk">@ClassLibrary.Resources.Percurso.Tuk</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.VisitLength</label>
+                            <div class="col-md-10">
+                                <select id="duration" class="form-control text-box single-line">
+                                    <option value="4">4 @ClassLibrary.Resources.Percurso.Hour</option>
+                                    <option value="8">8 @ClassLibrary.Resources.Percurso.Hour</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Kilometers</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Kilometers must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Kilometers must be greater than 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Kilometers field is required." id="kilometers_2" name="kilometers_2" type="number">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="kilometers_2" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Inclination</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Inclination must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Inclination must be atleast 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Inclination field is required." id="inclination_2" name="inclination_2" type="number">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="inclination_2" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10" style="display:inline-flex;">
+                                <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="RequestAlgav2()" class="btn btn-default" />
+                                <div id="loader2" class="loader"></div>
+                            </div>
+                        </div>
+                        <hr />
+
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -58,4 +197,249 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $('input:radio[name="radio"]').change(
+            function () {
+                if ($(this).is(':checked') && $(this).val() == "algav1") {
+                    $parent_box = $('div.algav1_box');
+                    $parent_box.siblings().find('.bottom').slideUp(0, 'swing');
+                    $parent_box.find('.bottom').slideToggle(200, 'swing');
+                }
+
+                if ($(this).is(':checked') && $(this).val() == "algav2") {
+                    $parent_box = $('div.algav2_box');
+                    $parent_box.siblings().find('.bottom').slideUp(0, 'swing');
+                    $parent_box.find('.bottom').slideToggle(200, 'swing');
+                }
+            });
+    </script>
+    <script>
+
+        function validateRequest1(request) {
+            var bool = true;
+            var text = "@Html.Raw(ClassLibrary.Resources.Percurso.MissingData):\n\n";
+
+            if (request.poiList.length == 0) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.POIList_Error) \n";
+                bool = false;
+            }
+
+            if (!request.horaInicialVisita) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.StartHour_Error) \n";
+                bool = false;
+            }
+
+            if (!request.inclinacaoMax) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.MaxInclination_Error) \n";
+                bool = false;
+            }
+
+            if (!request.kilometrosMax) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.MaxKilometers_Error) \n";
+                bool = false;
+            }
+
+            if (!bool) {
+                alert(text);
+            }
+            return bool;
+        }
+
+        function validateRequest2(request) {
+            var bool = true;
+            var text = "@Html.Raw(ClassLibrary.Resources.Percurso.MissingData):\n\n";
+
+            if (!request.horaInicialVisita) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.StartHour_Error) \n";
+                bool = false;
+            }
+
+            if (!request.inclinacaoMax) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.MaxInclination_Error) \n";
+                bool = false;
+            }
+
+            if (!request.kilometrosMax) {
+                text += "@Html.Raw(ClassLibrary.Resources.Percurso.MaxKilometers_Error) \n";
+                bool = false;
+            }
+
+            if (!bool) {
+                alert(text);
+            }
+            return bool;
+        }
+
+        function GenerateRouteString(json) {
+
+            var area = document.getElementById("PercursoResult");
+
+            //CONSTRUIR HORA
+            var min = Math.floor(json.duracao % 60);
+            if (min < 10) {
+                min = "0" + min;
+            }
+            var hora = Math.floor(json.duracao / 60) + ":" + min;
+
+            //CONSTRUIR ROTA
+            var text = "";
+            var visited = [];
+
+            var selectPOIList = document.getElementById("PercursoPOIs");
+            var options = selectPOIList && selectPOIList.options;
+            var opt;
+            var count = 1;
+            for (var j = 0, jLen = json.percurso.length; j < jLen; j++) {
+                poi = json.percurso[j];
+                for (var i = 0, iLen = options.length; i < iLen; i++) {
+                    opt = options[i];
+                    if (opt.value == poi) {
+                        if (j == 0) {
+                            text += "@Html.Raw(ClassLibrary.Resources.Percurso.Begin): " + opt.text + "\n";
+                        }
+                        else if (j == json.percurso.length - 1) {
+                            text += "@Html.Raw(ClassLibrary.Resources.Percurso.End): " + opt.text + "\n\n";
+                        } else {
+                            if (visited.includes(poi)) {
+                                text += "@Html.Raw(ClassLibrary.Resources.Percurso.Passing): " + opt.text + "\n";
+                            } else {
+                                text += "@Html.Raw(ClassLibrary.Resources.Percurso.Stop) " + count + ": " + opt.text + "\n";
+                                count++;
+                            }
+                        }
+                        visited.push(poi);
+                    }
+                }
+            }
+
+            text += "@Html.Raw(ClassLibrary.Resources.Percurso.Duration): " + hora + " min \n";
+            text += "@Html.Raw(ClassLibrary.Resources.Percurso.Distance): " + Number(Math.round(json.kilometros + 'e3') + 'e-3') + " Km";
+
+            area.value = text;
+
+            var percursoOrderItem = document.getElementById("Percurso_PercursoPOIsOrder");
+            percursoOrderItem.value = json.percurso;
+
+            var finishHourItem = document.getElementById("Percurso_FinishHour");
+            finishHourItem.value = json.duracao;
+
+            if (document.getElementById("loader1").style.display == "block")
+                document.getElementById("loader1").style.display = "none";
+
+            if (document.getElementById("loader2").style.display == "block")
+                document.getElementById("loader2").style.display = "none";
+        }
+
+        function HttpRequest(url, request) {
+
+            var http = new XMLHttpRequest();
+            http.open("POST", url, true);
+
+            http.setRequestHeader("Content-type", "application/json");
+
+            var area = document.getElementById("PercursoResult");
+
+            http.onreadystatechange = function () {
+                if (http.readyState == 4 && http.status == 200) {
+                    var json = JSON.parse(http.responseText);
+
+                    GenerateRouteString(json);
+
+                }
+                if (http.readyState == 4 && http.status == 400) {
+                    area.value = "@Html.Raw(ClassLibrary.Resources.Percurso.InvalidResult)";
+                    if (document.getElementById("loader1").style.display == "block")
+                        document.getElementById("loader1").style.display = "none";
+
+                    if (document.getElementById("loader2").style.display == "block")
+                        document.getElementById("loader2").style.display = "none";
+                }
+            }
+            var data = JSON.stringify(request);
+            http.send(data);
+        }
+
+        function RequestAlgav1() {
+
+            var selectPOI = document.getElementById("StartPOI_1");
+            var selectTransport = document.getElementById("transport_list_1");
+
+            var poiOrigin = selectPOI.options[selectPOI.selectedIndex].value;
+            var transport = selectTransport.options[selectTransport.selectedIndex].value;
+
+            var poiList = [];
+            var selectPOIList = document.getElementById("PercursoPOIs");
+            var options = selectPOIList && selectPOIList.options;
+            var opt;
+
+            for (var i = 0, iLen = options.length; i < iLen; i++) {
+                opt = options[i];
+
+                if (opt.selected) {
+                    poiList.push(opt.value);
+                }
+            }
+
+            var startHour = document.getElementById("Percurso_StartHour").value;
+            var kilometers = document.getElementById("kilometers_1").value;
+            var inclination = document.getElementById("inclination_1").value;
+
+            var request = {
+                poiOrigem: poiOrigin,
+                poiList: poiList,
+                horaInicialVisita: startHour,
+                inclinacaoMax: inclination,
+                tipoVeiculo: transport,
+                kilometrosMax: kilometers
+            }
+
+            if (validateRequest1(request)) {
+                document.getElementById("loader1").style.display = "block";
+                HttpRequest("https://10.8.11.86/PVAPI/api/Algav1", request);
+            }
+        }
+
+        function RequestAlgav2() {
+
+            var selectPOI = document.getElementById("StartPOI_2");
+            var selectTransport = document.getElementById("transport_list_2");
+            var selectDuration = document.getElementById("duration");
+
+            var poiOrigin = selectPOI.options[selectPOI.selectedIndex].value;
+            var transport = selectTransport.options[selectTransport.selectedIndex].value;
+            var duration = selectDuration.options[selectDuration.selectedIndex].value;
+
+            var startHour = document.getElementById("Percurso_StartHour").value;
+            var kilometers = document.getElementById("kilometers_2").value;
+            var inclination = document.getElementById("inclination_2").value;
+
+            var request = {
+                poiOrigem: poiOrigin,
+                maxHorasVisita: duration,
+                horaInicialVisita: startHour,
+                inclinacaoMax: inclination,
+                tipoVeiculo: transport,
+                kilometrosMax: kilometers
+            }
+
+            if (validateRequest2(request)) {
+                document.getElementById("loader2").style.display = "block";
+                HttpRequest("https://10.8.11.86/PVAPI/api/Algav2", request);
+            }
+        }
+
+        function ChangeTextAreaOrig() {
+            document.getElementById("PercursoOriginal").style.display = "none";
+            document.getElementById("PercursoOriginalSpan").style.color = null;
+            document.getElementById("PercursoResult").style.display = "block";
+            document.getElementById("PercursoResultSpan").style.color = "#428bca";
+        }
+
+        function ChangeTextAreaRes() {
+            document.getElementById("PercursoOriginal").style.display = "block";
+            document.getElementById("PercursoOriginalSpan").style.color = "#428bca";
+            document.getElementById("PercursoResult").style.display = "none";
+            document.getElementById("PercursoResultSpan").style.color = null;
+        }
+    </script>
 }

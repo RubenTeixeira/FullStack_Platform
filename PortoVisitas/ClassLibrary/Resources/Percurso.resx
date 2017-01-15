@@ -228,4 +228,7 @@
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
+  <data name="RouteOriginal" xml:space="preserve">
+    <value>Original Route</value>
+  </data>
 </root>

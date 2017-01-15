@@ -75,9 +75,9 @@ namespace BackOffice.Controllers
 
             foreach(POI connected in pOI.ConnectedPOIs)
             {
+                connected.GPS_Lat = 41.15M;
+                connected.GPS_Long = -8.65M;
                 connected.Altitude = 15;
-                connected.GPS_Lat = 1.0M;
-                connected.GPS_Long = 1.0M;
                 connected.VisitDuration = 60;
                 connected.ConnectedPOIs = new List<POI>();
             }
