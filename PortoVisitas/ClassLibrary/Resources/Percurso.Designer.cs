@@ -322,6 +322,15 @@ namespace ClassLibrary.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Original Route.
+        /// </summary>
+        public static string RouteOriginal {
+            get {
+                return ResourceManager.GetString("RouteOriginal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generated Route.
         /// </summary>
         public static string RouteResult {

@@ -1,13 +1,13 @@
 ﻿@model ClassLibrary.Models.Percurso
 
-    @{
-        ViewBag.Title = ClassLibrary.Resources.Global.Details;
-    }
+@{
+    ViewBag.Title = ClassLibrary.Resources.Global.Details;
+}
 
-    <h2>@ClassLibrary.Resources.Global.Details</h2>
+<h2>@ClassLibrary.Resources.Global.Details</h2>
 
-    <div>
-        <h4>@ClassLibrary.Resources.Global.Percurso</h4>
+<div>
+    <h4>@ClassLibrary.Resources.Global.Percurso</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -27,6 +27,22 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.StartHour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartHour)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FinishHour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FinishHour)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Creator)
         </dt>
 
@@ -35,27 +51,17 @@
         </dd>
 
     </dl>
-
+    <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PercursoPOIs)
+            @Html.Raw(@ClassLibrary.Resources.Global.Percurso)
         </dt>
 
         <dd>
+           @Html.Raw(Html.Encode(ViewBag.route).Replace("\n", "<br />"))
         </dd>
-        @{
-            foreach (ClassLibrary.Models.POI connected in Model.PercursoPOIs)
-            {
-                <dt>
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
-
-                <dd>
-                    @Html.DisplayName(connected.Name)
-                </dd>
-            }
-        }
     </dl>
+    <hr />
 </div>
 <p>
     @Html.ActionLink(ClassLibrary.Resources.Global.Edit, "Edit", new { id = Model.PercursoID }) |

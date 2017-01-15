@@ -60,6 +60,8 @@ namespace BackOffice.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.route = buildOriginalRouteString(percurso, percurso.PercursoPOIs.ToList());
+
             return View(percurso);
         }
 
@@ -74,17 +76,23 @@ namespace BackOffice.Controllers
 
         // POST: Percurso/Create
         [HttpPost]
-        public async Task<ActionResult> Create([Bind(Include = "PercursoID,Name,Description,StartHour,FinishHour,PercursoPOIsOrder,PercursoPOIs")] Percurso percurso)
+        public async Task<ActionResult> Create([Bind(Include = "PercursoID,Name,Description,StartHour,PercursoPOIsOrder")] Percurso percurso)
         {
 
             List<POI> list = await getPOIList(null);
             ViewBag.PoiList = list;
 
-            parsePercursoPOIs(percurso, list);
+            if(!parsePercursoPOIs(percurso, list))
+            {
+                return View(percurso);
+            }
 
             var finishHour = Request.Form["FinishHour"];
 
-            percurso.FinishHour = percurso.StartHour.AddMinutes(double.Parse(finishHour, CultureInfo.InvariantCulture));
+            if (finishHour != null)
+            {
+                percurso.FinishHour = percurso.StartHour.AddMinutes(double.Parse(finishHour, CultureInfo.InvariantCulture));
+            }
 
             percurso.Creator = PVWebApiHttpClient.getUsername();
 
@@ -96,7 +104,7 @@ namespace BackOffice.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View();
+            return View(percurso);
 
         }
 
@@ -117,26 +125,45 @@ namespace BackOffice.Controllers
 
             PercursoViewModel percursoModel = new PercursoViewModel();
             List<POI> poiList = await getPOIList(null);
-            buildPercursoViewModel(percursoModel, percurso, poiList);
+
+            string route = buildOriginalRouteString(percurso, poiList);
+
+            percursoModel.Percurso = percurso;
+            percursoModel.PercursoPOIs = poiList;
+            percursoModel.PercursoOriginal = route;
 
             return View(percursoModel);
         }
 
         // POST: Percurso/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, [Bind(Include = "PercursoID,Name,Description,Creator,PercursoPOIs")] Percurso percurso)
+        public async Task<ActionResult> Edit(int id, [Bind(Include = "PercursoID,Name,Description,Creator,FinishHour,StartHour,PercursoPOIsOrder")] Percurso percurso)
         {
 
             PercursoViewModel percursoModel = new PercursoViewModel();
             List<POI> poiList = await getPOIList(null);
 
-            var connectedForm = Request.Form["percursoPoi.SelectedItemIds"];
-            parsePercursoPOIs(percurso, poiList);
+            percursoModel.Percurso = percurso;
+            percursoModel.PercursoPOIs = poiList;
+            percursoModel.PercursoOriginal = Request.Form["PercursoOriginal"].ToString();
 
-            buildPercursoViewModel(percursoModel, percurso, poiList);
+            if (!parsePercursoPOIs(percurso, poiList))
+            {
+                return View(percurso);
+            }
+
+            var finishHour = Request.Form["Percurso.FinishHour"];
+            try { 
+                percurso.FinishHour = percurso.StartHour.AddMinutes(double.Parse(finishHour, CultureInfo.InvariantCulture));
+            }catch{
+                //
+            }
+
 
             client = PVWebApiHttpClient.GetClient();
             var responseHttp = await client.PutAsJsonAsync("api/Percurso/" + id, percurso);
+
+            Console.Write(responseHttp.RequestMessage);
 
             if (responseHttp.IsSuccessStatusCode)
             {
@@ -161,6 +188,8 @@ namespace BackOffice.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.route = buildOriginalRouteString(percurso, percurso.PercursoPOIs.ToList());
+
             return View(percurso);
         }
 
@@ -183,6 +212,8 @@ namespace BackOffice.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.route = buildOriginalRouteString(percurso, percurso.PercursoPOIs.ToList());
 
             return View(percurso);
         }
@@ -235,11 +266,11 @@ namespace BackOffice.Controllers
             return percurso;
         }
 
-        public void parsePercursoPOIs(Percurso percurso, List<POI> listPOI)
+        public bool parsePercursoPOIs(Percurso percurso, List<POI> listPOI)
         {
             List<int> visited = new List<int>();
 
-            if (listPOI != null)
+            if (listPOI != null && percurso.PercursoPOIsOrder!=null)
             {
                 string[] percursoPOIs = percurso.PercursoPOIsOrder.Split(',');
 
@@ -264,23 +295,70 @@ namespace BackOffice.Controllers
                         }
                     }
                 }
+            }else
+            {
+                return false;
             }
+            return true;
         }
 
-        public void buildPercursoViewModel(PercursoViewModel percursoModel, Percurso percurso, List<POI> poiList)
+        public string buildOriginalRouteString(Percurso percurso, List<POI> poiList)
         {
-            percursoModel.percurso = percurso;
+            int count = 0;
+            List<int> visited = new List<int>();
+            string route = "";
+            string[] ids = percurso.PercursoPOIsOrder.Split(',');
 
-            ConnectedPOIViewModel poiSelectedModel = new ConnectedPOIViewModel();
-            IEnumerable<int> selectedItemsArray = percurso.PercursoPOIs.Select(x => x.POIID).ToArray();
-            ViewBag.Selected = selectedItemsArray;
+            foreach (string poi_id in ids)
+            {
+                foreach (POI p in poiList)
+                {
+                    if (p.POIID == Int32.Parse(poi_id))
+                    {
+                        if (count == 0)
+                        {
+                            route += ClassLibrary.Resources.Percurso.Begin + ": " + p.Name + "\n";
+                        }
+                        else if (count == ids.Length - 1)
+                        {
+                            route += ClassLibrary.Resources.Percurso.End + ": " + p.Name + "\n\n";
+                        }
+                        else
+                        {
+                            if (visited.Contains(p.POIID))
+                            {
+                                route += ClassLibrary.Resources.Percurso.Passing + ": " + p.Name + "\n";
+                            }
+                            else
+                            {
+                                route += ClassLibrary.Resources.Percurso.Stop + " " + count + ": " + p.Name + "\n";
+                                visited.Add(p.POIID);
+                            }
+                        }
+                    }
+                }
+                count++;
+            }
 
-            poiSelectedModel.SelectedItemIds = selectedItemsArray;
+            route += ClassLibrary.Resources.Percurso.Duration + ": " + percurso.FinishHour.Subtract(percurso.StartHour).Duration();
 
-            poiSelectedModel.Items = poiList;
-
-            percursoModel.percursoPoi = poiSelectedModel;
+            return route;
         }
+
+        //public void buildPercursoViewModel(PercursoViewModel percursoModel, Percurso percurso, List<POI> poiList)
+        //{
+        //    percursoModel.percurso = percurso;
+
+        //    ConnectedPOIViewModel poiSelectedModel = new ConnectedPOIViewModel();
+        //    IEnumerable<int> selectedItemsArray = percurso.PercursoPOIs.Select(x => x.POIID).ToArray();
+        //    ViewBag.Selected = selectedItemsArray;
+
+        //    poiSelectedModel.SelectedItemIds = selectedItemsArray;
+
+        //    poiSelectedModel.Items = poiList;
+
+        //    percursoModel.percursoPoi = poiSelectedModel;
+        //}
     }
     #endregion
 }

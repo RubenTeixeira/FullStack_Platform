@@ -126,11 +126,11 @@ namespace PVAPI.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var objResponse1 = JsonConvert.DeserializeObject<POIDTO>(result);
-                return Ok(objResponse1);
+                return Ok(result);
             }
 
-            return BadRequest("PVAPI: Malformed request; "+response.ReasonPhrase);
+            var bad = await response.Content.ReadAsStringAsync();
+            return BadRequest("PVAPI: Malformed request; "+ bad);
         }
 
         // DELETE: api/POI/5

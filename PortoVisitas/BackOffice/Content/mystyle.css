@@ -19,3 +19,7 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.percurso_label:hover span{
+    color:#a0a0a0;
+}

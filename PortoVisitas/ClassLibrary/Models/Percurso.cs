@@ -35,6 +35,7 @@ namespace ClassLibrary.Models
         [Display(Name = "Creator", ResourceType = typeof(Resources.Percurso))]
         public string Creator { get; set; }
 
+        [Required]
         public string PercursoPOIsOrder { get; set; }
 
         [Required]

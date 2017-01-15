@@ -40,19 +40,19 @@ namespace ClassLibrary.Models
         [Required]
         [Range(41.140150, 41.210131)]
         [RegularExpression(@"[-]?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Lat_Error")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.######}")]
         [Display(Name = "GPS_Lat", ResourceType = typeof(Resources.POI))]
         public decimal GPS_Lat { get; set; }
 
         [Required]
         [Range(-8.726065, -8.560989)]
         [RegularExpression(@"[-]?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}", ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Long_Error")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.######}")]
         [Display(Name = "GPS_Long", ResourceType = typeof(Resources.POI))]
         public decimal GPS_Long { get; set; }
 
         [Required]
-        [Range(15, 270, ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Altitude_Error")]
+        [Range(0, 180, ErrorMessageResourceType = typeof(Resources.POI), ErrorMessageResourceName = "POI_Altitude_Error")]
         [Display(Name = "Altitude", ResourceType = typeof(Resources.POI))]
         public int Altitude { get; set; }
 

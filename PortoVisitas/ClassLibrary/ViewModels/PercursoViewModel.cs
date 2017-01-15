@@ -9,8 +9,10 @@ namespace ClassLibrary.ViewModels
 {
     public class PercursoViewModel
     {
-        public Percurso percurso { get; set; }
+        public Percurso Percurso { get; set; }
 
-        public ConnectedPOIViewModel percursoPoi { get; set; }
+        public List<POI> PercursoPOIs { get; set; }
+
+        public string PercursoOriginal { get; set; }
     }
 }

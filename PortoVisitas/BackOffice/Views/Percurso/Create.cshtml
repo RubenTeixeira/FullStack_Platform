@@ -108,7 +108,7 @@
                         </div>
 
 
-                        <div class="form-group" >
+                        <div class="form-group">
                             <div class="col-md-offset-2 col-md-10" style="display:inline-flex;">
                                 <input id="generateRoute" type="button" value="@ClassLibrary.Resources.Percurso.GenerateRoute" onclick="RequestAlgav1()" class="btn btn-default" />
                                 <div id="loader1" class="loader"></div>
@@ -154,7 +154,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-2">@ClassLibrary.Resources.Percurso.Kilometers</label>
                             <div class="col-md-10">
-                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Kilometers must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Kilometers must be atleast 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Kilometers field is required." id="kilometers_2" name="kilometers_2" type="number">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field @ClassLibrary.Resources.Percurso.Kilometers must be a number." data-val-range="The field @ClassLibrary.Resources.Percurso.Kilometers must be greater than 0." data-val-range-min="0" data-val-required="The @ClassLibrary.Resources.Percurso.Kilometers field is required." id="kilometers_2" name="kilometers_2" type="number">
                                 <span class="field-validation-valid text-danger" data-valmsg-for="kilometers_2" data-valmsg-replace="true"></span>
                             </div>
                         </div>
@@ -200,21 +200,20 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $('input:radio[name="radio"]').change(
-            function () {
-                if ($(this).is(':checked') && $(this).val() == "algav1") {
-                    $parent_box = $('div.algav1_box');
-                    $parent_box.siblings().find('.bottom').slideUp(0, 'swing');
-                    $parent_box.find('.bottom').slideToggle(200, 'swing');
-                }
+        function () {
+            if ($(this).is(':checked') && $(this).val() == "algav1") {
+                $parent_box = $('div.algav1_box');
+                $parent_box.siblings().find('.bottom').slideUp(0, 'swing');
+                $parent_box.find('.bottom').slideToggle(200, 'swing');
+            }
 
-                if ($(this).is(':checked') && $(this).val() == "algav2") {
-                    $parent_box = $('div.algav2_box');
-                    $parent_box.siblings().find('.bottom').slideUp(0, 'swing');
-                    $parent_box.find('.bottom').slideToggle(200, 'swing');
-                }
-            });
-    </script>
-    <script>
+            if ($(this).is(':checked') && $(this).val() == "algav2") {
+                $parent_box = $('div.algav2_box');
+                $parent_box.siblings().find('.bottom').slideUp(0, 'swing');
+                $parent_box.find('.bottom').slideToggle(200, 'swing');
+            }
+        });
+
 
         function validateRequest1(request) {
             var bool = true;
@@ -265,7 +264,7 @@
                 bool = false;
             }
 
-            if(!bool){
+            if (!bool) {
                 alert(text);
             }
             return bool;
@@ -301,7 +300,7 @@
                         else if (j == json.percurso.length - 1) {
                             text += "@Html.Raw(ClassLibrary.Resources.Percurso.End): " + opt.text + "\n\n";
                         } else {
-                            if(visited.includes(poi)){
+                            if (visited.includes(poi)) {
                                 text += "@Html.Raw(ClassLibrary.Resources.Percurso.Passing): " + opt.text + "\n";
                             } else {
                                 text += "@Html.Raw(ClassLibrary.Resources.Percurso.Stop) " + count + ": " + opt.text + "\n";
@@ -324,9 +323,9 @@
             var finishHourItem = document.getElementById("FinishHour");
             finishHourItem.value = json.duracao;
 
-            if(document.getElementById("loader1").style.display == "block")
+            if (document.getElementById("loader1").style.display == "block")
                 document.getElementById("loader1").style.display = "none";
-            
+
             if (document.getElementById("loader2").style.display == "block")
                 document.getElementById("loader2").style.display = "none";
         }
@@ -428,5 +427,6 @@
                 HttpRequest("https://10.8.11.86/PVAPI/api/Algav2", request);
             }
         }
+
     </script>
 }

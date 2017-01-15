@@ -21,7 +21,7 @@ namespace DBAPI.DAL.Repositories
 
         public async Task<List<CaminhoDTO>> FindCaminhos()
         {
-            return await context.Database.SqlQuery<CaminhoDTO>("select c.POIID,c.ConnectedPOIID from Caminho c, POI p where c.POIID = p.POIID and p.Approved IS NOT NULL and p.Approved NOT LIKE 'no'").ToListAsync();
+            return await context.Database.SqlQuery<CaminhoDTO>("select c.POIID,c.ConnectedPOIID from Caminho c, POI p where c.POIID = p.POIID and p.Approved IS NOT NULL and p.Approved NOT LIKE 'no' and c.ConnectedPOIID NOT IN (select q.ConnectedPOIID from Caminho q, POI d where q.ConnectedPOIID = d.POIID and (d.Approved IS NULL or d.Approved LIKE 'no'))").ToListAsync();
         }
 
         private bool disposedValue = false;

@@ -23,7 +23,7 @@ namespace DBAPI.DAL.Repositories
 
         public async Task<List<POI>> FindPOIs()
         {
-            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved != null && p.Approved!="no").ToListAsync();
+            return await context.POIs.Include(p => p.ConnectedPOIs).Include(p => p.Hashtags).Where(p => p.Approved != null && p.Approved != "no").ToListAsync();
         }
 
         public async Task<List<POI>> FindPOIsToApprove()
@@ -51,7 +51,8 @@ namespace DBAPI.DAL.Repositories
             foreach (Hashtag tag in poi.Hashtags)
             {   // Wont duplicate hashtags
                 Hashtag existingTag = await getHashtagRepository().FindHashtagAsync(tag.Text);
-                if (existingTag != null) {
+                if (existingTag != null)
+                {
                     tag.HashtagID = existingTag.HashtagID;
                     context.Entry(tag).State = EntityState.Unchanged;
                 }
@@ -61,6 +62,15 @@ namespace DBAPI.DAL.Repositories
             await context.SaveChangesAsync();
             context.Entry(poi).Collection(x => x.ConnectedPOIs).Load();
             context.Entry(poi).Collection(x => x.Hashtags).Load();
+
+            if (poi.Approved != null && poi.Approved != "no")
+            {
+                foreach (POI connected in poi.ConnectedPOIs)
+                {
+                    context.Database.ExecuteSqlCommand("Insert Into Caminho (POIID,ConnectedPOIID)" +
+                        "Values('" + connected.POIID + "','" + poi.POIID + "')");
+                }
+            }
 
             return poi;
         }
@@ -90,37 +100,24 @@ namespace DBAPI.DAL.Repositories
         {
 
             context.Database.ExecuteSqlCommand("delete from Caminho where POIID = {0}", poi.POIID);
-            context.Database.ExecuteSqlCommand("delete from POIHashtag where POI_POIID = {0}", poi.POIID);
             await context.SaveChangesAsync();
-            
 
-            foreach (Hashtag tag in poi.Hashtags)
-            {
-                Hashtag existingTag = null;
-                existingTag = await getHashtagRepository().FindHashtagAsync(tag.Text);
-                if (existingTag == null)
-                {
-                    context.Hashtags.Add(tag);
-                } 
-                else
-                {
-                    tag.HashtagID = existingTag.HashtagID;
-                    context.Entry(tag).State = EntityState.Unchanged;
-                }
-                await context.SaveChangesAsync();
-
-                context.Database.ExecuteSqlCommand("Insert Into POIHashtag (POI_POIID,Hashtag_HashtagID)" +
-                    "Values('" + poi.POIID + "','" + tag.HashtagID + "')");
-            }
-
-            context.Entry(poi).State = EntityState.Modified;
+            context.Database.ExecuteSqlCommand("delete from Caminho where ConnectedPOIID = {0}", poi.POIID);
+            await context.SaveChangesAsync();
 
             foreach (POI connected in poi.ConnectedPOIs)
             {
                 context.Database.ExecuteSqlCommand("Insert Into Caminho (POIID,ConnectedPOIID)" +
                     "Values('" + poi.POIID + "','" + connected.POIID + "')");
+
+                if (poi.Approved != null && poi.Approved != "no")
+                {
+                    context.Database.ExecuteSqlCommand("Insert Into Caminho (POIID,ConnectedPOIID)" +
+                    "Values('" + connected.POIID + "','" + poi.POIID + "')");
+                }
             }
 
+            context.Entry(poi).State = EntityState.Modified;
             await context.SaveChangesAsync();
 
             return true;
@@ -150,7 +147,6 @@ namespace DBAPI.DAL.Repositories
                 context.Database.ExecuteSqlCommand("Insert Into POIHashtag (POI_POIID,Hashtag_HashtagID)" +
                     "Values('" + poi.POIID + "','" + tag.HashtagID + "')");
             }
-
             await context.SaveChangesAsync();
 
             return true;
@@ -242,6 +238,6 @@ namespace DBAPI.DAL.Repositories
             GC.SuppressFinalize(this);
         }
 
-        
+
     }
 }
